@@ -1,0 +1,78 @@
+﻿@model int
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tabsADM").tabs({ selected: '@Model' });
+        $("li#ADMLink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/AjourBTScript/DatesValidation.js"></script>
+
+<div id="tabsADM">
+    <ul>
+        <li><a href="#tabs-6">Visas and Permits</a></li>
+        <li><a href="#tabs-7">BTs</a></li>
+        <li><a href="#tabs-8">Messages</a></li>
+    </ul>
+    <div id="tabs-6">@{Html.RenderAction("GetVisaADM", "Visa", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    <div id="tabs-7">@{Html.RenderAction("GetBusinessTripADM", "BusinessTrip", new { userName = HttpContext.Current.User.Identity.Name.ToString(), selectedDepartment = @ViewBag.SelectedDepartment });}</div>
+    <div id="tabs-8"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "ADM", tab = 2, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-6]').click(function () {
+            $('#visasViewExample').DataTable({
+                "sScrollY": (0.63 * $(window).height()),
+                "aaSorting": [],
+                "bPaginate": false,
+                "bScrollCollapse": true,
+                "bFilter": false,
+                "bDestroy": true,
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "sType": "date" },
+                    null,
+                    null,
+                    { "sType": "date" },
+                    { "sType": "visaNum" },
+                    { "sType": "date" }
+
+                ]
+            });
+        });
+        $(document).ready(function () {
+            $('[href=#tabs-7]').click(function () {
+                var admTable = $('#example').dataTable({
+                    "sScrollY": (0.51 * $(window).height()),
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "bPaginate": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bScrollCollapse": true,
+                    "aaSorting": [],
+                    "aoColumns": [
+                        null,
+                         { "sType": "html" },
+                        { "bSortable": false },
+                        { "sType": "numeric" },
+                        { "sType": "numeric" },
+                        { "sType": "numeric" },
+                        { "sType": "numeric" },
+                        { "sType": "shortdate" }
+                    ]
+                });
+            });
+        })
+    })
+</script>

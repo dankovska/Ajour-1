@@ -1,0 +1,16 @@
+﻿@{
+    Layout = null;
+}
+
+@using (Ajax.BeginForm("GetBusinessTripDataACC","BusinessTrip", new AjaxOptions { UpdateTargetId = "btsViewACC", HttpMethod = "Post"}, new { id = "formForACC" }))
+{
+    <div>
+        @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentList, "All Departments", new { onchange = "$('#searchInputACC').val(''),$(this.form).submit();" })
+       
+         <input id="searchInputACC" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search..."/>
+    </div>
+}
+
+<div id="btsViewACC">
+    @Html.Action("GetBusinessTripDataACC", "BusinessTrip", new { selectedDepartment = ViewBag.SelectedDepartment, searchString = ViewBag.SearchString })
+</div>

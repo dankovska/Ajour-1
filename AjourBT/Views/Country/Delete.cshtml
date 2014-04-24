@@ -1,0 +1,44 @@
+﻿@model AjourBT.Domain.Entities.Country
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = null;
+}
+
+<p>
+    Please Confirm
+</p>
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="LocId" value="@Model.CountryID">
+
+                <div style="float:left">
+
+                    <button type="submit" data-href="/Country/DeleteConfirmed/@Model.CountryID" id="OKDelete" name="Command" value="OK" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span>OK</span>
+                    </button>
+
+                </div>
+            }
+        </td>
+        <td>
+            <div style="float:right">
+
+                <button type="submit" id="btnCancelDeleteCountry" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+    $('#OKDelete').button();
+    $('#btnCancelDeleteCountry').button();
+
+</script>

@@ -1,0 +1,86 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@{
+    Layout = null;
+}
+
+@*<script>
+    $(function () {
+        $("#ReloadMessagesButtonPU")
+          .button()
+    });
+
+    $(function () {
+        $("#ReloadMessagesButtonDIR")
+          .button()
+    });
+    $(function () {
+        $("#ReloadMessagesButtonACC")
+          .button()
+    });
+    $(function () {
+        $("#ReloadMessagesButtonADM")
+          .button()
+    });
+    $(function () {
+        $("#ReloadMessagesButtonBTM")
+          .button()
+    });
+
+</script>*@
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "messagesContainer",
+        Url = Url.Action("GetMessagesDataForRole")
+
+    };
+}
+
+
+<script>
+    $(function () {
+        $("[id^=ReloadMessagesButton]").button();
+    })
+</script>
+
+
+    @if (ViewBag.role == "BTM")
+    {
+        <input type="submit" value="Refresh page"  id="ReloadMessagesButtonBTM" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+    }
+    else if (ViewBag.role == "ADM")
+    {
+        <input type="submit" value="Refresh page" id="ReloadMessagesButtonADM" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+    }
+    else if (ViewBag.role == "ACC")
+    {
+        <input type="submit" value="Refresh page" id="ReloadMessagesButtonACC" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+    }
+    else if (ViewBag.role == "DIR")
+    {
+        <input type="submit" value="Refresh page" id="ReloadMessagesButtonDIR" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+    }
+    else if (ViewBag.role == "PU")
+    {
+        <input type="submit" value="Refresh page" id="ReloadMessagesButtonPU" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+    }
+
+    @using (Ajax.BeginForm(null, null, ajaxOpts, new{id = "formForPU"} ))
+    {
+        <div>
+            <input id="seachInput" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search... " />
+            <input type="hidden" name="role" value="@ViewBag.Role">
+            <input type="hidden" name="actionNameForPagination" value="@ViewBag.ActionNameForPagination">
+            <input type="hidden" name="tab" value="@ViewBag.Tab">
+            <input type="hidden" name="page" value="1">
+        </div>
+    }
+
+
+    <div id="messagesContainer">
+        @Html.Action("GetMessagesDataForRole")
+    </div>
+
+

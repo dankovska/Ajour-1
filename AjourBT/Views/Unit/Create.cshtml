@@ -1,0 +1,76 @@
+﻿@model AjourBT.Domain.Entities.Unit
+
+@{
+
+    ViewBag.Title = "Add new Unit";
+
+    Layout = null;
+
+}
+
+@*<script type="text/javascript">
+
+    clearTimeout(timer);
+
+    timer = window.setTimeout(function () { unit.reload(); }, timeout);
+
+    </script>*@
+
+<h4>Add new Unit</h4>
+
+@using (Html.BeginForm("Create", "Unit", FormMethod.Post, new { id = "createUnitForm" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        <legend>Unit</legend>
+
+        <table>
+
+            <tr>
+
+                <td>@Html.LabelFor(model => model.ShortTitle)</td>
+
+                <td>
+
+                    @Html.EditorFor(model => model.ShortTitle)
+
+                    <br /> @Html.ValidationMessageFor(model => model.ShortTitle)
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>@Html.LabelFor(model => model.Title)</td>
+
+                <td>
+
+                    @Html.EditorFor(model => model.Title)
+
+                    <br /> @Html.ValidationMessageFor(model => model.Title)
+
+                </td>
+
+            </tr>
+
+        </table>
+
+        @*<div style="float: right">
+
+            <button type="submit" id="btnSave" name="Command" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+
+            <span class="ui-button-text">Save</span>
+
+            </button>
+
+            </div>*@
+
+    </fieldset>
+
+}

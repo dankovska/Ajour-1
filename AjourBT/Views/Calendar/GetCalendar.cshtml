@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+    
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "CalendarData",
+        Url = Url.Action("GetCalendarData")
+
+    };
+}
+
+
+@using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formForABM" }))
+{
+<div id="calendarDropList">
+    @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentDropDownList, "All Departments", new { onchange = "$(this.form).submit();", id = "depDropList" })
+</div>
+   <div id="rangeCalendar">
+       <table class="wtrContainer">
+        <tr id="wtrInput">
+            <td>@Html.Label("From")</td>
+            <td>@Html.TextBox("calendarFromDate")</td>
+            <td>@Html.Label("To")</td>
+            <td>@Html.TextBox("calendarToDate")</td>
+           
+        </tr>
+
+        <tr id="wtrInput2">
+            <td></td>
+            <td><p id="errorFromAbs"></p></td>
+            <td></td>
+            <td><p id="errorToAbs"></p></td>
+            
+        </tr>
+    </table>
+    </div>
+        <div id="calendarAbsenceSubmitBtn">
+            <button id="calendarAbsenceButton" type="button">Submit</button>
+        </div>
+}
+<div id="CalendarData">
+    @{Html.RenderAction("GetCalendarData", "Calendar", new { selectedDepartment = ViewBag.SelectedDepartment });}
+</div>
+
+<script src="/Scripts/AjourBTScript/ABMDatesValidation.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#calendarFromDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-5:+5",
+            firstDay: 1,
+            dateFormat: "dd.mm.yy",
+            showWeek: true,
+            calculateWeek: myWeekCalc,
+            showOn: 'button',
+            buttonImage: '/Content/themes/base/images/calendar2.gif',
+            buttonImageOnly: true
+        });
+
+        $('#calendarToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-5:+5",
+            firstDay: 1,
+            dateFormat: "dd.mm.yy",
+            calculateWeek: myWeekCalc,
+            showWeek: true,
+            showOn: 'button',
+            buttonImage: '/Content/themes/base/images/calendar2.gif',
+            buttonImageOnly: true
+        });
+
+        $('#absenceButton').button();
+    })
+</script>
+

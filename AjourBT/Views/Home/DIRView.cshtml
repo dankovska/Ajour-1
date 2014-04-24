@@ -1,0 +1,53 @@
+﻿@model int
+@{
+    ViewBag.Title = "Director View";
+ }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#tabsDIR").tabs({ selected: '@Model' });
+        $("li#DIRLink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div id="tabsDIR" class="DirTab">
+    <ul>
+        <li><a href="#tabs15">Business Trips</a></li>
+        <li><a href="#tabs16">Messages</a></li>
+    </ul>
+    <div id="tabs15">@{Html.RenderAction("GetBusinessTripDIR", "BusinessTrip", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    <div id="tabs16"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "DIR", tab = 1, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action")});}</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs15]').click(function () {
+            var oTable = $('#indexDIRexample').DataTable({
+                "sScrollY": (0.6 * $(window).height()),
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "aaSorting": [],
+                "bPaginate": false,
+                "bScrollCollapse": true,
+                "bDestroy": true,
+                "aoColumns": [
+                    null,
+                    null,
+                    { "sType": "date" },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ]
+            });
+        })
+    })
+</script>

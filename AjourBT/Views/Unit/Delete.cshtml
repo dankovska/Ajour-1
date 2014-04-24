@@ -1,0 +1,43 @@
+﻿@model AjourBT.Domain.Entities.Unit
+@{
+    Layout = null;
+    ViewBag.Title = "Delete";
+}
+
+<script type="text/javascript">
+    //clearTimeout(timer);
+    //timer = window.setTimeout(function () { unit.reload(); }, timeout);
+    //   $(function () {
+        $("#OKDelete, #btnCancelDeleteUnit").button();
+   
+</script>
+<p>
+    Please Confirm
+</p>
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="UnitId" value="@Model.UnitID">
+
+                <div style="float:left">
+
+                    <button type="submit" data-href="/Unit/DeleteConfirmed/@Model.UnitID" id="OKDelete" name="Command" value="OK" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span>OK</span>
+                    </button>
+
+                </div>
+            }
+        </td>
+        <td>
+            <div style="float:right">
+
+                <button type="submit" id="btnCancelDeleteUnit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </td>
+    </tr>
+</table>

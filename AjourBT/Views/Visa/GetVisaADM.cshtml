@@ -1,0 +1,39 @@
+﻿@model string
+
+@{
+    Layout = null;
+}
+
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBodyVisa",
+        Url = Url.Action("GetVisaDataADM")
+
+    };
+}
+
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div id="destination2">
+
+        @Html.DropDownList("departmentName", (SelectList)ViewBag.SelectedDepartment, "All Departments", new { onchange = "$(this.form).submit();" })
+        @*<input type="search" name="searchString" />*@
+        @*<input type="submit" value="Search" id="some_input" />
+        <input type="hidden" id="searchsubmit" />*@ 
+    </div>
+}
+
+@*<form method="get" action="@Url.Action("GetVisa")" data-otf-ajax="true" data-otf-target="#tableBodyVisa"/>
+
+    <input type="search" name="searchString" />
+    <input type="submit" value="Search" />
+
+</form>*@
+<br />
+
+
+    <div id="tableBodyVisa">
+        @Html.Action("GetVisaDataADM", new { userName = HttpContext.Current.User.Identity.Name.ToString(), selectedUserDepartment = Model })
+    </div>

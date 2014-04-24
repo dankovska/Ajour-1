@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "EmployeeData",
+        Url = Url.Action("GetEmployeeData")
+
+    };
+}
+
+
+@using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formForPU" }))
+{
+    <div >
+        @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentList, "All Departments", new { onchange = "$('#seachInput').val(''),$(this.form).submit();", id = "depDropList" })
+       
+        <input id="seachInput" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search... "/>
+    </div>
+}
+<div id="EmployeeData" style="position:relative;top:8px;">
+    @Html.Action("GetEmployeeData", "Employee", new { selectedDepartment = ViewBag.SelectedDepartment, searchString = ViewBag.SearchString })
+</div>

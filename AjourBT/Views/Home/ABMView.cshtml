@@ -1,0 +1,108 @@
+﻿@using System.Web.Configuration
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabsABM").tabs({ selected: '@Model' })
+        $("li#ABMLink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/AjourBTScript/DatesValidation.js"></script>
+
+
+<div id="tabsABM" class="PuTab">
+    <ul>
+        <li><a href="#tabs-23">Countries</a></li>
+        <li><a href="#tabs-24">Holidays</a></li>
+        @{
+            if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+            {
+                <li><a href="#tabs-25">Calendar</a></li>
+            }
+        }
+        <li><a href="#tabs-27">Days From BT</a></li>
+        <li><a href="#tabs-26">WTR</a></li>
+        <li><a href="#tabs-29">Absence</a></li>
+        @*@{
+            if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+            {
+                <li><a href="#tabs-28">Overtime Balance</a></li>
+            }
+        }*@
+
+    </ul>
+    <div id="tabs-23">@{Html.RenderAction("Index", "Country");}</div>
+    <div id="tabs-24">@{Html.RenderAction("GetHoliday", "Holiday");}</div>
+    @{
+        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+            <div id="tabs-25">@{Html.RenderAction("GetCalendar", "Calendar");}</div>
+        }
+    }
+
+    <div id="tabs-27">@{Html.RenderAction("GetJourney", "Journey");}</div>
+    <div id="tabs-26">@{Html.RenderAction("GetWTR", "WTR");}</div>
+    <div id="tabs-29">@{Html.RenderAction("GetAbsence", "Absence");}</div>
+    @*@{
+        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+            <div id="tabs-28">@{Html.RenderAction("GetOvertime", "Overtime");}</div>
+        }
+    }*@
+
+
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-25]').click(function () {
+            $.ajax({
+                cache: false,
+                url: "/Calendar/GetCalendar",
+                type: "GET",
+                data: { selectedDepartment: "" },
+                success: function (data) {
+                    $("#tabs-25").html($(data));
+                }
+            });
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-27]').click(function () {
+            $.ajax({
+                cache: false,
+                url: "/Journey/GetJourney",
+                type: "GET",
+                data: { searchString: "" },
+                success: function (data) {
+                    $("#tabs-27").html($(data));
+                }
+            });
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-28]').click(function () {
+            $.ajax({
+                cache: false,
+                url: "/Overtime/GetOvertime",
+                type: "GET",
+                data: { searchString: "" },
+                success: function (data) {
+                    $("#tabs-28").html($(data));
+                }
+            });
+        })
+    })
+</script>

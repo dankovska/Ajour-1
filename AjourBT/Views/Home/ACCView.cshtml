@@ -1,0 +1,74 @@
+﻿@model int
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#tabsACC").tabs({ selected: '@Model' });
+        $("li#ACCLink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/AjourBTScript/DatesValidation.js"></script>
+
+
+<div id="tabsACC">
+    <ul>
+        <li><a href="#tabs-12">Current/Future BTs</a></li>
+        <li><a href="#tabs-13">Accountable BTs</a></li>
+        <li><a href="#tabs-14">Messages</a></li>
+    </ul>
+
+    <div id="tabs-12">@{Html.RenderAction("GetBusinessTripACC", "BusinessTrip", new { selectedDepartment = @ViewBag.SelectedDepartment, searchString = @ViewBag.SearchString });}</div>
+    <div id="tabs-13">@{Html.RenderAction("IndexACCforAccountableBTs", "BusinessTrip", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    <div id="tabs-14"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "ACC", tab = 2, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-12]').click(function () {
+            $('#exampleBtsView').DataTable({
+                "sScrollY": "415px",
+                "bPaginate": false,
+                "bDestroy": true,
+                "bFilter": false,
+                "bStateSave": true,
+                "bScrollCollapse": true,
+                "aaSorting": [],
+                "aoColumns": [
+                    null,
+                    null,
+                    { "sType": "date" },
+                    null,
+                    null,
+                    null
+                ],
+            })
+        });
+
+        $('[href=#tabs-13]').click(function () {
+            var accTable = $("#btsViewExample").dataTable({
+                "sScrollY": (0.6 * $(window).height()),
+                "bPaginate": false,
+                "bAutoWidth": true,
+                "bDestroy": true,
+                "bScrollCollapse": true,
+                "aaSorting": [],
+                "aoColumns": [
+                                null,
+                                null,
+                                { "sType": "date" },
+                                null,
+                                null,
+                                null
+                ],
+
+            });
+        });
+    })
+</script>

@@ -1,0 +1,44 @@
+﻿@model AjourBT.Domain.Entities.Department
+@{
+    ViewBag.Title = "Delete";
+    Layout = null;
+}
+<script type="text/javascript">
+
+    clearTimeout(timer);
+    timer = window.setTimeout(function () { location.reload(); }, timeout);
+
+
+    $(function () {
+        $("#OKDeleteDepartment, #btnCancelDeleteDepartment").button();
+    })
+
+</script>
+<h4>Please Confirm</h4>
+
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm("Delete", "Department", new {id=Model.DepartmentID}, FormMethod.Post, new { id = "deleteConfirmedForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div style="float:left">
+
+                    <button type="submit" data-href="/Department/Delete/@Model.DepartmentID" id="OKDeleteDepartment" name="Command" value="OK">
+                        OK 
+                    </button>
+
+                </div>
+            }
+        </td>
+        <td>
+            <div style="float:right">
+
+                <button type="submit" id="btnCancelDeleteDepartment" >
+                    Cancel
+                </button>
+            </div>
+                </td>
+    </tr>
+</table>

@@ -1,0 +1,89 @@
+﻿@using AjourBT.Domain.Entities
+@using AjourBT.Helpers
+@model IEnumerable<AjourBT.Models.EmployeeViewModelForVU>
+
+@{
+    Layout = null;
+}
+
+
+
+
+<title>GetBusinessTripDataViewer</title>
+
+<table  class="BTsForViewer">
+    <colgroup>
+        <col class="cv1" />
+        <col class="cv2" />
+        <col class="cv3" />
+        <col class="cv4" />
+        <col class="cv5" />
+        <col class="cv6" />
+        <col class="cv7" />
+        <col class="cv8" />
+        <col class="cv9" />
+        <col class="cv10"/>
+        <col class="cv11"/>
+        <col class="cv12" />
+        <col class="cv13" />
+        <col class="cv14" />
+    </colgroup>
+    <tr>
+
+        <th>
+            EID
+        </th>
+        <th>
+            Name
+        </th>
+        @foreach (int month in ViewBag.Monthes)
+        {
+            <th>
+                @Html.CustomDisplayMonthInEnglishHelp(month.ToString())
+            </th>
+        }
+    </tr>
+
+    @foreach (var emp in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => emp.EID)
+            </td>
+
+            <td>
+                
+                @{
+                   var DaysUsedInBtInfo = Html.CustomDisplayNumberOfDaysInBT(emp);
+                  }
+                 <a id="NumberDaysInBt" class="DaysInBt" title="@DaysUsedInBtInfo">@emp.LastName @emp.FirstName</a>
+            </td>
+
+            @foreach (int month in ViewBag.Monthes)
+            {
+                <td class="VuTableTd">
+                    @foreach (var monthGroupName in emp.BusinessTripsByMonth)
+                    {
+                        if (monthGroupName.Key == month)
+                        {
+                            foreach (var bt in monthGroupName.Value)
+                            {
+                                <a id="ShowBTInformation" class="BTsForVU" href="/BusinessTripViewer/ShowBTInformation/@bt.BusinessTripID"> @bt.Location.Title @bt.StartDate.ToString("dd.MM") - @bt.EndDate.ToString("dd.MM")</a>
+                                <br>
+                            }
+                        }
+                    }
+
+                </td>
+            }
+        </tr>
+
+    }
+
+</table>
+
+<div id="ShowBTInformation-VU" style="display:none"></div>
+
+
+

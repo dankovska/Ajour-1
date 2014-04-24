@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Get Business Trip for DIR";
+    Layout = null;
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBodyBTs",
+        Url = Url.Action("GetBusinessTripDataDIR")
+
+    };
+}
+
+
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div id="destination5">
+        @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentList, "All Departments", new { onchange = "$(this.form).submit();" })
+    </div>
+}
+
+<div id="tableBodyBTs">
+    @Html.Action("GetBusinessTripDataDIR", "BusinessTrip", new { selectedDepartment = ViewBag.SelectedDepartment })
+</div>
+

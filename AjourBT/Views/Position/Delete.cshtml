@@ -1,0 +1,39 @@
+﻿@model AjourBT.Domain.Entities.Position
+
+@{
+    Layout = null;
+    ViewBag.Title = "Delete";
+}
+
+<script>
+    $("#OKDelete, #btnCancelDeletePosition").button();
+</script>
+<p>
+    Please Confirm
+</p>
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="PosId" value="@Model.PositionID">
+                <div style="float:left">
+
+                    <button type="submit" data-href="/Position/DeleteConfirmed/@Model.PositionID" id="OKDelete" name="Command" value="OK" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span>OK</span>
+                    </button>
+
+                </div>
+            }
+        </td>
+        <td>
+            <div style="float:right">
+
+                <button type="submit" id="btnCancelDeletePosition" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </td>
+    </tr>
+</table>

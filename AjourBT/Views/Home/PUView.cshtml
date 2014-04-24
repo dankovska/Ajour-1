@@ -1,0 +1,72 @@
+﻿@model int
+@{
+    ViewBag.Title = "PUView";
+    string selectedDepartment = ViewBag.SelectedDepartment;
+    string searchString = ViewBag.SearchString;
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabsPU").tabs({ selected: '@Model' })
+        $("li#PULink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/AjourBTScript/DatesValidation.js"></script>
+
+<div id="tabsPU" class="PuTab">
+    <ul>
+        <li><a href="#tabs1">Departments</a></li>
+        <li><a href="#tabs2">Employees</a></li>
+        <li><a href="#tabs3">Locations</a></li>
+        <li><a href="#tabs4">Positions</a></li>
+        <li><a href="#tabs5">Data</a></li>
+        <li><a href="#tabs8">Units</a></li>
+        <li><a href="#tabs6">Log</a></li>
+        @*<li><a href="#tabs7">Countries</a></li>*@
+    </ul>
+    <div id="tabs1">@{Html.RenderAction("Index", "Department");}</div>
+    <div id="tabs2">@{Html.RenderAction("GetEmployee", "Employee", new { selectedDepartment = @ViewBag.SelectedDepartment, searchString = @ViewBag.SearchString });}</div>
+    <div id="tabs3">@{Html.RenderAction("Index", "Location");}</div>
+    <div id="tabs4">@{Html.RenderAction("Index", "Position");}</div>
+    <div id="tabs5"></div>
+    <div id="tabs6">@{Html.RenderAction("GetMessagesForRole", "Message", new { role = "PU", tab = 6, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+    @*<div id="tabs7">@{Html.RenderAction("Index", "Country");}</div>*@
+    <div id="tabs8">@{Html.RenderAction("Index", "Unit");}</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs2]').click(function () {
+            $('#employeeViewexample').DataTable({
+                "sScrollY": (0.55 * $(window).height()),
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "bDestroy": true,
+                "aaSorting": [],
+                "bPaginate": false,
+                "bFilter": false,
+                "bScrollCollapse": true,
+                "aoColumns": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    { "sType": "date" },
+    null,
+    { "sType": "date" },
+    null,
+    ///{ "sType": "date" }
+    {"bSortable": false}            ]
+            });
+        });
+    })
+</script>

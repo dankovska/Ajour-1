@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBodyVisaVU",
+        Url = Url.Action("GetVisaDataVU")
+
+    };
+}
+
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div>
+        <input id="seachInput" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search... "/>
+        @*<input type="submit" value="Search" id="some_input" />
+            <input type="hidden" id="searchsubmit" />*@
+    </div>
+}
+
+
+<div id="tableBodyVisaVU">
+    @Html.Action("GetVisaDataVU", new { searchString = ViewBag.SearchString })
+</div>

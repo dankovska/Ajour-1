@@ -1,0 +1,34 @@
+﻿@model AjourBT.Domain.Entities.Department
+
+@{
+    Layout = null;
+    ViewBag.Title = "Create";
+}
+
+@*<script type="text/javascript">
+    clearTimeout(timer);
+    timer = window.setTimeout(function () { location.reload(); }, timeout);
+</script>*@
+
+
+@using (Html.BeginForm("Create", "Department", FormMethod.Post, new { id = "createDepartmentForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Department</legend>
+<table>
+        <tr>
+            <td>@Html.LabelFor(model => model.DepartmentName)</td>
+            <td>@Html.EditorFor(model => model.DepartmentName)
+                <br /> @Html.ValidationMessageFor(model => model.DepartmentName)</td>
+        </tr>
+</table>
+        @*<div style="float: right">
+            <button type="submit" id="btnSave" name="Command" value="Save">
+                <span class="ui-button-text">Save</span>
+            </button>
+        </div>*@
+    </fieldset>
+}

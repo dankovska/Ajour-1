@@ -1,0 +1,59 @@
+﻿@using System.Web.Configuration
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabsEMP").tabs({ selected: '@Model' })
+        $("li#EMPLink a").css({
+            'color': '#E1701D'
+        })
+    });
+</script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div id="tabsEMP" class="EMPTab">
+    <ul>
+        @if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+        <li><a href="#tabs4">Absence</a></li>
+        }
+        <li><a href="#tabs5">Birthdays</a></li>
+        <li><a href="#tabs1">Last BT</a></li>
+        <li><a href="#tabs6">Reported BTs</a></li>
+        <li><a href="#tabs2">Visa</a></li>
+            @if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+            {
+                <li><a href="#tabs3">WTR</a></li>
+            }
+        <li><a href="#tabs31">DaysFromBTs</a></li>
+    </ul>
+    <div id="tabs1">@{Html.RenderAction("GetLastBTDataPerEmployee", "EMP", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    <div id="tabs2">@{Html.RenderAction("GetVisaDataPerEmployee", "EMP", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    @{
+        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+            <div id="tabs3">@{Html.RenderAction("GetWTRPerEMP", "WTR");}</div>
+            <div id="tabs4">@{Html.RenderAction("GetAbsencePerEMP", "EMP");}</div>
+        }
+    }
+    <div id="tabs5">@{Html.RenderAction("GetBirthdays", "EMP");}</div>
+    <div id="tabs6">@{Html.RenderAction("GetReportedBTs", "EMP", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+    <div id="tabs31">@{Html.RenderAction("GetJourneyDataEMP", "Journey", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href=#tabs-31]').click(function () {
+            $.ajax({
+                cache: false,
+                url: "/Journey/GetJourneyDataEMP",
+                type: "GET",
+                data: { userName: "" },
+                success: function (data) {
+                    $("#tabs-31").html($(data));
+                }
+            });
+        })
+    })
+</script>

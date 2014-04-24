@@ -1,0 +1,20 @@
+﻿@*@{
+        Layout = null;
+    }
+
+    @{
+        AjaxOptions ajaxOpts = new AjaxOptions
+        {
+            UpdateTargetId = "LocationData",
+            Url = Url.Action("GetLocationData")
+
+        };
+    }
+
+    @using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formForPU" }))
+    {
+        <div>
+            @Html.DropDownList("selectedCountry", (SelectList)ViewBag.CountryList, "All Countries", new { onchange = "$('#seachInput').val(''),$(this.form).submit();", id = "countryDropList" })
+        </div>
+    }
+*@

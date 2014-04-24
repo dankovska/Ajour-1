@@ -1,0 +1,201 @@
+﻿@using AjourBT.Helpers
+@using AjourBT.Domain.Entities
+@using AjourBT.Infrastructure
+@model IEnumerable<AjourBT.Domain.Entities.Employee>
+
+@{
+    Layout = null;
+    string searchString = ViewBag.SearchString;
+    
+}
+
+    <tbody id="VisasViewBody">
+        @foreach (var item in Model)
+        {
+            <tr id="Data-@item.EmployeeID" style="height:20px; font-size:0.9em" class="indexBT">
+                <td>
+                    @Html.DisplayFor(modelItem => item.EID)
+                </td>
+
+                @if (item.DateDismissed != null)
+                {
+                    <td>
+                        <strike>
+                            @Html.DisplayFor(model => item.LastName)
+                            @Html.DisplayFor(model => item.FirstName)
+                        </strike>
+                        <br>
+                        <i2>@Html.DisplayFor(modelItem => item.DateDismissed)</i2>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @if (item.IsManager == true)
+                        {
+                            <b>
+                                @Html.DisplayFor(model => item.LastName)
+                                @Html.DisplayFor(model => item.FirstName)
+                            </b>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => item.LastName)
+                            @:
+                            @Html.DisplayFor(model => item.FirstName)
+                        }
+                    </td>
+                }
+                <td style="text-align:center">
+                    @Html.CheckBox("HasPassport", item.Passport != null ? true : false, new { id = "HasPassport", value = item.EmployeeID })
+                    &nbsp;
+                    @Html.CustomDisplayPassportsActionLink(item.Passport, searchString)
+                </td>
+                @if (item.Visa != null)
+                {
+                    <td>
+                        @Html.DisplayFor(model => item.Visa.VisaType)
+                    </td>
+                    <td>
+                        @Html.CustomDisplayVisaStartAndDueDates(item.Visa, "/Visa/Edit/" + item.EmployeeID + "?searchString=" + searchString)
+                    </td>
+                    if (item.Visa.Entries == 0)
+                    {
+                        <td>
+                            MULT
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(model => item.Visa.Entries)
+                            (@Html.DisplayFor(model => ((item.Visa.EntriesUsedInPrivateTrips + item.Visa.EntriesUsedInBT + item.Visa.CorrectionForVisaEntries).Value)))
+                        </td>
+                    }
+
+                    <td>
+                        @Html.DisplayFor(model => item.Visa.Days)
+                        (@Html.DisplayFor(model => ((item.Visa.DaysUsedInPrivateTrips + item.Visa.DaysUsedInBT + item.Visa.CorrectionForVisaDays).Value)))
+                    </td>
+                }
+                else if (item.Passport != null)
+                {
+                    <td @**@></td>
+                    <td><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="CreateVisa" href="/Visa/Create/@item.EmployeeID?searchString=@ViewBag.SearchString" data-date-format="@ViewBag.JSDatePattern" style="width:100%"> Add Visa </a></td>
+                    <td></td>
+                    <td></td>
+                }
+                else
+                {
+                    <td @**@></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                }
+                @if (item.VisaRegistrationDate != null)
+                {
+                    <td>
+                        @Html.ActionLink(item.VisaRegistrationDate.RegistrationDate.ToShortDateString(), "Edit", "VisaRegistrationDate", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "visaRegistrationDateEdit", data_date_format = ViewBag.JSDatePattern })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="CreateVisaRegistrationDate" href="/VisaRegistrationDate/Create/@item.EmployeeID?searchString=@ViewBag.SearchString" data-date-format="@ViewBag.JSDatePattern" style="width:100%">  Add </a>
+                    </td>
+                }
+
+                @if (item.Permit != null)
+                {
+                    if (item.Permit.Number != null || item.Permit.StartDate != null || item.Permit.EndDate != null)
+                    {
+                        <td>
+                            @Html.DisplayFor(model => item.Permit.Number)
+                        </td>
+                        <td>
+                            @if (item.Permit.IsKartaPolaka)
+                            {
+                                @Html.ActionLink("Karta Polaka", "Edit", "Permit", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "permitEditDialog", data_date_format = ViewBag.JSDatePattern })
+                                <br />
+                                <size0_8>
+                                    @if (item.Permit.StartDate != null)
+                                    {
+                                        @Html.CustomDisplayDateTime(item.Permit.StartDate.Value)
+                                    }
+                                    @if (item.Permit.EndDate != null)
+                                    {
+                                        @:-
+                                        @Html.CustomDisplayDateTime(item.Permit.EndDate.Value)
+                                    }
+                                </size0_8>
+                            }
+                            else
+                            {
+                                @Html.ActionLink(item.Permit.StartDate.Value.ToShortDateString() + " - " + item.Permit.EndDate.Value.ToShortDateString(), "Edit", "Permit", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "permitEditDialog", data_date_format = ViewBag.JSDatePattern })
+                            }
+
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                        <td>
+                            @if (item.Permit.IsKartaPolaka == true && item.Permit.Number == null && item.Permit.StartDate == null && item.Permit.EndDate == null)
+                            {
+                                @Html.ActionLink("Karta Polaka", "Edit", "Permit", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "permitEditDialog", data_date_format = ViewBag.JSDatePattern })
+                            }
+                        </td>
+                    }
+                }
+                else
+                {
+                    <td @**@></td>
+                    <td><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="CreatePermit" href="/Permit/Create/@item.EmployeeID?searchString=@ViewBag.SearchString" data-date-format="@ViewBag.JSDatePattern" style="width:100%"> Add Permit </a></td>
+                }
+                <td>
+                    @if (item.BusinessTrips != null)
+                    {
+                        BusinessTrip lastBT = item.BusinessTrips
+                                              .Where(b => (b.EndDate < DateTime.Now.ToLocalTimeAzure().Date)
+                                                           && (b.Status == (BTStatus.Confirmed | BTStatus.Reported)))
+                                              .LastOrDefault();
+                        if (lastBT != null)
+                        {
+                            <p>
+                                @*@Html.ActionLink(lastBT.Location.Title + ":" + lastBT.StartDate.ToString("dd.MM") + "-" + lastBT.EndDate.ToString("dd.MM"), "ShowBTData", new { id = lastBT.BusinessTripID })*@
+                                <a id="ShowBTDataADM" href="/BusinessTrip/ShowBTData/@lastBT.BusinessTripID">@lastBT.Location.Title:@lastBT.StartDate.ToString("dd.MM.yy")-@lastBT.EndDate.ToString("dd.MM.yy")</a>
+                            </p>
+                        }
+                    }
+                </td>
+
+                <td>@Html.CustomDisplayPermitStatus(item)</td>
+
+            </tr>
+        }
+    </tbody>
+
+
+<div id="permitDialog-edit" style="display: none"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#visasView').DataTable({
+            "sScrollY": (0.6 * $(window).height()),
+            "bPaginate": false,
+            "bDestroy": true,
+            "bFilter": false,
+            "bScrollCollapse": true,
+            "aaSorting": []
+        });
+
+         $("div.dataTables_scrollBody").scrollTop(window.scrollPosition);
+    });
+
+</script>
+
+@*<script>
+    $(function () {
+        $("[id^=CreatePassport], [id^=CreateVisa], [id^=CreateVisaRegistrationDate], [id^=CreatePermit]").button();
+    })
+</script>*@

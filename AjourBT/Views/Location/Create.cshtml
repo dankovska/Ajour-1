@@ -1,0 +1,62 @@
+﻿@model AjourBT.Domain.Entities.Location
+
+@{
+    ViewBag.Title = "Add new Location";
+    Layout = null;
+}
+
+<script type="text/javascript">
+    clearTimeout(timer);
+    timer = window.setTimeout(function () { location.reload(); }, timeout);
+</script>
+
+@*<h4>Add new Location</h4>*@
+
+@using (Html.BeginForm("Create", "Location", FormMethod.Post, new { id = "createLocationForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Location</legend>
+        <table>
+            <tr>
+                <td>@Html.Label("Country")</td>
+                <td>
+                    @Html.DropDownList("CountryID", (SelectList)ViewBag.CountryList, "<Choose country>")
+                    <br />   @Html.ValidationMessageFor(model => model.CountryID)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Title)</td>
+                <td>
+                    @Html.EditorFor(model => model.Title)
+                <br />  @Html.ValidationMessageFor(model => model.Title)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.Address)</td>
+            <td>
+                @Html.EditorFor(model => model.Address)
+            <br />  @Html.ValidationMessageFor(model => model.Address)
+        </td>
+    </tr>
+
+            <tr>
+                <td>@Html.Label("Responsible")</td>
+                <td>
+                    @Html.EditorFor(model => model.ResponsibleForLoc)
+                    <br />  @Html.ValidationMessageFor(model => model.ResponsibleForLoc)
+                    <div id="ModelError" style="max-width: 400px; color: red"></div>
+                </td>
+            </tr>
+</table>
+@*<div style="float: right">
+        <button type="submit" id="btnSave" name="Command" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+            <span class="ui-button-text">Save</span>
+        </button>
+    </div>*@
+</fieldset>
+}
+

@@ -1,0 +1,69 @@
+﻿@using AjourBT.Domain.Entities;
+@using AjourBT.Helpers;
+
+@model IEnumerable<AjourBT.Models.JourneysAndOvertimesModel>
+
+
+@{
+    Layout = null;
+    string searchString = ViewBag.SearchString;
+}
+    <tbody id="tbodyJourneys">
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>
+                    @employee.Department
+                </td>
+                <td>
+                    @employee.LastName @employee.FirstName
+                </td>
+                <td>
+                    @employee.EID
+                </td>
+                <td>
+                    @if (employee.Journeys != null)
+                    {
+                        foreach (Journey journey in employee.Journeys)
+                        {
+                            @Html.CustomDisplayJourneyDate(journey, searchString)
+                        }
+                    }
+                    
+                    @if (employee.Overtimes != null)
+                    {
+                        foreach (Overtime overtime in employee.Overtimes)
+                        {
+                            @Html.CustomDisplayOvertimeDate(overtime, searchString)
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+<input type="hidden" name="searchString" value=@ViewBag.SearchString>
+
+
+<script type="text/javascript">
+    var oTable;
+
+    $(document).ready(function () {
+        oTable = $('#journeysViewABM').DataTable({
+            "sScrollY": "415px",
+            "bPaginate": false,
+            "bDestroy": true,
+            "bFilter": false,
+            "bStateSave": false,
+            "bScrollCollapse": true,
+            "aaSorting": [],
+            "aoColumns": [
+                null,
+                null,
+                null,
+                { "sType": "date" },
+            ],
+        })
+        $("div.dataTables_scrollBody").scrollTop(window.scrollPositionABM);
+    });
+</script>

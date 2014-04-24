@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjourBT", "AjourBT\AjourBT.csproj", "{8877AAC1-0AA8-49EB-BFBA-0972F5416C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjourBT.Domain", "AjourBT.Domain\AjourBT.Domain.csproj", "{C1D1ADAA-6806-4E56-BA97-4F65B60750B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjourBT.Tests", "AjourBT.Tests\AjourBT.Tests.csproj", "{C4D92354-D30A-40BC-9A73-DD26D3459BEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLSLoader", "XLSLoader\XLSLoader.csproj", "{E82A0AD1-EC8E-4F84-92F1-A2F35FC4BD19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B32613E5-99F2-4B16-9DE1-7043B002123E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8877AAC1-0AA8-49EB-BFBA-0972F5416C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8877AAC1-0AA8-49EB-BFBA-0972F5416C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8877AAC1-0AA8-49EB-BFBA-0972F5416C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8877AAC1-0AA8-49EB-BFBA-0972F5416C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D1ADAA-6806-4E56-BA97-4F65B60750B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D1ADAA-6806-4E56-BA97-4F65B60750B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D1ADAA-6806-4E56-BA97-4F65B60750B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D1ADAA-6806-4E56-BA97-4F65B60750B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D92354-D30A-40BC-9A73-DD26D3459BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D92354-D30A-40BC-9A73-DD26D3459BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D92354-D30A-40BC-9A73-DD26D3459BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D92354-D30A-40BC-9A73-DD26D3459BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E82A0AD1-EC8E-4F84-92F1-A2F35FC4BD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82A0AD1-EC8E-4F84-92F1-A2F35FC4BD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82A0AD1-EC8E-4F84-92F1-A2F35FC4BD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82A0AD1-EC8E-4F84-92F1-A2F35FC4BD19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

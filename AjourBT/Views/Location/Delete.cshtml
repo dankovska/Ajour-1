@@ -1,0 +1,44 @@
+﻿@model AjourBT.Domain.Entities.Location
+@{
+    Layout = null;
+    ViewBag.Title = "Delete";
+}
+
+<script type="text/javascript">
+    clearTimeout(timer);
+    timer = window.setTimeout(function () { location.reload(); }, timeout);
+
+    $(function () {
+        $("#OKDelete, #btnCancelDeleteLocation").button();
+    })
+</script>
+<p>
+    Please Confirm
+</p>
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="LocId" value="@Model.LocationID">
+
+                <div style="float:left">
+
+                    <button type="submit" data-href="/Location/DeleteConfirmed/@Model.LocationID" id="OKDelete" name="Command" value="OK" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span>OK</span>
+                    </button>
+
+                </div>
+            }
+        </td>
+        <td>
+            <div style="float:right">
+
+                <button type="submit" id="btnCancelDeleteLocation" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,104 @@
+﻿@using AjourBT.Domain.Entities;
+@using AjourBT.Helpers;
+
+@model IEnumerable<AjourBT.Models.JourneysAndOvertimesModel>
+
+@{
+    Layout = null;
+    string userName = ViewBag.UserName;
+}
+
+<title>GetBusinessTripDataEMP</title>
+<table class="journeyView" id="journeysViewABM">
+    <colgroup>
+        <col class="j1" />
+        <col class="j2" />
+        <col class="j3" />
+        <col class="j4" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>
+                Department
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                EID
+            </th>
+            <th>
+                Days
+            </th>
+        </tr>
+    </thead>
+    <tbody id="tbodyJourneys">
+        
+        @foreach (var employee in Model)
+        {
+            if (employee.EID == userName)
+            {
+                
+            <tr>
+                <td>
+                    @employee.Department
+                </td>
+                <td>
+                    @employee.LastName @employee.FirstName
+                </td>
+                <td>
+                    @employee.EID
+                </td>
+                <td>
+                    @if (employee.Journeys != null)
+                    {
+                        foreach (Journey journey in employee.Journeys)
+                        {
+                            @Html.CustomDisplayJourneyDateForVU(journey, userName)
+                        }
+                    }
+
+                    @if (employee.Overtimes != null)
+                    {
+                        foreach (Overtime overtime in employee.Overtimes)
+                        {
+                            @Html.CustomDisplayOvertimeDateForVU(overtime, userName)
+                        }
+                    }
+                    @if (employee.Journeys.Count == 0 && employee.Overtimes.Count == 0)
+                    {
+                       @: No data found 
+                    }
+                </td>
+            </tr>
+            }
+
+            else
+            {
+            }
+        }
+    </tbody>
+</table>
+
+@*<script type="text/javascript">
+    var oTable;
+
+    $(document).ready(function () {
+        oTable = $('#journeysViewABM').DataTable({
+            "sScrollY": "415px",
+            "bPaginate": false,
+            "bDestroy": true,
+            "bFilter": false,
+            "bStateSave": false,
+            "bScrollCollapse": true,
+            "aaSorting": [],
+            "aoColumns": [
+                null,
+                null,
+                null,
+                { "sType": "date" },
+            ],
+        })
+        $("div.dataTables_scrollBody").scrollTop(window.scrollPositionACC);
+    });
+</script>*@

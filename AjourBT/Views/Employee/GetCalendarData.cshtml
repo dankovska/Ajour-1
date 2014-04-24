@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AjourBT.Domain.Entities.Employee>
+
+@{
+    Layout = null;
+    
+}
+
+<div class="calendar"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () { 
+    $(function () {
+        var data = [
+{ "id": "100", "name": " Step A ", "desc": " ", "values": [{ "id": "b0", "from": "/Date(1320182000000)/", "to": "/Date(1320301600000)/", "desc": "Id: 10<br/>Name:   Step Ann", "label": " Step A", "customClass": "ganttRed", "dep": "b1" }, { "id": "b0", "from": "/Date(1330182000000)/", "to": "/Date(1330301600000)/", "desc": "Id: 0<br/>Name:   Step A", "label": " Step A", "customClass": "ganttRed", "dep": "b1" }] },
+{ "id": "101", "name": " Step B ", "desc": " ", "values": [{ "id": "b1", "from": "/Date(1320601600000)/", "to": "/Date(1320870400000)/", "desc": "Id: 11<br/>Name:   Step B", "label": " Step B", "customClass": "ganttOrange", "dep": "b2" }] },
+{ "id": "102", "name": " Step C ", "desc": " ", "values": [{ "id": "b2", "from": "/Date(1321192000000)/", "to": "/Date(1321500400000)/", "desc": "Id: 12<br/>Name:   Step C", "label": " Step C", "customClass": "ganttGreen", "dep": "b3" }] },
+{ "id": "103", "name": " Step D ", "desc": " ", "values": [{ "id": "b3", "from": "/Date(1320302400000)/", "to": "/Date(1320551600000)/", "desc": "Id: 13<br/>Name:   Step D", "label": " Step D", "dep": "b4" }] },
+{ "id": "104", "name": " Step E ", "desc": " ", "values": [{ "id": "b4", "from": "/Date(1320802400000)/", "to": "/Date(1321994800000)/", "desc": "Id: 14<br/>Name:   Step E", "label": " Step E", "customClass": "ganttRed" }] },
+{ "id": "105", "name": " Step F ", "desc": " ", "values": [{ "id": "b5", "from": "/Date(1320192000000)/", "to": "/Date(1320401600000)/", "desc": "Id: 15<br/>Name:   Step F", "label": " Step F", "customClass": "ganttOrange", "dep": "b1" }] },
+{ "id": "106", "name": " Step G ", "desc": " ", "values": [{ "id": "b6", "from": "/Date(1320401600000)/", "to": "/Date(1320570400000)/", "desc": "Id: 16<br/>Name:   Step G", "label": " Step G", "customClass": "ganttGreen", "dep": "b8" }] },
+{ "id": "107", "name": " Step H ", "desc": " ", "values": [{ "id": "b7", "from": "/Date(1321192000000)/", "to": "/Date(1321500400000)/", "desc": "Id: 17<br/>Name:   Step H", "label": " Step H", "dep": "b9" }] },
+{ "id": "108", "name": " Step I ", "desc": " ", "values": [{ "id": "b8", "from": "/Date(1320302400000)/", "to": "/Date(1320551600000)/", "desc": "Id: 18<br/>Name:   Step I", "label": " Step I", "customClass": "ganttRed", "dep": "b7" }] },
+{ "id": "109", "name": " Step J ","desc": " ", "values": [{ "id": "b9", "from": "/Date(1320802400000)/", "to": "/Date(1321994800000)/", "desc": "Id: 19<br/>Name:   Step J", "label": " Step J", "customClass": "ganttOrange" }] }
+        ];
+        //
+        var calendar =   $(".calendar").gantt({
+            source: data,
+            navigate: scroll,
+            scale: "days",
+            minScale: "days",
+            maxScale: "weeks",
+            itemsPerPage: 15,
+            holidays: ["/Date(1320302400000)/"],
+            onItemClick: function (data) {
+
+            },
+            onAddClick: function (dt, rowId) {
+                var date = new Date(parseInt(dt));
+                if (rowId != undefined)
+                {
+                    //alert("Double onAddClick Click on empty cell:Would call out to server for adding a new entry on Date: " + date + "          DateDouble: " + dt + "       RowId:" + rowId);
+                }
+            },
+            onRender: function () {
+                if (window.console && typeof console.log === "function") {
+                    console.log("chart rendered");
+                }
+            },
+
+       
+        })
+    })
+    })
+</script>
+@foreach (var item in Model)
+        {
+    <div>@item.LastName</div>
+    <br>
+}
+

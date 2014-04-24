@@ -1,0 +1,24 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "calendarVU",
+        Url = Url.Action("GetCalendarData")
+
+    };
+}
+
+
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div class="destination10">
+        @Html.DropDownList("selectedDepartmentVU", (SelectList)ViewBag.DepartmentList, "All Departments", new { onchange = "$(this.form).submit();" })
+    </div>
+}
+
+<div id="calendarVU">
+    @Html.Action("GetCalendarData", "Employee", new { selectedDepartment = ViewBag.SelectedDepartment })
+</div>

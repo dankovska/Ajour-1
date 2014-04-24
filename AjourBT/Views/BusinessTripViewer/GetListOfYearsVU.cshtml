@@ -1,0 +1,24 @@
+﻿@model int
+
+@{
+    Layout = null;
+}
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "tableBodyVU",
+        Url = Url.Action("GetBusinessTripDataVU")
+
+    };
+}
+@using (Ajax.BeginForm(ajaxOpts))
+{
+    <div>
+        @Html.DropDownList("selectedYear", (SelectList)ViewBag.SelectedYear, new { onchange = "$(this.form).submit();" })
+        @Html.Action("GetListOfDepartmentsVU", new { selectedYear = Model})
+    </div>
+}
+<div id="tableBodyVU"> 
+    @Html.Action("GetBusinessTripDataVU", new { selectedYear = Model, selectedDepartment = ViewBag.SelectedDepartment })
+</div>

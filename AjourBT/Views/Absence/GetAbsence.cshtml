@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+    string textBoxFromValue = ViewBag.FromValue.ToString("dd.MM.yyyy");
+    string textBoxToValue = ViewBag.ToValue.ToString("dd.MM.yyyy");
+}
+
+@using (Ajax.BeginForm("GetAbsenceData", "Absence", new AjaxOptions { UpdateTargetId = "absenceView", HttpMethod = "Post" }, new { id = "formAbsence" }))
+{
+   <table class="wtrContainer">
+        <tr id="wtrInput">
+            <td>@Html.Label("From")</td>
+            <td>@Html.TextBox("fromDate",textBoxFromValue)</td>
+            <td>@Html.Label("To")</td>
+            <td>@Html.TextBox("toDate", textBoxToValue)</td>
+           
+        </tr>
+
+        <tr id="wtrInput2">
+            <td></td>
+            <td><p id="errorFromAbs"></p></td>
+            <td></td>
+            <td><p id="errorToAbs"></p></td>
+            
+        </tr>
+    </table>
+        <div id="absenceSubmitBtn">
+            <button id="absenceButton" type="button">Submit</button>
+        </div>
+    <div id="InputABM">
+        <input id="absenceSearchInput" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search... " />
+    </div>
+}
+
+<div id="absenceView">
+    @*@Html.Action("GetAbsenceData", "Absence", new { searchString = ViewBag.SearchString })*@
+</div>
+
+<script src="/Scripts/AjourBTScript/ABMDatesValidation.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#fromDate').datepicker({
+            firstDay: 1,
+            dateFormat: "dd.mm.yy",
+            showWeek: true,
+            calculateWeek: myWeekCalc,
+            showOn: 'button',
+            buttonImage: '/Content/themes/base/images/calendar2.gif',
+            buttonImageOnly: true
+        });
+
+        $('#toDate').datepicker({
+            firstDay: 1,
+            dateFormat: "dd.mm.yy",
+            calculateWeek: myWeekCalc,
+            showWeek: true,
+            showOn: 'button',
+            buttonImage: '/Content/themes/base/images/calendar2.gif',
+            buttonImageOnly: true
+        });
+
+        $('#absenceButton').button();        
+    })
+</script>
