@@ -1,3 +1,5 @@
+### Welcome!
+
 Here are a few steps needed to start contributing to the Project.
 
 * Get familiar with GitHub and our workflow
