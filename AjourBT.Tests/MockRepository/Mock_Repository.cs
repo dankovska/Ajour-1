@@ -290,7 +290,7 @@ namespace AjourBT.Tests.MockRepository
             AddCalendarItem(new CalendarItem { CalendarItemID = 21, EmployeeID = 1, From = new DateTime(2013, 01, 01), To = new DateTime(2013, 01, 01), Type = CalendarItemType.BT });
             AddCalendarItem(new CalendarItem { CalendarItemID = 22, EmployeeID = 1, From = new DateTime(2014, 01, 01), To = new DateTime(2014, 01, 01), Type = CalendarItemType.BT });
             AddCalendarItem(new CalendarItem { CalendarItemID = 23, EmployeeID = 1, From = new DateTime(2012, 01, 01), To = new DateTime(2012, 01, 01), Type = CalendarItemType.BT });
-
+            AddCalendarItem(new CalendarItem { CalendarItemID = 60, EmployeeID = 2, From = new DateTime(2014, 03, 11), To = new DateTime(2014, 03, 27), Type = CalendarItemType.SickAbsence });
             visas = new List<Visa>();
             //AddVisa(new Visa { EmployeeID = 1, VisaType = "D08", StartDate = new DateTime(2012, 08, 01), DueDate = new DateTime(2013, 11, 02), Days = 90, DaysUsedInBT = 0, Entries = 0, EntriesUsedInBT = 0 });
             //AddVisa(new Visa { EmployeeID = 2, VisaType = "C07", StartDate = new DateTime(2012, 02, 13), DueDate = new DateTime(2013, 05, 13), Days = 20, DaysUsedInBT = 5, Entries = 2, EntriesUsedInBT = 4 });

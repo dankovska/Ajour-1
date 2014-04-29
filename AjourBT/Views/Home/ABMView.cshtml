@@ -16,7 +16,7 @@
 <script src="~/Scripts/AjourBTScript/DatesValidation.js"></script>
 
 
-<div id="tabsABM" class="PuTab">
+<div id="tabsABM" class="PuTab" style="height: 100%">
     <ul>
         <li><a href="#tabs-23">Countries</a></li>
         <li><a href="#tabs-24">Holidays</a></li>
@@ -42,7 +42,7 @@
     @{
         if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
         {
-            <div id="tabs-25">@{Html.RenderAction("GetCalendar", "Calendar");}</div>
+            <div id="tabs-25" style="height: 91%">@{Html.RenderAction("GetCalendar", "Calendar");}</div>
         }
     }
 

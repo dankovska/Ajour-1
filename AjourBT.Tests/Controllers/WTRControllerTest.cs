@@ -81,7 +81,95 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(2, result[0].EmployeeID);
             Assert.AreEqual("Anatoliy", result[0].FirstName);
             Assert.AreEqual("Struz", result[0].LastName);
-            Assert.AreEqual(6, result[0].CalendarItems.Count);
+            Assert.AreEqual(7, result[0].CalendarItems.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemStartedJustAfterToDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 01, 30), new DateTime(2014, 01, 31), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemEndedJustBeforeFromDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 02, 15), new DateTime(2014, 02, 16), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemStartedJustOnToDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 01, 30), new DateTime(2014, 02, 01), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemEndedJustOnFromDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 02, 14), new DateTime(2014, 02, 16), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemStartedJustOnFromDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 02, 01), new DateTime(2014, 02, 16), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemEndedJustOnToDate_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 01, 30), new DateTime(2014, 02, 14), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemStartedAndEndedBetwwenDates_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 01, 30), new DateTime(2014, 02, 16), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void SearchEmployeeData_CalendarItemStartedBeforeAndEndedAfterDates_EmptyList()
+        {
+            //Arrange
+            List<Employee> empList = (from emp in mock.Object.Employees where (emp.FirstName != "") select emp).ToList();
+            //Act
+            var result = controller.SearchEmployeeData(new DateTime(2014, 02, 03), new DateTime(2014, 02, 12), empList, "Anatoliy");
+            //Assert
+            Assert.AreEqual(1, result.Count);
         }
 
         #endregion
@@ -110,11 +198,173 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("Boryslav", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
             Assert.AreEqual("Teshaw", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
             Assert.AreEqual("tebl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
-            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
             Assert.AreEqual("Tanya", ((List<WTRViewModel>)result.Model).ToArray()[2].FirstName);
             Assert.AreEqual("Kowood", ((List<WTRViewModel>)result.Model).ToArray()[2].LastName);
             Assert.AreEqual("tadk", ((List<WTRViewModel>)result.Model).ToArray()[2].ID);
-            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[2].FactorDetails.Count);
+            Assert.AreEqual(2, ((List<WTRViewModel>)result.Model).ToArray()[2].FactorDetails.Count);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromEqualsToGreater_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("25.01.2014", "05.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(3, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014,01,25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4 , ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_IncorrectDates_NotEmptySearchStringToIsGreaterThanFrom_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("25.01.2014", "24.01.2014", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);    
+        }
+
+        [Test]
+        public void GetWTRData_IncorrectDates_NotEmptySearchStringFromEqualsToNull_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("25.01.201456", "24.01.2014", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+        [Test]
+        public void GetWTRData_IncorrectDates_NotEmptySearchStringToEqualsToNull_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("25.01.2014", "24.01.201456", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromEqualsToEquals_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("25.01.2014", "25.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromLesserToEquals_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("02.01.2014", "25.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromLesserToGreater_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("02.01.2014", "26.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromGreaterThanFromLesserThanTo_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("26.01.2014", "26.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromGreaterThanFromEqual_To_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("05.02.2014", "06.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 02, 05), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 02, 05), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(6, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRData_CorrectDates_NotEmptySearchStringFromGreaterThanFromGreaterThanCalendarItemTo_EmptyList()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRData("06.02.2014", "06.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.ViewData.Model).Count);
+           
         }
 
         [Test]
@@ -208,21 +458,187 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("GetWTRData", result.ViewName);
             Assert.AreEqual(2010, result.ViewBag.FromYear);
             Assert.AreEqual(2017, result.ViewBag.ToYear);
-            Assert.AreEqual(8, fData.Count);
+            Assert.AreEqual(13, fData.Count);
             Assert.AreEqual(CalendarItemType.PaidVacation, fData.ToArray()[0].Factor);
             Assert.AreEqual(new DateTime(2014,01,25), fData.ToArray()[0].From);
-            Assert.AreEqual(new DateTime(2014,02,05), fData.ToArray()[0].To);
+            Assert.AreEqual(new DateTime(2014,01,26), fData.ToArray()[0].To);
             Assert.AreEqual(4, fData.ToArray()[0].WeekNumber);
 
-            Assert.AreEqual(CalendarItemType.SickAbsence, fData.ToArray()[4].Factor);
-            Assert.AreEqual(new DateTime(2014,02,21), fData.ToArray()[4].From);
-            Assert.AreEqual(new DateTime(2014,02,27), fData.ToArray()[4].To);
-            Assert.AreEqual(8, fData.ToArray()[4].WeekNumber);
-            Assert.AreEqual(CalendarItemType.BT, fData.ToArray()[5].Factor);
-            Assert.AreEqual(CalendarItemType.BT, fData.ToArray()[6].Factor);
-            Assert.AreEqual(CalendarItemType.BT, fData.ToArray()[7].Factor); 
+            Assert.AreEqual(CalendarItemType.ReclaimedOvertime, fData.ToArray()[4].Factor);
+            Assert.AreEqual(new DateTime(2013,01,01), fData.ToArray()[4].From);
+            Assert.AreEqual(new DateTime(2013,01,01), fData.ToArray()[4].To);
+            Assert.AreEqual(1, fData.ToArray()[4].WeekNumber);
+            Assert.AreEqual(CalendarItemType.PaidVacation, fData.ToArray()[5].Factor);
+            Assert.AreEqual(CalendarItemType.PaidVacation, fData.ToArray()[6].Factor);
+            Assert.AreEqual(CalendarItemType.BT, fData.ToArray()[12].Factor); 
         }
 
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromEqualsToGreater_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("25.01.2014", "05.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(3, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_IncorrectDates_NotEmptySearchStringToIsGreaterThanFrom_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("25.01.2014", "24.01.2014", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_IncorrectDates_NotEmptySearchStringFromEqualsToNull_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("25.01.201456", "24.01.2014", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_IncorrectDates_NotEmptySearchStringToEqualsToNull_EmptyView()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("25.01.2014", "24.01.201456", "andl");
+            //Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromEqualsToEquals_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("25.01.2014", "25.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromLesserToEquals_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("02.01.2014", "25.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromLesserToGreater_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("02.01.2014", "26.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 25), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromGreaterThanFromLesserThanTo_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("26.01.2014", "26.01.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 01, 26), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(4, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromGreaterThanFromEqual_To_CorrectListNoCalendarItemsFromPrevYears()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("05.02.2014", "06.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+            Assert.AreEqual(CalendarItemType.PaidVacation, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Factor);
+            Assert.AreEqual(new DateTime(2014, 02, 05), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].From);
+            Assert.AreEqual(new DateTime(2014, 02, 05), ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].To);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Hours);
+            Assert.AreEqual(null, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].Location);
+            Assert.AreEqual(6, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails[0].WeekNumber);
+        }
+
+        [Test]
+        public void GetWTRDataPerEMP_CorrectDates_NotEmptySearchStringFromGreaterThanFromGreaterThanCalendarItemTo_EmptyList()
+        {
+            //Arrange
+            //Act
+            var result = controller.GetWTRDataPerEMP("07.02.2014", "07.02.2014", "andl");
+            //Assert
+            Assert.AreEqual(1, ((List<WTRViewModel>)result.ViewData.Model).Count);
+            Assert.AreEqual("Anastasia", ((List<WTRViewModel>)result.Model).ToArray()[0].FirstName);
+            Assert.AreEqual("Zarose", ((List<WTRViewModel>)result.Model).ToArray()[0].LastName);
+            Assert.AreEqual("andl", ((List<WTRViewModel>)result.Model).ToArray()[0].ID);
+            Assert.AreEqual(0, ((List<WTRViewModel>)result.Model).ToArray()[0].FactorDetails.Count);
+
+        }
         #endregion
 
         #region WTRExportToExcel
@@ -300,6 +716,429 @@ namespace AjourBT.Tests.Controllers
             //Assert.AreEqual("", workSheet.Cells[4, 4].Value.ToString());
         }
 
+        #endregion 
+
+        #region GetWeeksInTimeSpan
+            [Test]
+        public void GetWeeksInTimeSpan_SingleDay_SingleWeek()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 04, 23);
+                DateTime to = new DateTime(2014, 04, 23);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(17, result.Keys.FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 04, 23), result[17].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 23), result[17].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_TwoDaysAtBeginningOfWeek_SingleWeek()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 04, 21);
+                DateTime to = new DateTime(2014, 04, 22);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+                
+                //Assert
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(17, result.Keys.FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 04, 21), result[17].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 22), result[17].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_TwoDaysAtEndOfWeek_SingleWeek()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 04, 26);
+                DateTime to = new DateTime(2014, 04, 27);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(17, result.Keys.FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 04, 26), result[17].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 27), result[17].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_TwoDaysAtEdgeOfTwoWeeks_TwoWeeks()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 04, 27);
+                DateTime to = new DateTime(2014, 04, 28);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(17, result.Keys.FirstOrDefault());
+                Assert.AreEqual(18, result.Keys.Skip(1).FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 04, 27), result[17].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 27), result[17].endDate);
+                Assert.AreEqual(new DateTime(2014, 04, 28), result[18].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 28), result[18].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_ManyDaysAcrossThreeWeeks_ThreeWeeks()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 04, 26);
+                DateTime to = new DateTime(2014, 05, 07);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual(3 , result.Count);
+                Assert.AreEqual(17, result.Keys.FirstOrDefault());
+                Assert.AreEqual(18, result.Keys.Skip(1).FirstOrDefault());
+                Assert.AreEqual(19, result.Keys.Skip(2).FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 04, 26), result[17].startDate);
+                Assert.AreEqual(new DateTime(2014, 04, 27), result[17].endDate);
+                Assert.AreEqual(new DateTime(2014, 04, 28), result[18].startDate);
+                Assert.AreEqual(new DateTime(2014, 05, 04), result[18].endDate);
+                Assert.AreEqual(new DateTime(2014, 05, 05), result[19].startDate);
+                Assert.AreEqual(new DateTime(2014, 05, 07), result[19].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_DaysAcrossTwoYears_TwoWeeksSecondOneHasNumber1()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 12, 29);
+                DateTime to = new DateTime(2015, 01, 02);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(53, result.Keys.FirstOrDefault());
+                Assert.AreEqual(1, result.Keys.Skip(1).FirstOrDefault());
+                Assert.AreEqual(new DateTime(2014, 12, 29), result[53].startDate);
+                Assert.AreEqual(new DateTime(2014, 12, 31), result[53].endDate);
+                Assert.AreEqual(new DateTime(2015, 01, 01), result[1].startDate);
+                Assert.AreEqual(new DateTime(2015, 01, 02), result[1].endDate);
+            }
+
+            [Test]
+            public void GetWeeksInTimeSpan_IllegalDatesToIsLesserThanFrom_0Weeks()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 01, 02);
+                DateTime to = new DateTime(2014, 01, 01);
+                WTRController controller = new WTRController(mock.Object);
+
+                //Act
+                Dictionary<int, WTRController.StartEndDatePair> result = controller.GetWeeksInTimeSpan(from, to);
+
+                //Assert
+                Assert.AreEqual( 0, result.Count);
+            }
+
+        #endregion
+
+        #region IntersectDatePairDicts
+            
+            [Test]
+            public void IntersectDatePairDicts_CalendarItemStartedBeforeAndEndedAfterDates_TwoKeysDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 02, 03);
+                DateTime to = new DateTime(2014, 02, 12);
+               
+                DateTime wtrFrom = new DateTime(2014, 02, 01);
+                DateTime wtrTo = new DateTime(2014, 02, 28);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(6, result.Keys.FirstOrDefault());
+                Assert.AreEqual(7, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 02, 03), result[6].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 09), result[6].endDate);
+                Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 12), result[7].endDate);
+            
+            }
+
+            public void IntersectDatePairDicts_CalendarItemStartINAndEndedAfterDates_TwoKeysDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 02, 03);
+                DateTime to = new DateTime(2014, 02, 12);
+
+                DateTime wtrFrom = new DateTime(2014, 02, 03);
+                DateTime wtrTo = new DateTime(2014, 02, 28);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(6, result.Keys.FirstOrDefault());
+                Assert.AreEqual(7, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 02, 03), result[6].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 09), result[6].endDate);
+                Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 12), result[7].endDate);
+
+            }
+            public void IntersectDatePairDicts_CalendarItemStartIAndEndIn_TwoKeysDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 02, 03);
+                DateTime to = new DateTime(2014, 02, 12);
+
+                DateTime wtrFrom = new DateTime(2014, 02, 03);
+                DateTime wtrTo = new DateTime(2014, 02, 28);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(6, result.Keys.FirstOrDefault());
+                Assert.AreEqual(7, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 02, 03), result[6].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 09), result[6].endDate);
+                Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 12), result[7].endDate);
+            }
+
+            public void IntersectDatePairDicts_CalendarItemStartBeforeEndIn_TwoKeysDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 02, 03);
+                DateTime to = new DateTime(2014, 02, 12);
+
+                DateTime wtrFrom = new DateTime(2014, 02, 03);
+                DateTime wtrTo = new DateTime(2014, 02, 28);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(6, result.Keys.FirstOrDefault());
+                Assert.AreEqual(7, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 02, 03), result[6].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 09), result[6].endDate);
+                Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 12), result[7].endDate);
+
+            }
+            [Test]
+            public void IntersectDatePairDicts_WTRFromInLastYearToCurrentYear_TwoKeysDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 02, 03);
+                DateTime to = new DateTime(2014, 02, 12);
+
+                DateTime wtrFrom = new DateTime(2013, 12, 12);
+                DateTime wtrTo = new DateTime(2014, 02, 28);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual(6, result.Keys.FirstOrDefault());
+                Assert.AreEqual(7, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 02, 03), result[6].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 09), result[6].endDate);
+                Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                Assert.AreEqual(new DateTime(2014, 02, 12), result[7].endDate);
+            }
+
+             [Test]
+            public void IntersectDatePairDicts_CalendarItemDuesForOneDay_OneKeyDictionary()
+            {
+                //Arrange
+                DateTime from = new DateTime(2014, 01, 01);
+                DateTime to = new DateTime(2014, 01, 01);
+
+                DateTime wtrFrom = new DateTime(2013, 12, 12);
+                DateTime wtrTo = new DateTime(2014, 01, 10);
+                Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                //Act
+                var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                //Assert
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(1, result.Keys.FirstOrDefault());
+                Assert.AreEqual(1, result.Keys.Last());
+                Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                Assert.AreEqual(new DateTime(2014, 01, 01), result[1].endDate);
+             }
+
+             [Test]
+             public void IntersectDatePairDicts_WTRFromToNotContainCalendarItem_OneKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2014, 01, 01);
+                 DateTime to = new DateTime(2014, 01, 01);
+
+                 DateTime wtrFrom = new DateTime(2015, 12, 12);
+                 DateTime wtrTo = new DateTime(2015, 01, 10);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(0, result.Count);
+             }
+
+             [Test]
+             public void IntersectDatePairDicts_CalendarItemContainWTRFromTo_OneKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2013, 12, 01);
+                 DateTime to = new DateTime(2014, 02, 25);
+
+                 DateTime wtrFrom = new DateTime(2014, 01, 01);
+                 DateTime wtrTo = new DateTime(2014, 2, 10);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(7, result.Count);
+                 Assert.AreEqual(1, result.Keys.FirstOrDefault());
+                 Assert.AreEqual(7, result.Keys.Last());
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 05), result[1].endDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 05), result[1].endDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 10), result[7].startDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 10), result[7].endDate);
+             }
+
+             [Test]
+             public void IntersectDatePairDicts_WTRFromToContainsToDateOfCalendarItem_FifthKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2013, 12, 01);
+                 DateTime to = new DateTime(2014, 02, 01);
+
+                 DateTime wtrFrom = new DateTime(2014, 01, 01);
+                 DateTime wtrTo = new DateTime(2014, 2, 10);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(5, result.Count);
+                 Assert.AreEqual(1, result.Keys.FirstOrDefault());
+                 Assert.AreEqual(5, result.Keys.Last());
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 05), result[1].endDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 01), result[5].endDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 27), result[5].startDate);
+             }
+
+             [Test]
+             public void IntersectDatePairDicts_WTRFromToContainsFromDateOfCalendarItem_SixKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2013, 12, 01);
+                 DateTime to = new DateTime(2014, 02, 01);
+
+                 DateTime wtrFrom = new DateTime(2013, 11, 01);
+                 DateTime wtrTo = new DateTime(2014, 01, 01);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(7, result.Count);
+                 Assert.AreEqual(48, result.Keys.FirstOrDefault());
+                 Assert.AreEqual(1, result.Keys.Last());
+                 Assert.AreEqual(new DateTime(2013, 12, 01), result[48].startDate);
+                 Assert.AreEqual(new DateTime(2013, 12, 01), result[48].endDate);
+                 Assert.AreEqual(new DateTime(2013, 12, 29), result[52].endDate);
+                 Assert.AreEqual(new DateTime(2013, 12, 30), result[53].startDate);
+                 Assert.AreEqual(new DateTime(2013, 12, 31), result[53].endDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].endDate);
+             }
+
+             [Test]
+             public void IntersectDatePairDicts_CalendarItemContainsFromDateOfWTRFromTo_SixKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2013, 12, 01);
+                 DateTime to = new DateTime(2014, 02, 25);
+
+                 DateTime wtrFrom = new DateTime(2014, 01, 01);
+                 DateTime wtrTo = new DateTime(2014, 02, 28);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(9, result.Count);
+                 Assert.AreEqual(1, result.Keys.FirstOrDefault());
+                 Assert.AreEqual(9, result.Keys.Last());
+                 Assert.AreEqual(new DateTime(2014, 01, 01), result[1].startDate);
+                 Assert.AreEqual(new DateTime(2014, 01, 05), result[1].endDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 24), result[9].startDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 25), result[9].endDate);
+             }
+             [Test]
+             public void IntersectDatePairDicts_CalendarItemContainsFromAndToDatesOfWTRFromTo_SixKeyDictionary()
+             {
+                 //Arrange
+                 DateTime from = new DateTime(2013, 12, 01);
+                 DateTime to = new DateTime(2014, 02, 25);
+
+                 DateTime wtrFrom = new DateTime(2013, 11, 30);
+                 DateTime wtrTo = new DateTime(2014, 02, 28);
+                 Dictionary<int, WTRController.StartEndDatePair> dict = controller.GetWeeksInTimeSpan(from, to);
+                 Dictionary<int, WTRController.StartEndDatePair> wtrDict = controller.GetWeeksInTimeSpan(wtrFrom, wtrTo);
+
+                 //Act
+                 var result = controller.IntersectDatePairDicts(dict, wtrDict);
+                 //Assert
+                 Assert.AreEqual(15, result.Count);
+                 Assert.AreEqual(48, result.Keys.FirstOrDefault());
+                 Assert.AreEqual(9, result.Keys.Last());
+                 Assert.AreEqual(new DateTime(2013, 12, 01), result[48].startDate);
+                 Assert.AreEqual(new DateTime(2013, 12, 01), result[48].endDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 24), result[9].startDate);
+                 Assert.AreEqual(new DateTime(2014, 02, 25), result[9].endDate);
+             }
         #endregion
     }
 }

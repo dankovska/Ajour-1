@@ -14,10 +14,22 @@ namespace AjourBT.Controllers
 {
     public class EMPController : Controller
     {
+        public EMPController()
+        {
+            CultureInfo _culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            CultureInfo _uiculture = (CultureInfo)CultureInfo.CurrentUICulture.Clone();
+
+            _culture.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
+            _uiculture.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = _culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = _uiculture;
+        }
 
         private IRepository repository;
 
         public EMPController(IRepository repo)
+            :this()
         {
             repository = repo;
         }

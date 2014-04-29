@@ -5,8 +5,11 @@
 
 @{
     Layout = null;
+    //string textBoxFromValue = ViewBag.FromValue.ToString("dd.MM.yyyy");
+    //string textBoxToValue = ViewBag.ToValue.ToString("dd.MM.yyyy");
     string searchString = ViewBag.SearchString;
 }
+
 
 <table class="absenceABM" id="absenceViewABM">
     <colgroup>
@@ -14,8 +17,8 @@
         <col class="absName" />
         <col class="absEID" />
         <col class="absJourney" />
-        <col class="absOvertime" />
         <col class="absBusinessTrip" />
+        <col class="absOvertime" />
         <col class="absSickness" />
         <col class="absVacation" />
     </colgroup>
@@ -34,10 +37,10 @@
                 Journeys
             </th>
             <th>
-                Overtimes
+                BusinessTrips 
             </th>
             <th>
-                BusinessTrips
+                Overtimes
             </th>
             <th>
                 Sicknesses
@@ -75,15 +78,6 @@
                         }
             </td>
             <td>
-                @if (employee.Overtimes != null)
-                        {
-                            foreach (CalendarItem overtime in employee.Overtimes)
-                            {
-                        @Html.CustomDisplayDateTime(overtime.From) @:- @Html.CustomDisplayDateTime(overtime.To) <br>
-                            }
-                        }
-            </td>
-            <td>
                 @if (employee.BusinessTrips != null)
                 {
                     foreach (CalendarItem bt in employee.BusinessTrips)
@@ -91,6 +85,17 @@
                         @Html.CustomDisplayDateTime(bt.From) @:- @Html.CustomDisplayDateTime(bt.To) (@bt.Location) <br>
                             }
                 }
+            </td>
+            <td>
+
+                @if (employee.Overtimes != null)
+                {
+                    foreach (CalendarItem overtime in employee.Overtimes)
+                    {
+                        @Html.CustomDisplayDateTime(overtime.From) @:- @Html.CustomDisplayDateTime(overtime.To) <br>
+                            }
+                }
+               
             </td>
             <td>
                 @if (employee.Sickness != null)
@@ -120,25 +125,62 @@
     </tbody>
 </table>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#absenceViewABM').DataTable({
-            "sScrollY": (0.65 * $(window).height()),
-            "sScrollX": "100%",
-            "sScrollXInner": "100%",
-            "bPaginate": false,
-            "bDestroy": true,
-            "bFilter": false,
-            "bScrollCollapse": true,
-            "aoColumns": [
-                null,
-            null,
-            null,
-            { "sType": "date" },
-            { "sType": "date" },
-            { "sType": "date" },
-            { "sType": "date" },
-            { "sType": "date" }]
-        })
-    })
-</script>
+@*@using (Html.BeginForm("ExportAbsenceToExcel", "Absence", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    {
+        <input type="hidden"  id="fromDate" value="@ViewBag.FromValue" name="fromDate">
+    <input type ="hidden" id="toDate" value="@ViewBag.FromValue" name="toDate">
+        <input type="hidden" value="@ViewBag.SearchString" name="searchString">
+        <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">
+        }
+        }*@
+        @*@{
+
+                using (Html.BeginForm("ExportAbsenceToExcel", "Absence", new { fromDate = ViewBag.FromValue, toDate = ViewBag.ToValue, selectedYear = ViewBag.SelectedYear }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @*<input  value="@textBoxFromValue" name="from">
+                    <input  value="@textBoxToValue" name="to">
+                    <input type="hidden" value="@ViewBag.SearchString" name="searchString">
+            <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">
+                }
+
+            }*@
+
+
+        @*@{
+
+                using (Html.BeginForm("ExportAbsenceToExcel", "Absence", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="@textBoxFromValue" name="from">
+                    <input type="hidden" value="@textBoxToValue" name="to">
+                    <input type="hidden" value="@ViewBag.SearchString" name="searchString">
+                    <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">
+                }
+
+            }*@
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#absenceViewABM').DataTable({
+                    "sScrollY": (0.65 * $(window).height()),
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "bPaginate": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bScrollCollapse": true,
+                    "aoColumns": [
+                        null,
+                    null,
+                    null,
+                    { "sType": "date" },
+                    { "sType": "date" },
+                    { "sType": "date" },
+                    { "sType": "date" },
+                    { "sType": "date" }]
+                })
+            })
+        </script>

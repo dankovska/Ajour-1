@@ -1,3 +1,37 @@
+function OnScrollDiv(event) {
+    var container = $(document.getElementsByClassName('calendar')).scrollTop();
+    var range = document.createRange();
+    range.setStartBefore(document.getElementsByClassName('row header year')[0]);
+    range.setEndAfter(document.getElementById('daysOfWeekRow'));
+    var documentFragment = range.extractContents();
+    for (var i = 0; i < documentFragment.childNodes.length; i++) {
+        if ($(documentFragment.childNodes[i]).attr("class").match('year')!=null)
+            {
+            $(documentFragment.childNodes[i]).css("top",container);
+        }
+        else if ($(documentFragment.childNodes[i]).attr("class").match('month') != null)
+            {
+            $(documentFragment.childNodes[i]).css("top", container+24);
+        }
+        else if(($(documentFragment.childNodes[i]).attr("id")!=null))
+            {
+        if ($(documentFragment.childNodes[i]).attr("id").match('_week') != null)
+            {
+            $(documentFragment.childNodes[i]).css("top", container);
+        }
+        else if ($(documentFragment.childNodes[i]).attr("id").match('_days') != null)
+            {
+            $(documentFragment.childNodes[i]).css("top", container);
+        }
+        else if ($(documentFragment.childNodes[i]).attr("id").match('daysOfWeek') != null)
+            {
+            $(documentFragment.childNodes[i]).css("top", container);
+        }
+        }
+    }
+    $("div.row.spacer").css("top", container);
+    $('.dataPanel').append(documentFragment);
+}
 function myWeekCalc(date) {
     var checkDate = new Date(date.getTime());
     // Find Thursday of this week starting on Sunday
@@ -338,10 +372,11 @@ function myWeekCalc(date) {
             leftPanel: function (element) {
                 /* Left panel */
                 var ganttLeftPanel = $('<div class="leftPanel"/>')
-                    .append($('<div class="row spacer"/>')
+                    .append($('<div class="row spacer" style="z-index: 0; position: absolute"/>')
                     .css("height", tools.getCellSize() * element.headerRows + "px")
-                    .css("width", "100%"));
-
+                    .css("width", "100%"))
+                ;
+                ganttLeftPanel.append('<div id=staticRowSpacer" style="height:' + tools.getCellSize() * element.headerRows + 'px"></div>');
                 var entries = [];
                 $.each(element.data, function (i, entry) {
                     if (i >= element.pageNum * settings.itemsPerPage && i < (element.pageNum * settings.itemsPerPage + settings.itemsPerPage)) {
@@ -731,7 +766,10 @@ function myWeekCalc(date) {
                         var year = dateBefore.getFullYear();
                         var month = dateBefore.getMonth();
                         var day = dateBefore; // <- never used?
-
+                        var yearOffset = 0;
+                        var monthOffset = 0;
+                        var weekOffset = 0;
+                        var dayOffset = 0;
                         for (var i = 0, len = range.length; i < len ; i++) {//THAT PLACE
                             var rday = range[i];
 
@@ -740,9 +778,10 @@ function myWeekCalc(date) {
                                 yearArr.push(
                                     ('<div class="row header year" style="width:'
                                         + tools.getCellSize() * daysInYear
-                                        + 'px;"><div class="fn-label">'
+                                        + 'px; position: absolute; left:' + yearOffset + 'px; top: 0px; z-index: 10;"><div class="fn-label">'
                                         + year
                                         + '</div></div>'));
+                                yearOffset += tools.getCellSize() * daysInYear;
                                 year = rday.getFullYear();
                                 daysInYear = 0;
                             }
@@ -753,9 +792,10 @@ function myWeekCalc(date) {
                                 monthArr.push(
                                     ('<div class="row header month" style="width:'
                                        + tools.getCellSize() * daysInMonth
-                                       + 'px;"><div class="fn-label">'
+                                       + 'px;  position: absolute; left:' + monthOffset + 'px; top: '+tools.getCellSize()+'px; z-index: 10;"><div class="fn-label">'
                                        + settings.months[month]
                                        + '</div></div>'));
+                                monthOffset += tools.getCellSize() * daysInMonth;
                                 month = rday.getMonth();
                                 daysInMonth = 0;
                             }
@@ -771,26 +811,31 @@ function myWeekCalc(date) {
                                 day_class = "postponedHoliday";
                             }
 
-                            dayArr.push('<div class="row date ' + day_class + '" '
+                            dayArr.push('<div class="row date ' + day_class + '" style="width:'
+                                       + tools.getCellSize()
+                                       + 'px;  position: absolute; left:' + dayOffset + 'px;  top: ' + tools.getCellSize()*3 + 'px; z-index: 10;"'
                                     + ' id="dh-' + tools.genId(rday.getTime()) + '" offset="' + i * tools.getCellSize() + '" repdate="' + rday.getRepDate() + '"> '
                                     + ' <div class="fn-label">' + rday.getDate() + '</div></div>');
 
-                            dowArr.push('<div class="row day ' + day_class + '" '
+                            dowArr.push('<div class="row day ' + day_class + '" style="width:'
+                                       + tools.getCellSize()
+                                       + 'px;  position: absolute; left:' + dayOffset + 'px;  top: ' + tools.getCellSize()*4 + 'px; z-index: 10;"'
                                     + ' id="dw-' + tools.genId(rday.getTime()) + '"  repdate="' + rday.getRepDate() + '"> '
                                     + ' <div class="fn-label">' + settings.dow[getDay] + '</div></div>');
+                            dayOffset += tools.getCellSize();
                         } //for
 
                         // Last year
                         yearArr.push(
                             '<div class="row header year" style="width: '
-                            + tools.getCellSize() * daysInYear + 'px;"><div class="fn-label">'
+                            + tools.getCellSize() * daysInYear + 'px; position: absolute; left:' + yearOffset + 'px;  top: 0px; z-index: 10;"><div class="fn-label">'
                             + year
                             + '</div></div>');
 
                         // Last month
                         monthArr.push(
                             '<div class="row header month" style="width: '
-                            + tools.getCellSize() * daysInMonth + 'px"><div class="fn-label">'
+                            + tools.getCellSize() * daysInMonth + 'px; position: absolute; left:' + monthOffset + 'px; top: ' + tools.getCellSize() + 'px; z-index: 10;"><div class="fn-label">'
                             + settings.months[month]
                             + '</div></div>');
 
@@ -809,21 +854,21 @@ function myWeekCalc(date) {
 
                                 if (i == len - 1) {
                                     weekArr.push('<div class="row header week" '
-                                            + ' id="' + rday.getWeekId() + '" style=width:' + (daysInWeekNum) * 24 + 'px; repdate="' + rday.getRepDate() + '"> '
+                                            + ' id="' + rday.getWeekId() + '" style="width:' + (daysInWeekNum) * 24 + 'px; position: relative ;  top: ' + tools.getCellSize()*2 + 'px; z-index: 10" repdate="' + rday.getRepDate() + '"> '
                                             + ' <div class="fn-label">' + 'W' + weekNum + '</div></div>');
                                 }
                             }
                             else {
                                 if (((daysInWeekNum - 1) - i) == 0) {
                                     weekArr.push('<div class="row header week" '
-                                            + ' id="' + rday.getWeekId() + '" style=width:' + (daysInWeekNum) * 24 + 'px; repdate="' + rday.getRepDate() + '"> '
+                                            + ' id="' + rday.getWeekId() + '" style="width:' + (daysInWeekNum) * 24 + 'px; position: relative;  top: ' + tools.getCellSize()*2 + 'px; z-index: 10" repdate="' + rday.getRepDate() + '"> '
                                             + ' <div class="fn-label">' + 'W' + weekNum + '</div></div>');
                                     daysInWeekNum = 0;
                                     weekNum = weekNumNext;
                                 }
                                 else if (i != 0) {
                                     weekArr.push('<div class="row header week" '
-                                            + ' id="' + rday.getWeekId() + '" style=width:' + (daysInWeekNum + 1) * 24 + 'px; repdate="' + rday.getRepDate() + '"> '
+                                            + ' id="' + rday.getWeekId() + '" style="width:' + (daysInWeekNum + 1) * 24 + 'px; position: relative;  top: ' + tools.getCellSize()*2 + 'px; z-index: 10" repdate="' + rday.getRepDate() + '"> '
                                             + ' <div class="fn-label">' + 'W' + weekNum + '</div></div>');
                                     daysInWeekNum = 0;
                                     weekNum = weekNumNext;
@@ -839,9 +884,9 @@ function myWeekCalc(date) {
 
                         dataPanel.append(yearArr.join(""));
                         dataPanel.append(monthArr.join(""));
-                        dataPanel.append($('<div class="row" style="margin-left: 0;" />').html(weekArr.join("")));
-                        dataPanel.append($('<div class="row" style="margin-left: 0;" />').html(dayArr.join("")));
-                        dataPanel.append($('<div id ="daysOfWeekRow" class="row" style="margin-left: 0;" />').html(dowArr.join("")));
+                        dataPanel.append($('<div class="row" style="margin-left: 0; position:absolute;" id="_weeks" />').html(weekArr.join("")));
+                        dataPanel.append($('<div class="row" style="margin-left: 0;  position:absolute;" id="_days" />').html(dayArr.join("")));
+                        dataPanel.append($('<div id ="daysOfWeekRow" class="row" style="margin-left: 0; position:absolute;" />').html(dowArr.join("")));
 
                         break;
                 }

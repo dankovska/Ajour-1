@@ -133,7 +133,7 @@
 </table>
 @{
 
-using (Html.BeginForm("ExportBusinessTripByDatesToExcel", "BusinessTripViewer", new { selectedYear = ViewBag.SelectedYear }, FormMethod.Post, null))
+    using (Html.BeginForm("ExportBusinessTripByDatesToExcel", "BusinessTripViewer", new { selectedYear = ViewBag.SelectedYear }, FormMethod.Post, null))
 {
 @Html.AntiForgeryToken()
     <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">

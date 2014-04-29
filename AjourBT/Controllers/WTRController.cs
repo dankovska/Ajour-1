@@ -16,6 +16,18 @@ namespace AjourBT.Controllers
 {
     public class WTRController : Controller
     {
+        public WTRController()
+        {
+            CultureInfo _culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            CultureInfo _uiculture = (CultureInfo)CultureInfo.CurrentUICulture.Clone();
+
+            _culture.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
+            _uiculture.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = _culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = _uiculture;
+        }
+
         private class FakeHttpContext : HttpContextBase
         {
             private Dictionary<object, object> _items = new Dictionary<object, object>();
@@ -31,7 +43,9 @@ namespace AjourBT.Controllers
 
         private IRepository repository;
         public WTRController(IRepository repo)
+            : this()
         {
+
             this.repository = repo;
         }
         //
@@ -79,12 +93,23 @@ namespace AjourBT.Controllers
 
             if (From != "" && To != "")
             {
-                fromParsed = DateTime.ParseExact(From,"dd.MM.yyyy",null);
-                toParse = DateTime.ParseExact(To,"dd.MM.yyyy",null);
-                FromYear = fromParsed.Year;
-                ToYear = toParse.Year;
+                try
+                {
+                    fromParsed = DateTime.ParseExact(From, "dd.MM.yyyy", null);
+                    toParse = DateTime.ParseExact(To, "dd.MM.yyyy", null);
+                    FromYear = fromParsed.Year;
+                    ToYear = toParse.Year;
+                }
+                catch (System.FormatException)
+                {
+                    return PartialView("GetWTRDataEmpty");
+                }
             }
             else
+            {
+                return PartialView("GetWTRDataEmpty");
+            }
+            if (fromParsed > toParse)
             {
                 return PartialView("GetWTRDataEmpty");
             }
@@ -92,24 +117,35 @@ namespace AjourBT.Controllers
             searchString = searchString != "" ? searchString.Trim() : "";
             List<Employee> selectedData = new List<Employee>();
             List<WTRViewModel> wtrDataList = new List<WTRViewModel>();
+            Dictionary<int, StartEndDatePair> timeSpanDatePairDict = GetWeeksInTimeSpan(fromParsed, toParse);
+            Dictionary<int, StartEndDatePair> calendarItemDatePairDict = new Dictionary<int, StartEndDatePair>();
+            Dictionary<int, StartEndDatePair> resultDatePairDict = new Dictionary<int, StartEndDatePair>();
 
             selectedData = SearchEmployeeData(fromParsed, toParse, repository.Employees.ToList(), searchString);
 
             foreach (var emp in selectedData)
             {
                 WTRViewModel onePerson = new WTRViewModel { ID = emp.EID, FirstName = emp.FirstName, LastName = emp.LastName, FactorDetails = new List<FactorData>() };
-                foreach (var calendarItems in emp.CalendarItems)
+                foreach (var calendarItems in emp.CalendarItems.Where((f => (f.From <= fromParsed && f.To >= fromParsed) || (f.From >= fromParsed && f.From <= toParse))))
                 {
-                    FactorData data = new FactorData();
-                    data.Factor = calendarItems.Type;
-                    data.Location = calendarItems.Location;
-                    data.From = calendarItems.From;
-                    data.To = calendarItems.To;
-                    data.Hours = 0;
-                    data.WeekNumber = cal.GetWeekOfYear(calendarItems.From, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
-                    onePerson.FactorDetails.Add(data);
+                    calendarItemDatePairDict = GetWeeksInTimeSpan(calendarItems.From, calendarItems.To);
+
+                    resultDatePairDict = IntersectDatePairDicts(timeSpanDatePairDict, calendarItemDatePairDict);
+
+                    foreach (int week in resultDatePairDict.Keys)
+                    {
+                        FactorData data = new FactorData();
+                        data.Factor = calendarItems.Type;
+                        data.Location = calendarItems.Location;
+                        data.From = resultDatePairDict[week].startDate;
+                        data.To = resultDatePairDict[week].endDate;
+                        data.Hours = 0;
+                        data.WeekNumber = week;
+                        onePerson.FactorDetails.Add(data);
+                    }
                 }
                 wtrDataList.Add(onePerson);
+
             }
 
             ViewBag.FromWeek = cal.GetWeekOfYear(fromParsed, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
@@ -123,13 +159,64 @@ namespace AjourBT.Controllers
             return PartialView(wtrDataList);
         }
 
+        public struct StartEndDatePair
+        {
+            public DateTime startDate;
+            public DateTime endDate;
+        }
+
+        public Dictionary<int, StartEndDatePair> IntersectDatePairDicts(
+            Dictionary<int, StartEndDatePair> firstDatePairDict,
+            Dictionary<int, StartEndDatePair> secondDatePairDict)
+        {
+            DateTime from;
+            DateTime to;
+            Dictionary<int, StartEndDatePair> resultDataPairs = new Dictionary<int, StartEndDatePair>();
+
+            foreach (int week in firstDatePairDict.Keys.Intersect(secondDatePairDict.Keys))
+            {
+                from = firstDatePairDict[week].startDate > secondDatePairDict[week].startDate ?
+                    firstDatePairDict[week].startDate :
+                    secondDatePairDict[week].startDate;
+                to = firstDatePairDict[week].endDate < secondDatePairDict[week].endDate ?
+                    firstDatePairDict[week].endDate :
+                    secondDatePairDict[week].endDate;
+                resultDataPairs.Add(week, new StartEndDatePair { startDate = from, endDate = to });
+            }
+
+            return resultDataPairs;
+        }
+
+        public Dictionary<int, StartEndDatePair> GetWeeksInTimeSpan(DateTime from, DateTime to)
+        {
+            DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+            Calendar cal = dfi.Calendar;
+            Dictionary<int, StartEndDatePair> weeks = new Dictionary<int, StartEndDatePair>();
+            int weekNumber = 0;
+
+            for (var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
+            {
+                weekNumber = cal.GetWeekOfYear(day, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
+                if (weeks.Count == 0 || !weeks.Keys.Contains(weekNumber))
+                {
+                    weeks.Add(weekNumber, new StartEndDatePair { startDate = day, endDate = day });
+                }
+                else if (weeks.Keys.Contains(weekNumber))
+                {
+                    weeks[weekNumber] = new StartEndDatePair { startDate = weeks[weekNumber].startDate, endDate = day };
+                }
+
+            }
+
+            return weeks;
+        }
 
         public List<Employee> SearchEmployeeData(DateTime FromDate, DateTime ToDate, List<Employee> empList, string searchString = "")
         {
             List<Employee> query = (from emp in empList
                                     where ((emp.CalendarItems.Count != 0))
                                     from f in emp.CalendarItems
-                                    where ((f.From >= FromDate) && (f.To <= ToDate) &&
+                                    where (((f.From <= FromDate && f.To >= FromDate) || (f.From >= FromDate && f.From <= ToDate)) &&
                                         ((emp.FirstName.ToLower().Contains(searchString.ToLower())) ||
                                         emp.LastName.ToLower().Contains(searchString.ToLower()) ||
                                         emp.EID.ToLower().Contains(searchString.ToLower())))
@@ -152,12 +239,23 @@ namespace AjourBT.Controllers
 
             if (From != "" && To != "")
             {
-                fromParsed = DateTime.ParseExact(From, "dd.MM.yyyy", null);
-                toParse = DateTime.ParseExact(To, "dd.MM.yyyy", null);
-                FromYear = fromParsed.Year;
-                ToYear = toParse.Year;
+                try
+                {
+                    fromParsed = DateTime.ParseExact(From, "dd.MM.yyyy", null);
+                    toParse = DateTime.ParseExact(To, "dd.MM.yyyy", null);
+                    FromYear = fromParsed.Year;
+                    ToYear = toParse.Year;
+                }
+                catch (System.FormatException)
+                {
+                    return PartialView("GetWTRDataEmpty");
+                }
             }
             else
+            {
+                return PartialView("GetWTRDataEmpty");
+            }
+            if (fromParsed > toParse)
             {
                 return PartialView("GetWTRDataEmpty");
             }
@@ -170,17 +268,26 @@ namespace AjourBT.Controllers
                 return PartialView("NoData");
             }
 
+            Dictionary<int, StartEndDatePair> timeSpanDatePairDict = GetWeeksInTimeSpan(fromParsed, toParse);
+            Dictionary<int, StartEndDatePair> calendarItemDatePairDict = new Dictionary<int, StartEndDatePair>();
+            Dictionary<int, StartEndDatePair> resultDatePairDict = new Dictionary<int, StartEndDatePair>();
+
             WTRViewModel onePerson = new WTRViewModel { ID = employee.EID, FirstName = employee.FirstName, LastName = employee.LastName, FactorDetails = new List<FactorData>() };
-            foreach (var calendarItems in employee.CalendarItems)
+            foreach (var calendarItems in employee.CalendarItems.Where((f=> (f.From <= fromParsed && f.To >= fromParsed) || (f.From >= fromParsed && f.From <= toParse))))
             {
-                FactorData data = new FactorData();
-                data.Factor = calendarItems.Type;
-                data.Location = calendarItems.Location;
-                data.From = calendarItems.From;
-                data.To = calendarItems.To;
-                data.Hours = 0;
-                data.WeekNumber = cal.GetWeekOfYear(calendarItems.From, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
-                onePerson.FactorDetails.Add(data);
+                calendarItemDatePairDict = GetWeeksInTimeSpan(calendarItems.From, calendarItems.To);
+                resultDatePairDict = IntersectDatePairDicts(timeSpanDatePairDict, calendarItemDatePairDict);
+                foreach (int week in resultDatePairDict.Keys)
+                {
+                    FactorData data = new FactorData();
+                    data.Factor = calendarItems.Type;
+                    data.Location = calendarItems.Location;
+                    data.From = resultDatePairDict[week].startDate;
+                    data.To = resultDatePairDict[week].endDate;
+                    data.Hours = 0;
+                    data.WeekNumber = week;
+                    onePerson.FactorDetails.Add(data);
+                }
             }
             wtrDataList.Add(onePerson);
 
@@ -239,20 +346,20 @@ namespace AjourBT.Controllers
                 for (int i = weekInt.weekFrom; i <= weekInt.weekTo; i++)
                 {
                     var week = helper.CustomSelectEmployeeByWeek(wtrDataList, i, weekInt.year);
-                    if (week.ToList().Count == 0)                    
+                    if (week.ToList().Count == 0)
                     {
                         workSheet.Cells[count, 0] = new Cell("");
                         workSheet.Cells[count + 1, 0] = new Cell(weekInt.year + "- W " + i);
                         workSheet.Cells[count + 2, 0] = new Cell("No absence data");
                         workSheet.Cells[count + 3, 0] = new Cell("");
-                        count+=4;
+                        count += 4;
                     }
                     else
                     {
                         workSheet.Cells[count, 0] = new Cell("");
                         workSheet.Cells[count + 1, 0] = new Cell(weekInt.year + "- W " + i);
                         workSheet.Cells[count + 2, 0] = new Cell("");
-                        count+=3;
+                        count += 3;
                     }
 
                     if (week.ToList().Count != 0)

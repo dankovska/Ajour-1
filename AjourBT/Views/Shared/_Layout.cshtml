@@ -1,6 +1,6 @@
 ﻿@using System.Web.Configuration
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
@@ -42,8 +42,8 @@
         });
     </script>
 </head>
-<body onload="loginDisplay();">
-    <header>
+<body onload="loginDisplay();" style="height: 100%">
+    <header style="height: 7%">
         <div class="content-wrapper">
             <div class="float-left">
                 <nav>
@@ -123,7 +123,7 @@
             </div>
         </div>
     </header>
-    <div id="body">
+    <div id="body" style="height: 90%; opacity: 0.99">
         @RenderSection("featured", required: false)
         @RenderBody()
     </div>
@@ -158,31 +158,30 @@
     <script src="~/Scripts/AjourBTScript/HolidayScript.js"></script>
     <script src="~/Scripts/AjourBTScript/OvertimeScript.js"></script>
     <script src="~/Scripts/AjourBTScript/CRUD_CalendarItems.js"></script>
-    <footer>
-        <script type="text/javascript">
-            $(function () {
-                setInterval(loginDisplay, 300000);
-            });
-
-            function loginDisplay() {
-                $.ajax({
-                    type: "post",
-                    url: "/Account/GetLoginUser",
-
-                    success: function (response) {
-                        $("#onlineUsers").html(response);
-                        //if ($("#loggedUsers") != "")
-                        //    $("#loggedUsers").text("Online: " + (response));
-                    }
+        <footer style="height: 3%">
+            <script type="text/javascript">
+                $(function () {
+                    setInterval(loginDisplay, 300000);
                 });
-            }
-        </script>
 
-        @if (HttpContext.Current.User.Identity.Name != "")
-        {
-            <div id="onlineUsers"></div>
-            @*<label id="loggedUsers"></label>*@
-        }
-    </footer>
+                function loginDisplay() {
+                    $.ajax({
+                        type: "post",
+                        url: "/Account/GetLoginUser",
+
+                        success: function (response) {
+                            $("#onlineUsers").html(response);
+                            //if ($("#loggedUsers") != "")
+                            //    $("#loggedUsers").text("Online: " + (response));
+                        }
+                    });
+                }
+            </script>
+            @if (HttpContext.Current.User.Identity.Name != "")
+            {
+                <div id="onlineUsers"></div>
+                @*<label id="loggedUsers"></label>*@
+            }
+        </footer>
 </body>
 </html>

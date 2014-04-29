@@ -3,6 +3,7 @@ using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
 using AjourBT.Models;
 using AjourBT.Tests.MockRepository;
+using ExcelLibrary.SpreadSheet;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -208,6 +209,237 @@ namespace AjourBT.Tests.Controllers
                 Assert.AreEqual("NoData", result.ViewName);
             }
 
+            #endregion
+
+            #region SearchAbsenseData
+
+            [Test]
+            public void ExportAbsenceToExcel_DateNotParsed_NullReference()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.SearchAbsenceData("23.32,1990", "23.32,1990");
+
+                //Assert 
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+            }
+
+            [Test]
+            public void ExportAbsenceToExcel_DateIsEmpy_NullReference()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.SearchAbsenceData("", "");
+
+                //Assert 
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+            }
+            #endregion
+
+            #region CreateCaption
+            [Test]
+            public void CreateCaption_Null_Exception()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
+
+                //Act 
+
+                //Assert 
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+            }
+
+            [Test]
+            public void CreateCaption_workSheet_ValidCaptionOnWorksheet()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
+
+                //Act 
+                controller.CreateCaption(workSheet);
+
+                //Assert 
+                for (int i = 0; i < caption.Length; i++)
+                {
+                    Assert.AreEqual(caption[i], workSheet.Cells[0, i].Value);
+                }
+            }
+            
+            #endregion
+
+            #region ExportAbsenceToExcel
+            [Test]
+            public void ExportAbsenceToExcel_FromToDatesSearchStringEmpty_FileResult()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+
+                //Act 
+                FileResult file = controller.ExportAbsenceToExcel("01.01.2014", "01.02.2014") as FileResult;
+
+                //Assert 
+                Assert.IsInstanceOf(typeof(FileResult), file);
+            }
+
+            [Test]
+            public void ExportAbsenceToExcel_ProperCaptionOnWorksheet()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
+
+                //Act 
+                controller.CreateCaption(workSheet);
+
+                //Assert 
+                for (int i = 0; i < caption.Length; i++)
+                {
+                    Assert.AreEqual(caption[i], workSheet.Cells[0, i].Value);
+                }
+            }
+
+
+            [Test]
+            public void CreateCaption_Null_NullReferenceException()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
+
+                //Act 
+
+                //Assert 
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+            }
+
+            [Test]
+            public void CreateCaption_workSheet_ProperCaptionOnWorksheet()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
+
+                //Act 
+                controller.CreateCaption(workSheet);
+
+                //Assert 
+                for (int i = 0; i < caption.Length; i++)
+                {
+                    Assert.AreEqual(caption[i], workSheet.Cells[0, i].Value);
+                }
+            }
+
+           
+            [Test]
+            public void ExportAbsenceToExcel_DateNotParsed_NullReferense()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.SearchAbsenceData("efwery", "dsacf");
+
+                //Assert 
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+            }
+
+
+
+            #endregion
+
+            #region WriteAbsenceData
+            [Test]
+            public void ExportAbsenceToExcel_FromDateinvalid_Exception()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.WriteAbsenceData(workSheet, "0101.2014", "28.07.2014");
+
+                //Assert 
+
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+
+            }
+            [Test]
+            public void ExportAbsenceToExcel_DateIsEmpty_Exception()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.WriteAbsenceData(workSheet, "", "");
+
+                //Assert 
+
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+
+            }
+
+            [Test]
+            public void ExportAbsenceToExcel_DateIsNull_Exception()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.WriteAbsenceData(workSheet, null, null);
+
+                //Assert 
+
+                Assert.Throws<NullReferenceException>(() => controller.CreateCaption(null));
+
+            }
+            [Test]
+            public void ExportAbsenceToExcel_From01012014To_28072014SearchStringIsEmpty_FileResult()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.WriteAbsenceData(workSheet, "01.01.2014", "28.07.2014");
+
+                //Assert 
+                Assert.AreEqual("SDDDA", workSheet.Cells[1, 0].Value.ToString());
+                Assert.AreEqual("Zarose Anastasia", workSheet.Cells[1, 1].Value.ToString());
+                Assert.AreEqual("andl", workSheet.Cells[1, 2].Value.ToString());
+                Assert.AreEqual("01.01.2014 - 01.01.2014", workSheet.Cells[1, 4].Value.ToString());
+                Assert.AreEqual("21.02.2014 - 27.02.2014", workSheet.Cells[2, 6].Value.ToString());
+                Assert.AreEqual("25.01.2014 - 05.02.2014", workSheet.Cells[3, 7].Value.ToString());
+                Assert.AreEqual("12.02.2014 - 28.02.2014", workSheet.Cells[4, 7].Value.ToString());
+            }
+
+            [Test]
+            public void ExportAbsenceToExcel_From01012014To_28072014SearchStringNotEmpty_FileResult()
+            {
+                //Arrange 
+                AbsenceController controller = new AbsenceController(mock.Object);
+                Worksheet workSheet = new Worksheet("Absence");
+                //Act 
+                controller.WriteAbsenceData(workSheet, "01.01.2014", "28.07.2014", "TAAA");
+
+                //Assert 
+                Assert.AreEqual("TAAAA", workSheet.Cells[1, 0].Value.ToString());
+                Assert.AreEqual("Struz Anatoliy", workSheet.Cells[1, 1].Value.ToString());
+                Assert.AreEqual("ascr", workSheet.Cells[1, 2].Value.ToString());
+                Assert.AreEqual("01.02.2014 - 14.02.2014", workSheet.Cells[1, 4].Value.ToString());
+                Assert.AreEqual("09.05.2014 - 09.06.2014", workSheet.Cells[2, 4].Value.ToString());
+                Assert.AreEqual("21.02.2014 - 27.03.2014", workSheet.Cells[3, 6].Value.ToString());
+                Assert.AreEqual("11.03.2014 - 27.03.2014", workSheet.Cells[4, 6].Value.ToString());
+                Assert.AreEqual("01.03.2014 - 14.03.2014", workSheet.Cells[5, 7].Value.ToString());
+                Assert.AreEqual("12.03.2014 - 28.03.2014", workSheet.Cells[6, 7].Value.ToString());
+
+            }
             #endregion
 
         }
