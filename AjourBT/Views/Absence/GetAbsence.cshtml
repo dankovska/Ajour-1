@@ -1,8 +1,10 @@
-﻿
+﻿@using AjourBT.Domain.Entities
 @{
     Layout = null;
     string textBoxFromValue = ViewBag.FromValue.ToString("dd.MM.yyyy");
     string textBoxToValue = ViewBag.ToValue.ToString("dd.MM.yyyy");
+
+    string search = @ViewBag.SearchString;
 }
 
 @using (Ajax.BeginForm("GetAbsenceData", "Absence", new AjaxOptions { UpdateTargetId = "absenceView", HttpMethod = "Post" }, new { id = "formAbsence" }))
@@ -28,13 +30,39 @@
             <button id="absenceButton" type="button">Submit</button>
         </div>
     <div id="InputABM">
-        <input id="absenceSearchInput" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search... " />
+        <input id="absenceSearchInput" type="search" name="searchString" value="@search" placeholder="Search... " />
     </div>
+
+
+
+}
+<div id="absenceView">
+  @*  Html.Action("GetAbsenceData", "Absence", new { searchString = ViewBag.SearchString })*@
+</div>
+ 
+
+
+@*@using (Html.BeginForm("ExportAbsenceToExcel", "Absence", new { textBoxFromValue = ViewBag.ToValue, textBoxToValue = ViewBag.ToValue, searchString = ViewBag.SearchString }, FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    @*<input type="hidden" value="@textBoxFromValue" name="from">
+        <input type="hidden" value="@textBoxToValue" name="to">
+    //<input type="hidden" value="@ViewBag.SearchString" name="searchString">
+    <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">
+}
+}*@
+
+@using (Html.BeginForm("ExportAbsenceToExcel", "Absence", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    {
+        <input type="hidden" id="fromData" name="from">
+    <input type="hidden"  id="toData" name="to">
+    <input type="hidden" id="absenceSearch" name="searchString">
+        <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="ExportToXls">
+    }
 }
 
-<div id="absenceView">
-    @*@Html.Action("GetAbsenceData", "Absence", new { searchString = ViewBag.SearchString })*@
-</div>
 
 <script src="/Scripts/AjourBTScript/ABMDatesValidation.js"></script>
 <script type="text/javascript">
@@ -47,7 +75,10 @@
             showOn: 'button',
             buttonImage: '/Content/themes/base/images/calendar2.gif',
             buttonImageOnly: true
+        
         });
+       
+    
 
         $('#toDate').datepicker({
             firstDay: 1,
@@ -59,6 +90,30 @@
             buttonImageOnly: true
         });
 
-        $('#absenceButton').button();        
+        $('#absenceButton').button();
+
+        document.getElementById("fromData").value = $("#fromDate").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+        document.getElementById("toData").value = $("#toDate").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+        document.getElementById("absenceSearch").value = $("#absenceSearchInput").val();
+       
+     
+      
     })
+
+    $('#fromDate').on('change', function () {
+        document.getElementById("fromData").value = $("#fromDate").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    }
+    );
+
+    $('#toDate').on('change', function () {
+        document.getElementById("toData").value = $("#toDate").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    }
+    );
+
+    $('#absenceSearchInput').on('change', function () {
+        document.getElementById("absenceSearch").value = $("#absenceSearchInput").val();
+    }
+    );
+   
 </script>
+

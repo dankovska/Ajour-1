@@ -23,8 +23,8 @@
             },
 
             onRender: function () {
-
-                var firstChild = $('div.leftPanel div:nth-child(3)').attr('id');
+                //set to 3 if pagination disabled and scroll and frozen header enabled
+                var firstChild = $('div.leftPanel div:nth-child(4)').attr('id');
                 var lastChild = $('div.leftPanel div:last-child').attr('id');
                 var slash = firstChild.search("_");
                 var firstChildIndex = firstChild.substr(slash + 1, firstChild.length - slash);
@@ -110,18 +110,6 @@
 
                         } 
 
-                    //if((elem.childNodes[j].className == "row day postponedHoliday" && $(elem.childNodes[j]).find('.fn-label').html() == 'S'))
-                    //{
-                    //    for (var i = 1; i <= res; i++)
-                    //    {
-                    //        htmlData[1] = elem.childNodes[j].offsetTop + i * 24;
-                    //        htmlData[3] = elem.childNodes[j].offsetLeft + 1; 
-                    //        var div = document.createElement("div");
-                    //        div.setAttribute("id", "holidayMarker");
-                    //        div.setAttribute("style", "top:"+(elem.childNodes[j].offsetTop + i * 24) +'px; '+"left:"+(elem.childNodes[j].offsetLeft + 1)+'px');
-                    //        fragment.appendChild(div);
-                    //    }
-                    //}
                     }
 
                 dataPanel.appendChild(fragment);

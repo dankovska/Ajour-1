@@ -36,6 +36,9 @@ $(document).on("click", "#CreateEmployee", function (event) {
                 if ($('#createDateEmployed').length > 0) {
                     $('#createDateEmployed').datepicker({
                         firstDay: 1,
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-100:+100",
                         dateFormat: dateFormat,
                         showWeek: true,
                         calculateWeek: myWeekCalc,
@@ -173,6 +176,9 @@ $(document).on("click", ".empEditDialog", function (event) {
                 if ($('#editDateEmployed').length > 0) {
                     $('#editDateEmployed').datepicker({
                         firstDay: 1,
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-100:+100",
                         dateFormat: dateFormat,
                         showWeek: true,
                         calculateWeek: myWeekCalc,
@@ -196,25 +202,28 @@ $(document).on("click", ".empEditDialog", function (event) {
                 if ($('#editDateBirthDay').length > 0) {
                     $('#editDateBirthDay').datepicker({
                         firstDay: 1,
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-100:+100",
                         dateFormat: dateFormat,
                         showWeek: true,
                         calculateWeek: myWeekCalc,
                         showOn: 'button',
                         buttonImage: '/Content/themes/base/images/calendar2.gif',
                         buttonImageOnly: true
-
-                    });
+                        
+                       });
                 }
 
                 $("#btnSaveEmployee").click(function (event) {
                     event.preventDefault();
                     $("#editEmployeeForm").validate();
                     if ($("#editEmployeeForm").valid()) {
-                        visa = $('#editEmployeeForm').serialize();
+                        editEmp = $('#editEmployeeForm').serialize();
                         $.ajax({
                             type: "POST",
                             url: "/Employee/Edit",
-                            data: visa,
+                            data: editEmp,
                             success: function (data) {
                                 if (data.error) {
                                     $("#ModelError").html(data.error);

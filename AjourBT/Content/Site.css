@@ -2215,19 +2215,19 @@ margin75 {
     top:-82%;
 }
 
-#empWtrSubmitButton, #wtrSubmitButton, #calendarAbsenceSubmitBtn{
+#empWtrSubmitButton, #wtrSubmitButton{
     width: 20%;
     position:relative;
     left:35%;
     bottom:50px;
 }
 
-#calendarAbsenceSubmitBtn{
+/*#calendarAbsenceSubmitBtn{
     width: 6%;
     position:relative;
     left:51%;
     bottom:95px;
-}
+}*/
 
 
 #formAbsence {
