@@ -395,7 +395,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             string[] result = messenger.GetMailingListForRole(msg);
 
             //Assert        
-            Assert.AreEqual(new string[] {"andl@elegant.com", "ascr@elegant.com" }, result);
+            Assert.AreEqual(new string[] { "andl@elegant.com", "ascr@elegant.com" }, result);
 
         }
 
