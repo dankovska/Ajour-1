@@ -350,31 +350,9 @@ namespace AjourBT.Controllers
                     }
                     i++;
                 }
-                
+
             }
         }
-
-        //private string AppendAbsenceToOneCell(List<AbsenceViewModel> list)
-        //{
-        //    string bts = "";
-        //    StringBuilder builder = new StringBuilder();
-
-        //    if (list.Count != 0)
-        //    {
-        //        foreach (List<IQueryable> bt in list)
-        //        {
-        //            foreach (var item in bt)
-        //            {
-        //                builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
-        //            }
-        //        }
-        //        bts = builder.ToString();
-
-
-        //    }
-
-        //    return bts;
-        //}
 
     }
 }

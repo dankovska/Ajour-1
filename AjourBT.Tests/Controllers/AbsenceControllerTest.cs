@@ -435,7 +435,6 @@ namespace AjourBT.Tests.Controllers
                 Assert.AreEqual("01.02.2014 - 14.02.2014\r\n09.05.2014 - 09.06.2014\r\n", workSheet.Cells[1, 4].Value.ToString());
                 Assert.AreEqual("21.02.2014 - 27.03.2014\r\n11.03.2014 - 27.03.2014\r\n", workSheet.Cells[1, 6].Value.ToString());
                 Assert.AreEqual("01.03.2014 - 14.03.2014\r\n12.03.2014 - 28.03.2014\r\n", workSheet.Cells[1, 7].Value.ToString());
-      
 
             }
             #endregion
