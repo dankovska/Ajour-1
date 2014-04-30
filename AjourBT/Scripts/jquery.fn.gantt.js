@@ -393,6 +393,8 @@ function myWeekCalc(date) {
                     }
                 });
                 ganttLeftPanel.append(entries.join(""));
+                var wheel = 'onwheel' in element ? 'wheel' : document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
+                $(ganttLeftPanel).on(wheel, function (e) { core.wheelScroll(element, e); });
                 return ganttLeftPanel;
             },
 
@@ -402,7 +404,7 @@ function myWeekCalc(date) {
 
                 // Handle mousewheel events for scrolling the data panel
                 var wheel = 'onwheel' in element ? 'wheel' : document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
-                $(element).on(wheel, function (e) { core.wheelScroll(element, e); });
+                $(dataPanel).on(wheel, function (e) { core.wheelScroll(element, e); });
 
                 // Handle click events and dispatch to registered `onAddClick`
                 // function
@@ -1067,6 +1069,8 @@ function myWeekCalc(date) {
                                 core.zoomInOut(element, 1);
                             }));
                 }
+                var wheel = 'onwheel' in element ? 'wheel' : document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
+                $(ganttNavigate).on(wheel, function (e) { core.wheelScroll(element, e); });
                 return $('<div class="bottom"/>').append(ganttNavigate);
             },
 
