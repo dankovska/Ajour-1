@@ -327,7 +327,7 @@ namespace AjourBT.Tests.MockRepository
             AddPermit(new Permit { EmployeeID = 2, Number = "01/2012", IsKartaPolaka = true, PermitOf = employees.Find(e => e.EmployeeID == 2) });
             AddPermit(new Permit { EmployeeID = 3, Number = "01/2013", IsKartaPolaka = true, PermitOf = employees.Find(e => e.EmployeeID == 3) });
             AddPermit(new Permit { EmployeeID = 5, Number = "01/2013", StartDate = new DateTime(2013, 01, 01), EndDate = new DateTime(2014, 08, 08), IsKartaPolaka = false, PermitOf = employees.Find(e => e.EmployeeID == 5), CancelRequestDate = DateTime.Now.ToLocalTimeAzure() });
-            AddPermit(new Permit { EmployeeID = 14, Number = "01/2013", StartDate = new DateTime(2013, 01, 01), EndDate = new DateTime(2014, 08, 08), IsKartaPolaka = true, PermitOf = employees.Find(e => e.EmployeeID == 14), CancelRequestDate = DateTime.Now.ToLocalTimeAzure() });
+            AddPermit(new Permit { EmployeeID = 14, Number = "01/2013", StartDate = new DateTime(2013, 01, 01), EndDate = DateTime.Now.ToLocalTimeAzure().AddDays(101), IsKartaPolaka = true, PermitOf = employees.Find(e => e.EmployeeID == 14), CancelRequestDate = DateTime.Now.ToLocalTimeAzure() });
          //   AddPermit(new Permit { EmployeeID = 17, Number = "01/2013",  IsKartaPolaka = true, PermitOf = employees.Find(e => e.EmployeeID == 17), CancelRequestDate = DateTime.Now.ToLocalTimeAzure() });
 
             passports = new List<Passport>();

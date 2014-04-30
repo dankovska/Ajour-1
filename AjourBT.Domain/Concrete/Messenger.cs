@@ -60,15 +60,14 @@ namespace AjourBT.Domain.Concrete
                     case "EMP":
                         if (message.employee != null)
                         {
-                            mailingList.Add(message.employee.EID + "@elegant.com");
+                            mailingList.Add(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
                             break;
                         }
 
                         foreach (BusinessTrip bt in message.BTList)
                         {
-                            if (!mailingList.Contains(bt.BTof.EID + "@elegant.com"))
-                                mailingList.Add(bt.BTof.EID + "@elegant.com");
-                            //mailingList.Add("daol@elegant.com");
+                            if (!mailingList.Contains(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]))
+                                mailingList.Add(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]);
                         }
                         break;
                     case "ADM":
@@ -87,8 +86,8 @@ namespace AjourBT.Domain.Concrete
 
                         foreach (BusinessTrip bt in message.BTList)
                         {
-                            if (!mailingList.Contains(bt.LastCRUDedBy + "@elegant.com"))
-                                mailingList.Add(bt.LastCRUDedBy + "@elegant.com");
+                            if (!mailingList.Contains(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]))
+                                mailingList.Add(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]);
                         }
                         break;
                     case "Unknown Role":
@@ -104,8 +103,8 @@ namespace AjourBT.Domain.Concrete
 
                                         foreach (string userID in userIDs)
                                         {
-                                            if (!mailingList.Contains(userID + "@elegant.com"))
-                                                mailingList.Add(userID + "@elegant.com");
+                                            if (!mailingList.Contains(userID + WebConfigurationManager.AppSettings["MailAlias"]))
+                                                mailingList.Add(userID + WebConfigurationManager.AppSettings["MailAlias"]);
                                         }
                                     }
                                 }
@@ -116,7 +115,7 @@ namespace AjourBT.Domain.Concrete
                         mailingList = System.Web.Security.Roles.GetUsersInRole(message.Role).ToList<string>();
                         for (int i = 0; i < mailingList.Count(); i++)
                         {
-                            mailingList[i] += "@elegant.com";
+                            mailingList[i] += WebConfigurationManager.AppSettings["MailAlias"];
                         }
                         break;
                 }
