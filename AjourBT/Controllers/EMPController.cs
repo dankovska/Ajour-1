@@ -325,10 +325,12 @@ namespace AjourBT.Controllers
             List<Employee> emp = (from e in repository.Employees where
                                       e.BirthDay.HasValue orderby e.BirthDay.Value                                     
                                   select e).ToList();
-
+            DateTime date;
+        //    DateTime date1;
             foreach (Employee e in emp)
             {
-                if (TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date) >= fromDate && TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date) <= toDate)
+                 date = TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date);
+                if (date >= fromDate.AddDays(-10) && date <= toDate)
                 {
                     birthList.Add(e);
                 }

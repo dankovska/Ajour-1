@@ -591,6 +591,71 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
+        public void GetBirthDayBirthdayDatesFrom10DaysAgoT_ViewMissingabout10daysBirthdays()
+        {
+            //Arrange
+
+
+            List<Employee> employees = new List<Employee> 
+            { 
+            new Employee { EmployeeID = 4, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, PositionID = 2, EID = "andl", DateDismissed = new DateTime(2013, 11, 01), DateEmployed = new DateTime(2011, 11, 01), IsManager = false, BusinessTrips = new List<BusinessTrip>(),CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now },
+            new Employee { EmployeeID = 2, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, PositionID = 2, EID = "ascr", DateEmployed = new DateTime(2013, 04, 11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(), BirthDay = DateTime.Now.AddDays(1) },
+            new Employee { EmployeeID = 1, FirstName = "Tymur", LastName = "Pyorge", DepartmentID = 1, PositionID = 2, EID = "tedk", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddDays(2) },
+            new Employee { EmployeeID = 3, FirstName = "Anton", LastName = "Cde", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddYears(2) },
+            new Employee { EmployeeID = 5, FirstName = "Andriy", LastName = "Cdess", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddMonths(1) },
+            new Employee { EmployeeID = 6, FirstName = "Oleg", LastName = "Lopp", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddDays(30) },
+            new Employee { EmployeeID = 5, FirstName = "Igor", LastName = "Kopl", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddDays(31) },
+            new Employee { EmployeeID = 7, FirstName = "Andriy", LastName = "Cdess", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddMonths(2) },
+            };
+
+            mock.Setup(m => m.Employees).Returns(employees.AsQueryable());
+
+            EMPController controller = new EMPController(mock.Object);
+            //Act
+            var result = controller.GetBirthdays() as ViewResult;
+            var oRes = result.Model as List<Employee>;
+
+            //Assert
+            Assert.AreEqual(5, oRes.Count);
+            Assert.AreEqual("Anastasia", oRes[0].FirstName);
+            Assert.AreEqual("Anton", oRes[1].FirstName);
+            Assert.AreEqual("Anatoliy", oRes[2].FirstName);
+            Assert.AreEqual("Tymur", oRes[3].FirstName);
+            Assert.AreEqual("Oleg", oRes[4].FirstName);
+        }
+
+
+        [Test]
+        public void GetBirthDayDatesFromNowTo30DaysAhead_ViewFutureBirthdays()
+        {
+            //Arrange
+
+
+            List<Employee> employees = new List<Employee> 
+            { 
+            new Employee { EmployeeID = 4, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, PositionID = 2, EID = "andl", DateDismissed = new DateTime(2013, 11, 01), DateEmployed = new DateTime(2011, 11, 01), IsManager = false, BusinessTrips = new List<BusinessTrip>(),CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddDays(-10) },
+            new Employee { EmployeeID = 2, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, PositionID = 2, EID = "ascr", DateEmployed = new DateTime(2013, 04, 11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(), BirthDay = DateTime.Now.AddDays(-11) },
+            new Employee { EmployeeID = 1, FirstName = "Tymur", LastName = "Pyorge", DepartmentID = 1, PositionID = 2, EID = "tedk", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddDays(-2) },
+            new Employee { EmployeeID = 3, FirstName = "Anton", LastName = "Cde", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddYears(2) },
+            new Employee { EmployeeID = 5, FirstName = "Andriy", LastName = "Cdess", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddMonths(-1) },
+            new Employee { EmployeeID = 6, FirstName = "Andriy", LastName = "Cdess", DepartmentID = 1, PositionID = 2, EID = "tepyee", DateEmployed = new DateTime(2013, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>(),BirthDay = DateTime.Now.AddMonths(-2) },
+            };
+
+            mock.Setup(m => m.Employees).Returns(employees.AsQueryable());
+
+            EMPController controller = new EMPController(mock.Object);
+            //Act
+            var result = controller.GetBirthdays() as ViewResult;
+            var oRes = result.Model as List<Employee>;
+
+            //Assert
+            Assert.AreEqual(3, oRes.Count);
+            Assert.AreEqual("Anastasia", oRes[0].FirstName);
+            Assert.AreEqual("Tymur", oRes[1].FirstName);
+            Assert.AreEqual("Anton", oRes[2].FirstName);
+        }
+
+        [Test]
         public void TransformDateTime_1990_03_21__2014_12_13()
         {
             //Arange
