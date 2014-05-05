@@ -92,20 +92,29 @@ namespace AjourBT.Domain.Concrete
                         break;
                     case "Unknown Role":
                         {
-                            string[] userIDs;
+                            Regex regex = new Regex(@"^[\w]+$", RegexOptions.IgnoreCase);
+                            List<string> userIDs = new List<string>();
                             if (message.BTList!=null && message.BTList.Count != 0)
                             {
                                 foreach (BusinessTrip bt in message.BTList)
                                 {
                                     if (bt.Location.ResponsibleForLoc != null)
                                     {
-                                        userIDs = Regex.Split(bt.Location.ResponsibleForLoc, @"\W+");
+                                        userIDs = userIDs.Concat(Regex.Split(bt.Location.ResponsibleForLoc, @"\W+").ToList()).ToList<string>();                                        
+                                    }
+                                    if (bt.Responsible != null && bt.Responsible != String.Empty)
+                                    {
 
-                                        foreach (string userID in userIDs)
+                                        Match match = regex.Match(bt.Responsible.Trim());
+                                        if (match.Success)
                                         {
-                                            if (!mailingList.Contains(userID + WebConfigurationManager.AppSettings["MailAlias"]))
-                                                mailingList.Add(userID + WebConfigurationManager.AppSettings["MailAlias"]);
+                                            userIDs.Add(bt.Responsible.Trim());
                                         }
+                                    }
+                                    foreach (string userID in userIDs)
+                                    {
+                                        if (!mailingList.Contains(userID + WebConfigurationManager.AppSettings["MailAlias"]))
+                                            mailingList.Add(userID + WebConfigurationManager.AppSettings["MailAlias"]);
                                     }
                                 }
                             }

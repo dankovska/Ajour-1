@@ -550,7 +550,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             List<BusinessTrip> btList = new List<BusinessTrip>();
             btList.Add(mockRepository.Object.BusinessTrips.Skip(2).FirstOrDefault());
             btList.Add(mockRepository.Object.BusinessTrips.Skip(3).FirstOrDefault());
-            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation, btList, null);
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, btList, null);
             //Act
             string[] result = messenger.GetMailingListForRole(msg);
 
@@ -565,7 +565,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             //Arrange
             Messenger messenger = new Messenger(mockRepository.Object);
             List<BusinessTrip> btList = new List<BusinessTrip>();
-            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation, btList, null);
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, btList, null);
             //Act
             string[] result = messenger.GetMailingListForRole(msg);
 
@@ -580,7 +580,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             //Arrange
             Messenger messenger = new Messenger(mockRepository.Object);
             List<BusinessTrip> btList = new List<BusinessTrip>();
-            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation, null, null);
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, null, null);
             //Act
             string[] result = messenger.GetMailingListForRole(msg);
 
@@ -590,19 +590,70 @@ namespace AjourBT.Tests.Messaging_Subsystem
         }
 
         [Test]
-        public void GetMailingListForRole_RoleUnknown_ResponsiblesInLocationPresent_IDsOfResponsibles()
+        public void GetMailingListForRole_RoleUnknown_ResponsiblesInLocationPresent_ProperMailingList()
         {
             //Arrange
             Messenger messenger = new Messenger(mockRepository.Object);
             List<BusinessTrip> btList = new List<BusinessTrip>();
             btList.Add(mockRepository.Object.BusinessTrips.Skip(5).FirstOrDefault());
             btList.Add(mockRepository.Object.BusinessTrips.Skip(4).FirstOrDefault());
-            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation, btList, null);
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, btList, null);
             //Act
             string[] result = messenger.GetMailingListForRole(msg);
 
             //Assert        
             Assert.AreEqual(new string[] { "andl@elegant.com", "tebl@elegant.com", "xnta@elegant.com", "daol@elegant.com" }, result);
+
+        }
+
+        [Test]
+        public void GetMailingListForRole_RoleUnknown_NoResponsiblesInLocationBTHasResponsibles_ProperMailingList()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            List<BusinessTrip> btList = new List<BusinessTrip>();
+            BusinessTrip bt1 = mockRepository.Object.BusinessTrips.Skip(2).FirstOrDefault();
+            BusinessTrip bt2 = mockRepository.Object.BusinessTrips.Skip(3).FirstOrDefault();
+            BusinessTrip bt3 = new BusinessTrip(bt2);
+            bt1.Responsible = "xkdf";
+            bt2.Responsible = "fksd";
+            bt3.Responsible = " fkld ";
+            btList.Add(bt1);
+            btList.Add(bt2);
+            btList.Add(bt3);
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, btList, null);
+            //Act
+            string[] result = messenger.GetMailingListForRole(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "xkdf@elegant.com", "fksd@elegant.com", "fkld@elegant.com" }, result);
+
+        }
+
+
+        [Test]
+        public void GetMailingListForRole_RoleUnknown_NoResponsiblesInLocationBTHasResponsiblesNotAllowedCharactersUsed_EmptyMailingList()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            List<BusinessTrip> btList = new List<BusinessTrip>();
+            BusinessTrip bt1 = mockRepository.Object.BusinessTrips.Skip(2).FirstOrDefault();
+            BusinessTrip bt2 = mockRepository.Object.BusinessTrips.Skip(3).FirstOrDefault();
+            BusinessTrip bt3 = new BusinessTrip(bt2);
+            bt1.Responsible = "xk df";
+            bt2.Responsible = "a.";
+            bt3.Responsible = "bk..bk";
+
+            btList.Add(bt1);
+            btList.Add(bt2);
+            btList.Add(bt3);
+
+            Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, btList, null);
+            //Act
+            string[] result = messenger.GetMailingListForRole(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { }, result);
 
         }
 

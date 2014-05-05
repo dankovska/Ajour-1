@@ -136,15 +136,15 @@ namespace AjourBT.Domain.Concrete
                     return "For BTM: Planned Modified BT Cancellation";
                 case MessageType.ADMCancelsPlannedModifiedToACC:
                     return "For ACC: Planned Modified BT Cancellation";
-                case MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation:
+                case MessageType.ADMConfirmsPlannedOrRegisteredToResponsible:
                     return "BT Confirmation";
-                case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation:
+                case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible:
                     return "BT Cancellation";
-                case MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation:
+                case MessageType.ACCCancelsConfirmedReportedToResponsible:
                     return "BT Cancellation";
-                case MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation:
+                case MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible:
                     return "BT Rejection";
-                case MessageType.DIRRejectsConfirmedToResponsibleInLocation:
+                case MessageType.DIRRejectsConfirmedToResponsible:
                     return "BT Rejection";
                 case MessageType.BTMCreateVisaRegistrationDateToEMP:
                     return "Visa Registration Date Creation";
@@ -243,9 +243,9 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.ADMRegistersPlannedOrPlannedModifiedToACC:
                 case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR:
                 case MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC:
-                case MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation:
-                case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation:
-                case MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation:
+                case MessageType.ADMConfirmsPlannedOrRegisteredToResponsible:
+                case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible:
+                case MessageType.ACCCancelsConfirmedReportedToResponsible:
                     pathAndQuery = "/Home/VUView/?tab=2";
                     break;
                 
@@ -422,15 +422,15 @@ namespace AjourBT.Domain.Concrete
                     case MessageType.ADMCancelsPlannedModifiedToACC:
                         return string.Format("<b>Planned modified BT cancellation</b> by ADM {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
 
-                    case MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation:
+                    case MessageType.ADMConfirmsPlannedOrRegisteredToResponsible:
                         return string.Format("<b>BT confirmation</b> by ADM {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
-                    case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation:
+                    case MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible:
                         return string.Format("<b>BT(s) cancellation</b> by ADM {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
-                    case MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation:
+                    case MessageType.ACCCancelsConfirmedReportedToResponsible:
                         return string.Format("<b>BT cancellation</b> by ACC {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
-                    case MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation:
+                    case MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible:
                         return string.Format("<b>BT rejection</b> by BTM {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
-                    case MessageType.DIRRejectsConfirmedToResponsibleInLocation:
+                    case MessageType.DIRRejectsConfirmedToResponsible:
                         return string.Format("<b>BT rejection</b> by DIR {0} {1} at {2}", Author.FirstName, Author.LastName, TimeStamp.ToString("dd.MM.yyyy HH:mm:ss"));
 
                     case MessageType.BTMCreateVisaRegistrationDateToEMP:

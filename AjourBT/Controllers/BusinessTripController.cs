@@ -265,7 +265,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToDIR, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToEMP, selectedBusinessTripsList, author));
-                    messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible, selectedBusinessTripsList, author));
                     //messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToACC, selectedBusinessTripsList, author));
                 }
             }
@@ -313,7 +313,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToDIR, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToEMP, selectedBusinessTripsList, author));
-                    messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible, selectedBusinessTripsList, author));
                     //messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToACC, selectedBusinessTripsList, author));
                 }
             }
@@ -438,7 +438,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                         messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM, selectedBusinessTripsList, author));
                         messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR, selectedBusinessTripsList, author));
                         messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
-                        messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation, selectedBusinessTripsList, author));
+                        messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
                         //messenger.Notify(new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
                     }
                     catch (DbUpdateConcurrencyException)
@@ -1224,7 +1224,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     {
                         messenger.Notify(new Message(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM, selectedBusinessTripsList, author));
                         messenger.Notify(new Message(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
-                        messenger.Notify(new Message(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation, selectedBusinessTripsList, author));
+                        messenger.Notify(new Message(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
                         //messenger.Notify(new Message(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
                     }
                     List<Employee> empList = SearchBusinessTripDataBTM(repository.Employees.ToList(), searchString);
@@ -1409,7 +1409,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToADM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToEMP, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToBTM, selectedBusinessTripsList, author));
-                    messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToResponsibleInLocation, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToResponsible, selectedBusinessTripsList, author));
                     //messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToACC, selectedBusinessTripsList, author));
                     return RedirectToAction("DIRView", "Home", new { tab = 0, selectedDepartment = selectedDepartment });
                 }
@@ -1688,7 +1688,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToADM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToBTM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToEMP, selectedBusinessTripsList, author));
-                    messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToResponsible, selectedBusinessTripsList, author));
                     //return RedirectToAction("ACCView", "Home", new { tab = 0, selectedDepartment = selectedDepartment });
                     return Json(new { success = "success" });
 

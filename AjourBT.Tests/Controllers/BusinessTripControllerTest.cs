@@ -61,7 +61,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCCancelsConfirmedReportedToADM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCCancelsConfirmedReportedToBTM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCCancelsConfirmedReportedToEMP))).Verifiable();
-            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))).Verifiable();
+            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCCancelsConfirmedReportedToResponsible))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCModifiesConfirmedReportedToADM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCModifiesConfirmedReportedToBTM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ACCModifiesConfirmedReportedToDIR))).Verifiable();
@@ -70,14 +70,14 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))).Verifiable();
-            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))).Verifiable();
+            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsRegisteredOrRegisteredModifiedToBTM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsRegisteredOrRegisteredModifiedToEMP))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMCancelsRegisteredOrRegisteredModifiedToACC))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToBTM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToDIR))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToEMP))).Verifiable();
-            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))).Verifiable();
+            messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))).Verifiable();
             //messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMConfirmsPlannedOrRegisteredToACC))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMRegistersPlannedOrPlannedModifiedToBTM))).Verifiable();
             messengerMock.Setup(m => m.Notify(It.Is<IMessage>(msg => msg.messageType == MessageType.ADMRegistersPlannedOrPlannedModifiedToEMP))).Verifiable();
@@ -427,7 +427,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Never);
             Assert.AreEqual(null, ((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -452,7 +452,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Never);
             Assert.AreEqual("SDDDA", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -489,7 +489,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Once);
 
         }
@@ -517,7 +517,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Once);
 
             Assert.AreEqual("BT is too expensive", businessTrip.RejectComment);
@@ -543,7 +543,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Never);
             Assert.AreEqual("SDDDA", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -572,7 +572,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToADM))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.DIRRejectsConfirmedToACC))), Times.Never);
             Assert.AreEqual("BT is too expensive", businessTrip.RejectComment);
             Assert.AreEqual((BTStatus.Planned | BTStatus.Modified), businessTrip.Status);
@@ -1835,7 +1835,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual(null, businessTrip.CancelComment);
             Assert.IsNull(((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -1859,7 +1859,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never); 
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never); 
             Assert.IsNull(((ViewResult)view).ViewBag.SelectedDepartment);
         }
 
@@ -1881,7 +1881,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual(null, businessTrip.CancelComment);
             Assert.AreEqual("", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -1904,7 +1904,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual(null, businessTrip.CancelComment);
             Assert.AreEqual("RAAA4", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
@@ -1928,7 +1928,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual("RAAA4", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
 
@@ -1950,7 +1950,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual(null, ((ViewResult)view).ViewBag.SelectedDepartment);
         }
 
@@ -1972,7 +1972,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual(null, ((ViewResult)view).ViewBag.SelectedDepartment);
             Assert.AreEqual(null, businessTrip.CancelComment);
 
@@ -1996,7 +1996,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
             Assert.AreEqual("", ((ViewResult)view).ViewBag.SelectedDepartment);
         }
 
@@ -2019,7 +2019,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Once);
                     
             Assert.IsNull(businessTrip.BTof.Visa);
 
@@ -2044,7 +2044,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Once);
             Assert.IsNull(businessTrip.BTof.Visa);
         }
 
@@ -2079,7 +2079,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Once);
 
             //Assert.AreEqual("BT is too expensive", bTrip.CancelComment);
             //Assert.AreEqual((BTStatus.Confirmed | BTStatus.Cancelled), bTrip.Status);
@@ -2109,7 +2109,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Once);
 
             //Assert.AreEqual("BT is too expensive", bTrip.CancelComment);
             //Assert.AreEqual((BTStatus.Confirmed | BTStatus.Cancelled), bTrip.Status);
@@ -2137,7 +2137,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ACCCancelsConfirmedReportedToResponsible))), Times.Never);
 
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
@@ -2834,7 +2834,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Once);
             Assert.AreEqual(BTStatus.Confirmed, bTrip1.Status);
             Assert.AreEqual(BTStatus.Confirmed, bTrip2.Status);
@@ -2866,7 +2866,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Once);
             Assert.AreEqual(BTStatus.Confirmed | BTStatus.Modified, bTrip1.Status);
             Assert.AreEqual(bTrip1.LastCRUDedBy, "cbur");
@@ -2896,7 +2896,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.AreEqual(BTStatus.Planned, bTrip1.Status);
             Assert.AreEqual(BTStatus.Planned | BTStatus.Modified, bTrip2.Status);
@@ -2919,7 +2919,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -2953,7 +2953,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.AreEqual(BTStatus.Planned, bTrip1.Status);
             Assert.AreEqual(BTStatus.Planned | BTStatus.Modified, bTrip2.Status);
@@ -2975,7 +2975,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3007,7 +3007,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
@@ -3034,7 +3034,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Once);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3069,7 +3069,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Once);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3101,7 +3101,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Once);
             Assert.AreEqual(BTStatus.Confirmed | BTStatus.Modified, bTrip1.Status);
             Assert.AreEqual(bTrip1.LastCRUDedBy, "cbur");
@@ -3132,7 +3132,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3161,7 +3161,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3190,7 +3190,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3217,7 +3217,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("TableViewBTADM", ((ViewResult)result).ViewName);
@@ -3247,7 +3247,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToACC))), Times.Never);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
@@ -3660,7 +3660,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Once);
             Assert.IsFalse(result.Permanent);
             Assert.IsFalse(result.Permanent);
@@ -3689,7 +3689,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Once);
             Assert.IsFalse(result.Permanent);
             Assert.AreEqual("ADMView", result.RouteValues["action"]);
@@ -3715,7 +3715,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Never);
             Assert.IsFalse(result.Permanent);
             Assert.IsFalse(result.Permanent);
@@ -3745,7 +3745,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Never);
             Assert.IsFalse(result.Permanent);
             Assert.IsFalse(result.Permanent);
@@ -3776,7 +3776,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Never);
             Assert.IsFalse(result.Permanent);
             Assert.IsFalse(result.Permanent);
@@ -3807,7 +3807,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Never);
             Assert.IsFalse(result.Permanent);
             Assert.IsFalse(result.Permanent);
@@ -3840,7 +3840,7 @@ namespace AjourBT.Tests.Controllers
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToDIR))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC))), Times.Never);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
@@ -3867,7 +3867,7 @@ namespace AjourBT.Tests.Controllers
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Once);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Once);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Once);
-        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
         //    Assert.IsFalse(result.Permanent);
         //    Assert.AreEqual("ADMView", result.RouteValues["action"]);
         //    Assert.AreEqual(null, result.RouteValues["id"]);
@@ -3919,7 +3919,7 @@ namespace AjourBT.Tests.Controllers
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
         //    Assert.IsFalse(result.Permanent);
         //    Assert.AreEqual("ADMView", result.RouteValues["action"]);
         //    Assert.AreEqual(null, result.RouteValues["id"]);
@@ -3942,7 +3942,7 @@ namespace AjourBT.Tests.Controllers
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToBTM))), Times.Never);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToDIR))), Times.Never);
         //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToEMP))), Times.Never);
-        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsibleInLocation))), Times.Never);
+        //    messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible))), Times.Never);
         //    Assert.AreEqual(BTStatus.Planned, bTrip1.Status);
         //    Assert.AreEqual("EditPlannedBT", result.ViewName);
         //    Assert.IsInstanceOf(typeof(BusinessTripViewModel), result.Model);
@@ -9641,7 +9641,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Never);
         }
 
@@ -9663,7 +9663,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Never);
         }
 
@@ -9690,7 +9690,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Once);
         }
 
@@ -9715,7 +9715,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Never);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Never);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Never);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Once);
 
             Assert.AreEqual("Visa expired", businessTrip.RejectComment);
@@ -9743,7 +9743,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Never);
 
             Assert.AreEqual("Visa expired", businessTrip.RejectComment);
@@ -9771,7 +9771,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(businessTrip), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM))), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToEMP))), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible))), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC))), Times.Never);
 
             Assert.AreEqual("Visa expired", businessTrip.RejectComment);
