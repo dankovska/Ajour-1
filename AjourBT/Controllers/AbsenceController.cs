@@ -248,7 +248,7 @@ namespace AjourBT.Controllers
             WriteAbsenceData(workSheet, from, to, searchString);
             workBook.Worksheets.Add(workSheet);
             MemoryStream stream = new MemoryStream();
-            workBook.SaveToStream(stream);
+            workBook.Save(stream);
             return File(stream.ToArray(), "application/vnd.ms-excel", "Absence.xls");
         }
 
