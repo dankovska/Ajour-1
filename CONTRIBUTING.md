@@ -25,7 +25,8 @@ Here are a few steps needed to start contributing to the Project.
   * Make a commit -> Make a pull request -> Take part in a discussion ->
     Make additional commits to a dedicated branch if needed (opened pull request is updated automatically)
   * Pull request is closed by Maintainer (merge or cancel)  
-  * Issue is closed after pull request number is specified
+  * Issue is closed after pull request number is specified in comment
+  * Release is created when corresponding commit is deployed to Production Server
 
 (to be updated - it's only current best thinking)
 
