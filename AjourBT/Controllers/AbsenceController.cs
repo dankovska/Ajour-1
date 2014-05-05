@@ -289,23 +289,28 @@ namespace AjourBT.Controllers
 
                     if (absences[j].Journeys.Count != 0)
                     {
-                        string bts = "";
+                        string bts;
                         StringBuilder builder = new StringBuilder();
-                        foreach (var item in absences[j].Journeys.AsEnumerable())
+                        builder.Append(absences[j].Journeys[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].Journeys[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
+
+                        for (int item = 1; item < absences[j].Journeys.AsEnumerable().Count(); item++)
                         {
-                            builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
+                            builder.Append(absences[j].Journeys[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].Journeys[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
+                      
                         bts = builder.ToString();
                         workSheet.Cells[i, 3] = new Cell(bts);
                     }
 
                     if (absences[j].BusinessTrips.Count() != 0)
                     {
-                        string bts = "";
+                        string bts;
                         StringBuilder builder = new StringBuilder();
-                        foreach (var item in absences[j].BusinessTrips.AsEnumerable())
+                        builder.Append(absences[j].BusinessTrips[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].BusinessTrips[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
+
+                        for (int item = 1; item < absences[j].BusinessTrips.AsEnumerable().Count(); item++)
                         {
-                            builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
+                            builder.Append(absences[j].BusinessTrips[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].BusinessTrips[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
                         bts = builder.ToString();
                         workSheet.Cells[i, 4] = new Cell(bts);
@@ -314,11 +319,13 @@ namespace AjourBT.Controllers
 
                     if (absences[j].Overtimes.Count() != 0)
                     {
-                        string bts = "";
+                        string bts;
                         StringBuilder builder = new StringBuilder();
-                        foreach (var item in absences[j].Overtimes.AsEnumerable())
+                        builder.Append(absences[j].Overtimes[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].Overtimes[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
+
+                        for (int item = 1; item < absences[j].Overtimes.AsEnumerable().Count(); item++)
                         {
-                            builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
+                            builder.Append(absences[j].Overtimes[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].Overtimes[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
                         bts = builder.ToString();
                         workSheet.Cells[i, 5] = new Cell(bts);
@@ -327,11 +334,13 @@ namespace AjourBT.Controllers
 
                     if (absences[j].Sickness.Count() != 0)
                     {
-                        string bts = "";
+                        string bts;
                         StringBuilder builder = new StringBuilder();
-                        foreach (var item in absences[j].Sickness.AsEnumerable())
+                        builder.Append(absences[j].Sickness[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].Sickness[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
+
+                        for (int item = 1; item < absences[j].Sickness.AsEnumerable().Count(); item++)
                         {
-                            builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
+                            builder.Append(absences[j].Sickness[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].Sickness[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
                         bts = builder.ToString();
                         workSheet.Cells[i, 6] = new Cell(bts);
@@ -339,11 +348,13 @@ namespace AjourBT.Controllers
 
                     if (absences[j].Vacations.Count() != 0)
                     {
-                        string bts = "";
+                        string bts ;
                         StringBuilder builder = new StringBuilder();
-                        foreach (var item in absences[j].Vacations.AsEnumerable())
+                        builder.Append(absences[j].Vacations[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].Vacations[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
+
+                        for (int item = 1; item < absences[j].Vacations.AsEnumerable().Count(); item++)
                         {
-                            builder.AppendLine(item.From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + item.To.Date.ToString(String.Format("dd.MM.yyyy")));
+                            builder.Append(absences[j].Vacations[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].Vacations[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
                         bts = builder.ToString();
                         workSheet.Cells[i, 7] = new Cell(bts);
