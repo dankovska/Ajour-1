@@ -67,10 +67,13 @@ namespace AjourBT.Domain.Abstract
         ADMCancelsPlannedModifiedToBTM,
         ADMCancelsPlannedModifiedToACC,
 
-        ADMConfirmsPlannedOrRegisteredToResponsibleInLocation,
-        ADMCancelsConfirmedOrConfirmedModifiedToResponsibleInLocation,
-        ACCCancelsConfirmedReportedToResponsibleInLocation,
-        BTMRejectsConfirmedOrConfirmedModifiedToResponsibleInLocation,
-        DIRRejectsConfirmedToResponsibleInLocation
+        ADMConfirmsPlannedOrRegisteredToResponsible,
+        ADMCancelsConfirmedOrConfirmedModifiedToResponsible,
+        ACCCancelsConfirmedReportedToResponsible,
+        BTMRejectsConfirmedOrConfirmedModifiedToResponsible,
+        DIRRejectsConfirmedToResponsible, 
+        BTMUpdatesConfirmedOrConfirmedModifiedToResponsible,
+        BTMReportsConfirmedOrConfirmedModifiedToResponsib,
+
     }
 }
