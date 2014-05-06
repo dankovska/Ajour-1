@@ -29,7 +29,7 @@ namespace AjourBT.Controllers
         private IRepository repository;
 
         public EMPController(IRepository repo)
-            :this()
+            : this()
         {
             repository = repo;
         }
@@ -126,8 +126,8 @@ namespace AjourBT.Controllers
 
             if (FromAbsence != "" && ToAbsence != "")
             {
-                fromParsed = DateTime.ParseExact(FromAbsence, "dd.MM.yyyy",null); // check this
-                toParse = DateTime.ParseExact(ToAbsence, "dd.MM.yyyy",null);// --------^
+                fromParsed = DateTime.ParseExact(FromAbsence, "dd.MM.yyyy", null); // check this
+                toParse = DateTime.ParseExact(ToAbsence, "dd.MM.yyyy", null);// --------^
                 FromYear = fromParsed.Year;
                 ToYear = toParse.Year;
             }
@@ -226,15 +226,15 @@ namespace AjourBT.Controllers
                                 paidOvertime.ReclaimDate = overtime.ReclaimDate;
 
                                 paidOvertimeList.Add(paidOvertime);
-                                if(overtime.ReclaimDate!= null && overtime.ReclaimDate!=DateTime.MinValue)
+                                if (overtime.ReclaimDate != null && overtime.ReclaimDate != DateTime.MinValue)
                                 {
                                     AbsenceFactorData overtimeData = new AbsenceFactorData();
-                                        overtimeData.AbsenceFactorDataID = overtime.OvertimeID;
-                                        overtimeData.From = overtime.ReclaimDate.Value;
-                                        overtimeData.To = overtime.ReclaimDate.Value;
-                                        overtimeData.ReclaimDate = overtime.Date;
+                                    overtimeData.AbsenceFactorDataID = overtime.OvertimeID;
+                                    overtimeData.From = overtime.ReclaimDate.Value;
+                                    overtimeData.To = overtime.ReclaimDate.Value;
+                                    overtimeData.ReclaimDate = overtime.Date;
 
-                                        overtimeList.Add(overtimeData);
+                                    overtimeList.Add(overtimeData);
                                 }
                                 break;
 
@@ -288,7 +288,7 @@ namespace AjourBT.Controllers
                     }
                 }
             }
-           
+
 
             absenceData.FactorDetails.Add(CalendarItemType.SickAbsence, sicknessList);
             absenceData.FactorDetails.Add(CalendarItemType.PaidVacation, paidVacationList);
@@ -322,14 +322,15 @@ namespace AjourBT.Controllers
             DateTime fromDate = DateTime.Now.Date;
             DateTime toDate = fromDate.AddDays(30).Date;
             List<Employee> birthList = new List<Employee>();
-            List<Employee> emp = (from e in repository.Employees where
-                                      e.BirthDay.HasValue orderby e.BirthDay.Value                                     
+            List<Employee> emp = (from e in repository.Employees
+                                  where
+                                      e.BirthDay.HasValue
+                                  orderby e.BirthDay.Value
                                   select e).ToList();
             DateTime date;
-        //    DateTime date1;
             foreach (Employee e in emp)
             {
-                 date = TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date);
+                date = TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date);
                 if (date >= fromDate.AddDays(-10) && date <= toDate)
                 {
                     birthList.Add(e);
@@ -369,11 +370,12 @@ namespace AjourBT.Controllers
                 return PartialView("NoData");
             }
 
-            List<BusinessTrip> reportedBTs = (from bts in emp.BusinessTrips where
-                                                  ((bts.Status == (BTStatus.Reported | BTStatus.Confirmed) && bts.Status != BTStatus.Cancelled)||
+            List<BusinessTrip> reportedBTs = (from bts in emp.BusinessTrips
+                                              where
+                                                  ((bts.Status == (BTStatus.Reported | BTStatus.Confirmed) && bts.Status != BTStatus.Cancelled) ||
                                                   bts.Status == (BTStatus.Reported) ||
-                                                  bts.Status == (BTStatus.Confirmed))                                                  
-                                                  orderby bts.StartDate
+                                                  bts.Status == (BTStatus.Confirmed))
+                                              orderby bts.StartDate
                                               select bts).ToList();
 
             if (reportedBTs.Count == 0)
