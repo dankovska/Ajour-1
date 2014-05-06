@@ -370,8 +370,12 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "BT Cancellation")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "BT Rejection")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "BT Rejection")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "BT Update")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "BT Report")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "BT Update")]
         [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "Visa Registration Date Update")]
         [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "Visa Registration Date Creation")]
+
         public String GetSubjectTest_MessageType_SubjectStringAccordingToType(MessageType messageType)
         {
             //Arrange
@@ -430,6 +434,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "Unknown Role")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "Unknown Role")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "Unknown Role")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "Unknown Role")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "Unknown Role")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "Unknown Role")]
         public String GetRoleIDTest_MessageType_RoleAccordingToType(MessageType messageType)
         {
             //Arrange
@@ -487,6 +494,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
         public String GetLinkTest_MessageType_LinkAccordingToType(MessageType messageType)
@@ -713,17 +723,17 @@ namespace AjourBT.Tests.Messaging_Subsystem
             Assert.AreEqual(btTemplate, result);
         }
 
-                [Test]
+        [Test]
         public void GetBTTemplate_AllFieldsHabitationConfirmedFlightsConfirmedInvitationAllComments_ProperString()
         {
             //Arrange
             Message message = new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, null, null);
             string btTemplate = "<b>Zarose</b> <b>Anastasia</b> (<b>andl</b>), SDDDA, xtwe, wiza, Work in BD2, <b>LDF</b><b>, 01.12.2014 - </b><b>10.12.2014</b>"
-    + "<br/>" + "<b>Habitation (confirmed):</b> Krakow, Poland, ul. Wroclawska 5a, Home&Travel<br/><b>Flights (confirmed):</b> Kyiv - Warshawa<br/><b>Invitation:</b> confirmed" + 
-    "<br/><b>Comment:</b> Comment added<br/>" + 
+    + "<br/>" + "<b>Habitation (confirmed):</b> Krakow, Poland, ul. Wroclawska 5a, Home&Travel<br/><b>Flights (confirmed):</b> Kyiv - Warshawa<br/><b>Invitation:</b> confirmed" +
+    "<br/><b>Comment:</b> Comment added<br/>" +
     "<b>BTM comment:</b> BTM comment added<br/>" +
-    "<b>Reject comment:</b> Reject comment added<br/>" + 
-       "<b>Cancel comment:</b> Cancel comment added" ;
+    "<b>Reject comment:</b> Reject comment added<br/>" +
+       "<b>Cancel comment:</b> Cancel comment added";
 
             //Act
             BusinessTrip businessTrip = mock.Object.BusinessTrips.FirstOrDefault();
@@ -732,10 +742,10 @@ namespace AjourBT.Tests.Messaging_Subsystem
             businessTrip.Flights = "Kyiv - Warshawa";
             businessTrip.FlightsConfirmed = true;
             businessTrip.Invitation = true;
-                    businessTrip.Comment = "Comment added";
-                    businessTrip.CancelComment = "Cancel comment added";
-                    businessTrip.RejectComment = "Reject comment added";
-                    businessTrip.BTMComment = "BTM comment added";
+            businessTrip.Comment = "Comment added";
+            businessTrip.CancelComment = "Cancel comment added";
+            businessTrip.RejectComment = "Reject comment added";
+            businessTrip.BTMComment = "BTM comment added";
             string result = message.GetBTTemplate(businessTrip);
 
             //Assert        
@@ -845,6 +855,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible, Result = "<b>BT confirmation</b> by ADM Anastasia Zarose at ")]
         [TestCase(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT(s) cancellation</b> by ADM Anastasia Zarose at ")]
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "<b>BT cancellation</b> by ACC Anastasia Zarose at ")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "<b>BT update</b> by ADM Anastasia Zarose at ")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<b>BT(s) report</b> by ADM Anastasia Zarose at ")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "<b>BT update</b> by ACC Anastasia Zarose at ")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT rejection</b> by BTM Anastasia Zarose at ")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "<b>BT rejection</b> by DIR Anastasia Zarose at ")]
         public String GetMessageTemplate_MessageType_MessageTemplateAccordingToType(MessageType messageType)
@@ -853,7 +866,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             Message message = new Message(messageType, null, mock.Object.Employees.FirstOrDefault());
 
             //Act
-            string messageTemplate = message.GetMessageTemplate().Remove(message.GetMessageTemplate().Length-19, 19);
+            string messageTemplate = message.GetMessageTemplate().Remove(message.GetMessageTemplate().Length - 19, 19);
 
             //Assert              
             Assert.IsTrue(Regex.IsMatch(message.GetMessageTemplate().Substring(message.GetMessageTemplate().Length - 20), @"\d\d\.\d\d\.\d\d\d\d \d\d:\d\d:\d\d"));
@@ -873,7 +886,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Act
             string messageTemplate = message.GetMessageTemplate();
-            string messageCopy = message.GetMessageTemplate().Substring(0,64);
+            string messageCopy = message.GetMessageTemplate().Substring(0, 64);
 
             //Assert
             Assert.IsTrue(Regex.IsMatch(message.GetMessageTemplate().Substring(messageTemplate.Length - 34, 10), @"\d\d\.\d\d\.\d\d\d\d"));
@@ -889,10 +902,10 @@ namespace AjourBT.Tests.Messaging_Subsystem
             employeeForPermit.Permit.CancelRequestDate = DateTime.Now.ToLocalTimeAzure();
             Message message = new Message(MessageType.BTMCancelsPermitToADM, null, mock.Object.Employees.FirstOrDefault(), employeeForPermit);
 
-            string messageTemplate =  string.Format("<b>Permit cancellation</b> by BTM {0} {1} at {2}", message.Author.FirstName, message.Author.LastName, message.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss")) +
+            string messageTemplate = string.Format("<b>Permit cancellation</b> by BTM {0} {1} at {2}", message.Author.FirstName, message.Author.LastName, message.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss")) +
                            "<br/>" +
                            string.Format("Cancel for permit of {0} {1} ({2}) with dates {3:dd.MM.yyyy} - {4:dd.MM.yyyy} requested at {5:dd.MM.yyyy}", employeeForPermit.FirstName, employeeForPermit.LastName, employeeForPermit.EID,
-                           employeeForPermit.Permit.StartDate, employeeForPermit.Permit.EndDate, employeeForPermit.Permit.CancelRequestDate);                        
+                           employeeForPermit.Permit.StartDate, employeeForPermit.Permit.EndDate, employeeForPermit.Permit.CancelRequestDate);
 
             //Act
 
@@ -1062,7 +1075,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             //Arrange
             BusinessTrip bTrip = mock.Object.BusinessTrips.Take(1).FirstOrDefault();
             bTrip.Comment = "Comment added";
-            Message message = new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, new List<BusinessTrip>{bTrip}, mock.Object.Employees.FirstOrDefault());
+            Message message = new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, new List<BusinessTrip> { bTrip }, mock.Object.Employees.FirstOrDefault());
             string excpectedResult =
       "<b>BT confirmation</b> by ADM Anastasia Zarose at " + message.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss") + "<br/><br/>" +
       "<b>Zarose</b> <b>Anastasia</b> (<b>andl</b>), SDDDA, xtwe, wiza, Work in BD2, <b>LDF</b><b>, 01.12.2014 - </b><b>10.12.2014</b><br/><b>Comment:</b> Comment added<br/><br/>";
