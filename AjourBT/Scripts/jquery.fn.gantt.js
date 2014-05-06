@@ -394,7 +394,7 @@ function myWeekCalc(date) {
                 });
                 ganttLeftPanel.append(entries.join(""));
                 var wheel = 'onwheel' in element ? 'wheel' : document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
-                $(ganttLeftPanel).on(wheel, function (e) { core.wheelScroll(element, e); });
+                $(ganttLeftPanel).on(wheel, function (e) { OnScrollDiv(e); });
                 return ganttLeftPanel;
             },
 
