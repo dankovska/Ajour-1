@@ -238,7 +238,7 @@ namespace AjourBT.Controllers
             return absenceData;
         }
 
-
+        [Authorize(Roles = "EMP")]
         [HttpPost]
         public ActionResult ExportAbsenceToExcel(string from, string to, string searchString = "")
         {
@@ -248,7 +248,7 @@ namespace AjourBT.Controllers
             WriteAbsenceData(workSheet, from, to, searchString);
             workBook.Worksheets.Add(workSheet);
             MemoryStream stream = new MemoryStream();
-            workBook.Save(stream);
+            workBook.SaveToStream(stream);
             return File(stream.ToArray(), "application/vnd.ms-excel", "Absence.xls");
         }
 
@@ -257,7 +257,6 @@ namespace AjourBT.Controllers
             string[] caption = new string[] { "Department", "Name", "EID", "Journeys", "BusinessTrips", "Overtimes", "Sickness", "Vacations" };
             for (int i = 0; i < caption.Length; i++)
             {
-                // workSheet.Cells.ColumnWidth[0, 1] = 3000;
                 workSheet.Cells[0, i] = new Cell(caption[i]);
             }
             workSheet.Cells.ColumnWidth[0] = 3000;
@@ -267,7 +266,6 @@ namespace AjourBT.Controllers
             workSheet.Cells.ColumnWidth[4, 5] = 6000;
             workSheet.Cells.ColumnWidth[6, 7] = 6000;
         }
-
 
 
         public void WriteAbsenceData(Worksheet workSheet, string from, string to, string searchString = "")
@@ -297,7 +295,7 @@ namespace AjourBT.Controllers
                         {
                             builder.Append(absences[j].Journeys[item].From.Date.ToString("\n" + String.Format("dd.MM.yyyy")) + " - " + absences[j].Journeys[item].To.Date.ToString(String.Format("dd.MM.yyyy")));
                         }
-                      
+
                         bts = builder.ToString();
                         workSheet.Cells[i, 3] = new Cell(bts);
                     }
@@ -348,7 +346,7 @@ namespace AjourBT.Controllers
 
                     if (absences[j].Vacations.Count() != 0)
                     {
-                        string bts ;
+                        string bts;
                         StringBuilder builder = new StringBuilder();
                         builder.Append(absences[j].Vacations[0].From.Date.ToString(String.Format("dd.MM.yyyy")) + " - " + absences[j].Vacations[0].To.Date.ToString(String.Format("dd.MM.yyyy")));
 
