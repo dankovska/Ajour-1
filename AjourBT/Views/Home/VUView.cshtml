@@ -17,7 +17,7 @@
     });
 </script>
 
-<div id="tabsVU">
+<div id="tabsVU" style="height: 100%">
     <ul>
         @*<li><a href="#tabs-17">Business Trips Data</a></li>*@
         <li><a href="#tabs-18">BTs by Dates/Location</a></li>
@@ -47,7 +47,7 @@
     @{
         if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
         {
-            <div id="tabs-22">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
+            <div id="tabs-22" style="height: 91%">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
         }
     }
 
@@ -56,6 +56,8 @@
     <div id="tabs-30">@{Html.RenderAction("GetJourney", "Journey");}</div>
 
 </div>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -178,45 +180,45 @@
         })
 
         $('[href=#tabs-23]').click(function () {
-        var vuTable = $('#exampleBtsViewByUnits').DataTable({
-            "sScrollY": (0.5 * $(window).height()),
-            "bPaginate": false,
-            "bFilter": true,
-            "bScrollCollapse": true,
-            "bDestroy": true,
-            "aaSorting": [[0,'asc']],
-            "aoColumns": [
-                 { "sType": "numeral"},
-                 null,
-                 null,
-                 null,
-                 { "sType": "datefrm" },
-                 { "sType": "datefrm" },
-                 null,
-                 null,
-                 null,
-                 null,
-            ],
-        });
+            var vuTable = $('#exampleBtsViewByUnits').DataTable({
+                "sScrollY": (0.5 * $(window).height()),
+                "bPaginate": false,
+                "bFilter": true,
+                "bScrollCollapse": true,
+                "bDestroy": true,
+                "aaSorting": [[0, 'asc']],
+                "aoColumns": [
+                     { "sType": "numeral" },
+                     null,
+                     null,
+                     null,
+                     { "sType": "datefrm" },
+                     { "sType": "datefrm" },
+                     null,
+                     null,
+                     null,
+                     null,
+                ],
+            });
 
-        vuTable.columnFilter({
-            sPlaceHolder: "head:before",
-            "aoColumns": [
-                null,
-                null,
-                null,
-                { "type": "select" },
-                { "type": "date-range" },
-                { "type": "date-range" },
-                 null,
-                 null,
-                 null,
-                 null,
-            ]
-        });
+            vuTable.columnFilter({
+                sPlaceHolder: "head:before",
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    { "type": "select" },
+                    { "type": "date-range" },
+                    { "type": "date-range" },
+                     null,
+                     null,
+                     null,
+                     null,
+                ]
+            });
 
-        $.datepicker.regional[""].dateFormat = 'yy-mm-dd';
-        $.datepicker.setDefaults($.datepicker.regional[""]);
+            $.datepicker.regional[""].dateFormat = 'yy-mm-dd';
+            $.datepicker.setDefaults($.datepicker.regional[""]);
 
         });
     })
