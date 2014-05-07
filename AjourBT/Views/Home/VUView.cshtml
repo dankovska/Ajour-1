@@ -17,24 +17,25 @@
     });
 </script>
 
-<div id="tabsVU">
+<div id="tabsVU" style="height: 100%">
     <ul>
-        @*<li><a href="#tabs-17">Business Trips Data</a></li>*@
-        <li><a href="#tabs-18">BTs by Dates/Location</a></li>
-        <li><a href="#tabs-19">BTs by Quarters</a></li>
-        <li><a href="#tabs-20">BTs in preparation process</a></li>
-        <li><a href="#tabs-21">Private Trips</a></li>
+        @*<li><a href=" #tabs-17">
+    Business Trips Data</a></li>*@
+    <li><a href="#tabs-18">BTs by Dates/Location</a></li>
+    <li><a href="#tabs-19">BTs by Quarters</a></li>
+    <li><a href="#tabs-20">BTs in preparation process</a></li>
+    <li><a href="#tabs-21">Private Trips</a></li>
 
-        @{
-            if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
-            {
-                <li><a href="#tabs-22">Calendar</a></li>
-            }
+    @{
+        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+            <li><a href="#tabs-22">Calendar</a></li>
         }
+    }
 
-        <li><a href="#tabs-23">BTs by Units</a></li>
-        <li><a href="#tabs-29">Visas and Permits</a></li>
-        <li><a href="#tabs-30">Days From BT</a></li>
+    <li><a href="#tabs-23">BTs by Units</a></li>
+    <li><a href="#tabs-29">Visas and Permits</a></li>
+    <li><a href="#tabs-30">Days From BT</a></li>
 
 
     </ul>
@@ -45,17 +46,19 @@
     <div id="tabs-20">@{Html.RenderAction("GetPrepBusinessTripDataVU", "BusinessTripViewer");}</div>
     <div id="tabs-21">@{Html.RenderAction("GetPrivateTripVU", "PrivateTrip");}</div>
     @{
-        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
-        {
-            <div id="tabs-22">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
-        }
+    if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+    {
+        <div id="tabs-22" style="height: 91%">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
     }
+}
 
     <div id="tabs-23">@{Html.RenderAction("GetBusinessTripByUnitsVU", "BusinessTripViewer", new { selectedYear = DateTime.Now.ToLocalTimeAzure().Year });}</div>
     <div id="tabs-29">@{Html.RenderAction("GetVisaVU", "Visa");}</div>
     <div id="tabs-30">@{Html.RenderAction("GetJourney", "Journey");}</div>
 
 </div>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
