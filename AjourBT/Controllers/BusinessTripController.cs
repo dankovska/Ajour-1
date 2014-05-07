@@ -978,7 +978,8 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 if (bTrip.Status == BTStatus.Confirmed)
                 {
                     messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
-                    //messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
+                    //messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author)); 
+                    messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
                 }
             }
             else
@@ -1153,6 +1154,8 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
+
                 }
             }
             List<Employee> empList = SearchBusinessTripDataBTM(repository.Employees.ToList(), searchString);
@@ -1592,6 +1595,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToBTM, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToDIR, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToEMP, selectedBusinessTripsList, author));
+                            messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToResponsible, selectedBusinessTripsList, author)); 
                         }
                         catch (DbUpdateConcurrencyException)
                         {
