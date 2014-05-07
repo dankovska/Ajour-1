@@ -370,9 +370,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "BT Cancellation")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "BT Rejection")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "BT Rejection")]
-        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "BT Update")]
-        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "BT Report")]
-        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "BT Update")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, Result = "BT Update")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, Result = "BT Report")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToResponsible, Result = "BT Update")]
         [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "Visa Registration Date Update")]
         [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "Visa Registration Date Creation")]
 
@@ -434,9 +434,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "Unknown Role")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "Unknown Role")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "Unknown Role")]
-        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "Unknown Role")]
-        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "Unknown Role")]
-        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "Unknown Role")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, Result = "Unknown Role")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, Result = "Unknown Role")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToResponsible, Result = "Unknown Role")]
         public String GetRoleIDTest_MessageType_RoleAccordingToType(MessageType messageType)
         {
             //Arrange
@@ -494,9 +494,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "")]
-        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
-        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
-        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
         public String GetLinkTest_MessageType_LinkAccordingToType(MessageType messageType)
@@ -855,9 +855,9 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ADMConfirmsPlannedOrRegisteredToResponsible, Result = "<b>BT confirmation</b> by ADM Anastasia Zarose at ")]
         [TestCase(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT(s) cancellation</b> by ADM Anastasia Zarose at ")]
         [TestCase(MessageType.ACCCancelsConfirmedReportedToResponsible, Result = "<b>BT cancellation</b> by ACC Anastasia Zarose at ")]
-        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "<b>BT update</b> by ADM Anastasia Zarose at ")]
-        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<b>BT(s) report</b> by ADM Anastasia Zarose at ")]
-        [TestCase(MessageType.ACCModifiesConfirmedReportedToEMP, Result = "<b>BT update</b> by ACC Anastasia Zarose at ")]
+        [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT update</b> by BTM Anastasia Zarose at ")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT(s) report</b> by BTM Anastasia Zarose at ")]
+        [TestCase(MessageType.ACCModifiesConfirmedReportedToResponsible, Result = "<b>BT modification</b> by ACC Anastasia Zarose at ")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToResponsible, Result = "<b>BT rejection</b> by BTM Anastasia Zarose at ")]
         [TestCase(MessageType.DIRRejectsConfirmedToResponsible, Result = "<b>BT rejection</b> by DIR Anastasia Zarose at ")]
         public String GetMessageTemplate_MessageType_MessageTemplateAccordingToType(MessageType messageType)

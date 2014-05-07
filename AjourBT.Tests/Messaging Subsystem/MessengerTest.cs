@@ -48,7 +48,6 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
         Mock<IRepository> mockRepository;
         Mock<IMessage> mockMessage;
-        Mock<RoleProvider> mockRoleProvide;
 
         [SetUp]
         public void SetUp()
