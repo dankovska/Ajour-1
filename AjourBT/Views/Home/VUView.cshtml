@@ -19,23 +19,22 @@
 
 <div id="tabsVU" style="height: 100%">
     <ul>
-        @*<li><a href=" #tabs-17">
-    Business Trips Data</a></li>*@
-    <li><a href="#tabs-18">BTs by Dates/Location</a></li>
-    <li><a href="#tabs-19">BTs by Quarters</a></li>
-    <li><a href="#tabs-20">BTs in preparation process</a></li>
-    <li><a href="#tabs-21">Private Trips</a></li>
+        @*<li><a href=" #tabs-17">Business Trips Data</a></li>*@
+        <li><a href="#tabs-18">BTs by Dates/Location</a></li>
+        <li><a href="#tabs-19">BTs by Quarters</a></li>
+        <li><a href="#tabs-20">BTs in preparation process</a></li>
+        <li><a href="#tabs-21">Private Trips</a></li>
 
-    @{
-        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
-        {
-            <li><a href="#tabs-22">Calendar</a></li>
+        @{
+            if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+            {
+                <li><a href="#tabs-22">Calendar</a></li>
+            }
         }
-    }
 
-    <li><a href="#tabs-23">BTs by Units</a></li>
-    <li><a href="#tabs-29">Visas and Permits</a></li>
-    <li><a href="#tabs-30">Days From BT</a></li>
+        <li><a href="#tabs-23">BTs by Units</a></li>
+        <li><a href="#tabs-29">Visas and Permits</a></li>
+        <li><a href="#tabs-30">Days From BT</a></li>
 
 
     </ul>
@@ -46,11 +45,11 @@
     <div id="tabs-20">@{Html.RenderAction("GetPrepBusinessTripDataVU", "BusinessTripViewer");}</div>
     <div id="tabs-21">@{Html.RenderAction("GetPrivateTripVU", "PrivateTrip");}</div>
     @{
-    if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
-    {
-        <div id="tabs-22" style="height: 91%">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
+        if (WebConfigurationManager.AppSettings["IncludeAbsence"] == "true")
+        {
+            <div id="tabs-22" style="height: 91%">@{Html.RenderAction("GetCalendar", "Calendar", new { selectedDepartment = @ViewBag.SelectedDepartment });}</div>
+        }
     }
-}
 
     <div id="tabs-23">@{Html.RenderAction("GetBusinessTripByUnitsVU", "BusinessTripViewer", new { selectedYear = DateTime.Now.ToLocalTimeAzure().Year });}</div>
     <div id="tabs-29">@{Html.RenderAction("GetVisaVU", "Visa");}</div>
@@ -181,45 +180,45 @@
         })
 
         $('[href=#tabs-23]').click(function () {
-        var vuTable = $('#exampleBtsViewByUnits').DataTable({
-            "sScrollY": (0.5 * $(window).height()),
-            "bPaginate": false,
-            "bFilter": true,
-            "bScrollCollapse": true,
-            "bDestroy": true,
-            "aaSorting": [[0,'asc']],
-            "aoColumns": [
-                 { "sType": "numeral"},
-                 null,
-                 null,
-                 null,
-                 { "sType": "datefrm" },
-                 { "sType": "datefrm" },
-                 null,
-                 null,
-                 null,
-                 null,
-            ],
-        });
+            var vuTable = $('#exampleBtsViewByUnits').DataTable({
+                "sScrollY": (0.5 * $(window).height()),
+                "bPaginate": false,
+                "bFilter": true,
+                "bScrollCollapse": true,
+                "bDestroy": true,
+                "aaSorting": [[0, 'asc']],
+                "aoColumns": [
+                     { "sType": "numeral" },
+                     null,
+                     null,
+                     null,
+                     { "sType": "datefrm" },
+                     { "sType": "datefrm" },
+                     null,
+                     null,
+                     null,
+                     null,
+                ],
+            });
 
-        vuTable.columnFilter({
-            sPlaceHolder: "head:before",
-            "aoColumns": [
-                null,
-                null,
-                null,
-                { "type": "select" },
-                { "type": "date-range" },
-                { "type": "date-range" },
-                 null,
-                 null,
-                 null,
-                 null,
-            ]
-        });
+            vuTable.columnFilter({
+                sPlaceHolder: "head:before",
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    { "type": "select" },
+                    { "type": "date-range" },
+                    { "type": "date-range" },
+                     null,
+                     null,
+                     null,
+                     null,
+                ]
+            });
 
-        $.datepicker.regional[""].dateFormat = 'yy-mm-dd';
-        $.datepicker.setDefaults($.datepicker.regional[""]);
+            $.datepicker.regional[""].dateFormat = 'yy-mm-dd';
+            $.datepicker.setDefaults($.datepicker.regional[""]);
 
         });
     })
