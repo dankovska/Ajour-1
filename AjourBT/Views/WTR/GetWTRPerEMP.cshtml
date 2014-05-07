@@ -7,9 +7,9 @@
     {
         UpdateTargetId = "wtrData",
         Url = Url.Action("GetWTRDataPerEMP")
-
     };
 }
+
 @using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formWTR" }))
 {
     <table class="wtrContainer">
@@ -35,7 +35,7 @@
     @Html.Hidden("userName", userName);
 }
 <div id="wtrData">
-    @{Html.RenderAction("GetWTRDataPerEMP", "WTR" );}
+    @{Html.RenderAction("GetWTRDataPerEMP", "WTR");}
 </div>
 <script src="/Scripts/AjourBTScript/ABMDatesValidation.js"></script>
 <script type="text/javascript">
