@@ -635,6 +635,7 @@
     <Content Include="Views\Journey\GetJourneyDataForVU.cshtml" />
     <Content Include="Views\Journey\GetJourneyDataForEmp.cshtml" />
     <Content Include="Views\Journey\NoData.cshtml" />
+    <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
