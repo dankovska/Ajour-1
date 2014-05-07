@@ -2,6 +2,8 @@
 
 Here are a few steps needed to start contributing to the Project.
 
+*Discussion for this document can be found [here](https://github.com/EricpolUkraine/Ajour/issues/11)*
+
 * Get familiar with GitHub and our workflow
 * Setup development environment
 * Get familiar with project documentation
@@ -25,7 +27,9 @@ Here are a few steps needed to start contributing to the Project.
   * Make a commit -> Make a pull request -> Take part in a discussion ->
     Make additional commits to a dedicated branch if needed (opened pull request is updated automatically)
   * Pull request is closed by Maintainer (merge or cancel)  
-  * Issue is closed after pull request number is specified in comment
+  * Issue is marked as 'done' after the pull request is merged and its number is specified in comment
+  * Pre-release is created when corresponding commit is deployed to Test Server
+  * Issue is closed after it's tested on Test Server
   * Release is created when corresponding commit is deployed to Production Server
 
 (to be updated - it's only current best thinking)
@@ -35,3 +39,5 @@ Here are a few steps needed to start contributing to the Project.
 
 ### Get familiar with project documentation
 (to be added)
+
+*Discussion for this document can be found [here](https://github.com/EricpolUkraine/Ajour/issues/11)*
