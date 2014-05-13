@@ -9,6 +9,18 @@
 }
 
 <title>GetBusinessTripDataEMP</title>
+
+@foreach (var emp in Model)
+{
+    if (emp.EID == userName)
+    {
+        if (emp.Journeys.Count == 0 && emp.Overtimes.Count == 0)
+        {
+                 <b> You have no days for reclaim</b>  
+        }
+        else
+        {
+  
 <table class="journeyView" id="journeysViewABM">
     <colgroup>
         <col class="j1" />
@@ -67,7 +79,7 @@
                     }
                     @if (employee.Journeys.Count == 0 && employee.Overtimes.Count == 0)
                     {
-                       @: No data found 
+                       @: There is no days for reclaim
                     }
                 </td>
             </tr>
@@ -79,7 +91,10 @@
         }
     </tbody>
 </table>
-
+        }
+    }
+}
+   
 @*<script type="text/javascript">
     var oTable;
 

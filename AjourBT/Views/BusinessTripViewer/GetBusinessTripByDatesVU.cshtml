@@ -13,7 +13,7 @@
 
 @using (Ajax.BeginForm(ajaxOpts))
 {
-    <div class="destination8"> 
+    <div> 
         @Html.DropDownList("selectedYear", (SelectList)ViewBag.SelectedYear, new { onchange = "$(this.form).submit();" })
     </div>
 }

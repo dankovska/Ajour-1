@@ -55,7 +55,7 @@ namespace AjourBT.Controllers
         }
 
         [Authorize(Roles = "EMP")]
-        public ActionResult EMPView(int tab = 2)
+        public ActionResult EMPView(int tab = 0)
         {
             return View(tab);
         }

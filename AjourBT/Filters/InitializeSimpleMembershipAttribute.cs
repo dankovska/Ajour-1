@@ -268,6 +268,7 @@ namespace AjourBT.Filters
                 new BusinessTrip { BusinessTripID = 94, StartDate = new DateTime(2014,03,10), EndDate = new DateTime (2014,03,19), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
                // new BusinessTrip { BusinessTripID = 194, StartDate = new DateTime(2014,02,10), EndDate = new DateTime (2014,02,23), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 22, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
 
+                new BusinessTrip { BusinessTripID = 130, StartDate = new DateTime(2012,11,01), EndDate = new DateTime (2012,12,30), OrderStartDate = new DateTime(2013,10,31), OrderEndDate = new DateTime (2013,12,31), DaysInBtForOrder = 62, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime (2015,12,30), Status= BTStatus.Reported, EmployeeID = 22, LocationID = 1, Manager="ncru", UnitID = 1,Purpose = "Meeting",Responsible= "mter" },
 
 
 
@@ -716,7 +717,7 @@ namespace AjourBT.Filters
                     new Overtime{OvertimeID = 36, EmployeeID = 36,Date = new DateTime(2014,11,05), ReclaimDate = new DateTime(2014,12,14), DayOff = true, Type = OvertimeType.Overtime },
                     new Overtime{OvertimeID = 37, EmployeeID = 37,Date = new DateTime(2014,11,04), ReclaimDate = new DateTime(2014,12,05), DayOff = true, Type = OvertimeType.Private },
                     new Overtime{OvertimeID = 38, EmployeeID = 38,Date = new DateTime(2014,11,03), ReclaimDate = new DateTime(2014,12,15), DayOff = true, Type = OvertimeType.Overtime },
-                    new Overtime{OvertimeID = 39, EmployeeID = 39,Date = new DateTime(2014,11,02), ReclaimDate = new DateTime(2014,12,06), DayOff = true, Type = OvertimeType.Paid },
+                  //  new Overtime{OvertimeID = 39, EmployeeID = 39,Date = new DateTime(2014,11,02), ReclaimDate = new DateTime(2014,12,06), DayOff = true, Type = OvertimeType.Paid },
                     new Overtime{OvertimeID = 40, EmployeeID = 40,Date = new DateTime(2014,11,01), ReclaimDate = new DateTime(2014,12,16), DayOff = true, Type = OvertimeType.Overtime },
 
                     new Overtime{OvertimeID = 41, EmployeeID = 41,Date = new DateTime(2013,01,01), DayOff = false, Type = OvertimeType.Overtime },

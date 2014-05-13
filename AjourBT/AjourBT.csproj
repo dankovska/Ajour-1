@@ -636,6 +636,12 @@
     <Content Include="Views\Journey\GetJourneyDataForEmp.cshtml" />
     <Content Include="Views\Journey\NoData.cshtml" />
     <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
+    <Content Include="Views\EMP\NoBtsInThisYear.cshtml" />
+    <Content Include="Views\EMP\NoAbsenceData.cshtml" />
+    <Content Include="Views\EMP\NoBirthdays.cshtml" />
+    <Content Include="Views\EMP\GetListofYearsEMP.cshtml" />
+    <Content Include="Views\EMP\Empty.cshtml" />
+    <Content Include="Views\EMP\GetBusinessTripByYearsEMP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
