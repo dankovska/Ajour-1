@@ -416,7 +416,7 @@ namespace AjourBT.Tests.Controllers
         // Assert
         Assert.IsInstanceOf(typeof(ViewResult), result);
         Assert.IsNotNull(((ViewResult)result).Model);
-        Assert.AreEqual(((ViewResult)result).Model, 2);
+        Assert.AreEqual(((ViewResult)result).Model, 0);
     }
 
     [Test]

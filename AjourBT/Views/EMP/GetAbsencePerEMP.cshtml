@@ -12,7 +12,7 @@
     };
 }
 
-@using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formAbsence" }))
+@using (Ajax.BeginForm("GetAbsenceDataPerEMP", "EMP", ajaxOpts, new { id = "formAbsence" }))
 {
     <table class="wtrContainer">
         <tr id="wtrInput">
@@ -31,7 +31,7 @@
         </tr>
     </table>
     <div id="empAbsenceSubmitButton">
-        <a id="buttonSubmitAbsence">Submit</a>
+        <a id="buttonSubmitAbsence">Show data</a>
     </div>
     
     var userName = HttpContext.Current.User.Identity.Name.ToString();
@@ -41,6 +41,7 @@
 <div id="wtrDataAbsence">
     @{Html.RenderAction("GetAbsenceDataPerEMP", "EMP");}
 </div>
+
 
 <script src="/Scripts/AjourBTScript/ABMDatesValidation.js"></script>
 <script type="text/javascript">

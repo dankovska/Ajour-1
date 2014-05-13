@@ -104,7 +104,7 @@
                         @if (HttpContext.Current.User.IsInRole("EMP"))
                         {
                             <li id="EMPLink">
-                                @Html.ActionLink("EMP", "EMPView", "Home", new { tab = 2 }, null)
+                                @Html.ActionLink("EMP", "EMPView", "Home")
                             </li>
                         }
 
