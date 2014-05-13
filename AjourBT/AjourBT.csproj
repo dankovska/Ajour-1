@@ -67,6 +67,9 @@
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PDFjet">
+      <HintPath>Resources\PDFjet.dll</HintPath>
+    </Reference>
     <Reference Include="SendGridMail">
       <HintPath>..\packages\SendGrid.1.2.1\lib\SendGridMail.dll</HintPath>
     </Reference>
@@ -275,6 +278,7 @@
     <Compile Include="Helpers\StatusHintHelper.cs" />
     <Compile Include="Helpers\StatusHintHelperForVUPreps.cs" />
     <Compile Include="Helpers\WeekIntervalHelper.cs" />
+    <Compile Include="Infrastructure\CalendarToPdfExporter.cs" />
     <Compile Include="Infrastructure\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\JourneyBydateComparer.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
@@ -397,6 +401,9 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Resource Include="Resources\PDFjet.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Scripts\AjourBTScript\ABMDatesValidation.js" />
     <Content Include="Scripts\AjourBTScript\BTsForAcc.js" />
     <Content Include="Scripts\AjourBTScript\BTsForADM.js" />
