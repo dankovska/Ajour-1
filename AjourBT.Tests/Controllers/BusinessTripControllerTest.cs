@@ -5820,6 +5820,39 @@ namespace AjourBT.Tests.Controllers
                                  + "Please change \'From\' or \'To\' or \'Location\'.", data);
         }
 
+        [Test]
+        public void PostPlanBT_PlanBTOnSamePeriodAsVacation_JsonResult() //Vacation 12.02.2014  - 28.02.2014 empID = 1
+        {
+            //Arrange
+            mock.Setup(m => m.SaveBusinessTrip(It.IsAny<BusinessTrip>())).Throws(new VacationAlreadyExistException());
+            BusinessTrip bTrip = new BusinessTrip
+            {
+                StartDate = new DateTime(2014, 02, 12),
+                EndDate = new DateTime(2014, 02, 28),
+                Status = BTStatus.Planned,
+                EmployeeID = 1,
+                LocationID = 12,
+                Location = new Location { LocationID = 12, Title = "LLLDF", Address = "Kyiv, Shevchenka St.", BusinessTrips = new List<BusinessTrip>() },
+                Comment = "test",
+                Manager = "xtwe",
+                Purpose = "meeting",
+                UnitID = 1,
+                Unit = new Unit()
+            };
+
+            //Act
+            var result = controller.Plan(bTrip);
+            string data = (string)(new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(((JsonResult)result).Data, "error")).Target;
+
+            //Assert
+            Assert.AreEqual(BTStatus.Planned, bTrip.Status);
+            mock.Verify(m => m.SaveBusinessTrip(bTrip), Times.Once);
+            Assert.IsInstanceOf(typeof(JsonResult), result);
+            Assert.AreEqual(typeof(JsonResult), result.GetType());
+            Assert.AreEqual("Vacation already planned with the same dates for this user. "
+                                      + "Please change OrderDates or if BT haven\'t OrderDates "
+                                      + "change \'From\' or \'To\'", data);
+        }
         #endregion
 
 
@@ -9299,6 +9332,40 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
 
+        }
+
+        [Test]
+        public void SaveArrangedBT_OrderDatesInVacationPeriod_JsonErrorResult()
+        {
+            //Arrange
+            mock.Setup(m => m.SaveBusinessTrip(It.IsAny<BusinessTrip>())).Throws(new VacationAlreadyExistException());
+            BusinessTrip bTrip = new BusinessTrip
+            {
+                OrderStartDate = new DateTime(2014,02,12),
+                OrderEndDate = new DateTime(2014,02,28),
+                Status = BTStatus.Planned,
+                EmployeeID = 1,
+                LocationID = 12,
+                Location = new Location { LocationID = 12, Title = "LLLDF", Address = "Kyiv, Shevchenka St.", BusinessTrips = new List<BusinessTrip>() },
+                Comment = "test",
+                Manager = "xtwe",
+                Purpose = "meeting",
+                UnitID = 1,
+                Unit = new Unit()
+            };
+
+            //Act
+            var result = controller.Plan(bTrip);
+            string data = (string)(new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(((JsonResult)result).Data, "error")).Target;
+
+            //Assert
+            Assert.AreEqual(BTStatus.Planned, bTrip.Status);
+            mock.Verify(m => m.SaveBusinessTrip(bTrip), Times.Once);
+            Assert.IsInstanceOf(typeof(JsonResult), result);
+            Assert.AreEqual(typeof(JsonResult), result.GetType());
+            Assert.AreEqual("Vacation already planned with the same dates for this user. "
+                                      + "Please change OrderDates or if BT haven\'t OrderDates "
+                                      + "change \'From\' or \'To\'", data);
         }
 
         #endregion
