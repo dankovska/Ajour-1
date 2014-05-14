@@ -73,10 +73,10 @@ namespace AjourBT.Controllers
                 parseFromDate = DateTime.ParseExact(calendarFromDate, "dd.MM.yyyy", null);
                 parseToDate = DateTime.ParseExact(calendarToDate, "dd.MM.yyyy", null);
             }
-            catch (SystemException)            
-            { 
-                parseFromDate = new DateTime(currentYear,01,01);
-                parseToDate = new DateTime(currentYear,12,31);
+            catch (SystemException)
+            {
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
             }
 
             ViewBag.Holidays = GetHolidaysData();
@@ -90,7 +90,7 @@ namespace AjourBT.Controllers
                 string myUrl = Request.UrlReferrer.OriginalString;
                 if (myUrl.Contains("ABMView"))
                 {
-                    ViewBag.ItemsPerPage = empList.Count +  1; //+1 for fake row  
+                    ViewBag.ItemsPerPage = empList.Count + 1; //+1 for fake row  
                     return PartialView(rowList);
                 }
             }
@@ -143,7 +143,7 @@ namespace AjourBT.Controllers
 
 
 
-            List<CalendarRowViewModel> result = InsertFakeEmployee(calendarDataList, fromDate , toDate);
+            List<CalendarRowViewModel> result = InsertFakeEmployee(calendarDataList, fromDate, toDate);
             return result;
             //return calendarDataList;
         }
@@ -210,7 +210,11 @@ namespace AjourBT.Controllers
             Table table = new Table();
             //table.SetData(CalendarToPdfExporter.CreateCalendarHeader(new DateTime(2011, 12, 29), new DateTime(2013, 01, 02)), 1); 
             //table.SetData(CalendarToPdfExporter.CreateCalendarLeftPanel(GetCalendarRowData(repository.Employees.ToList(), new DateTime(2011, 12, 29), new DateTime(2014, 01, 02))));
-            table.SetData(CalendarToPdfExporter.CreateCalendar(GetCalendarRowData(repository.Employees.ToList(), new DateTime(2012, 12, 31), new DateTime(2014, 1, 1)), new DateTime(2012, 12, 31), new DateTime(2014, 1, 1)));
+            table.SetData(CalendarToPdfExporter.CreateCalendar( 
+                GetCalendarRowData(repository.Employees.ToList(), new DateTime(2012, 12, 31), new DateTime(2015, 1, 1)), 
+                repository.Holidays.ToList(), 
+                new DateTime(2012, 12, 31), 
+                new DateTime(2015, 1, 1)));
             //table.SetLocation(100f, 50f);
 
             // REPLACED:
@@ -262,7 +266,7 @@ namespace AjourBT.Controllers
             //cell2.SetColSpan(2);
             //cell2.SetTextAlignment(Align.CENTER);
 
-              //SetBgColorForRow(table, 0, Color.lightgray);
+            //SetBgColorForRow(table, 0, Color.lightgray);
             //SetBgColorForRow(table, 1, Color.lightgray);
 
             //table.SetColumnWidth(3, 10);
@@ -274,7 +278,7 @@ namespace AjourBT.Controllers
             Page page = new Page(pdf, A0.LANDSCAPE);
             //table.AutoAdjustColumnWidths();
             //int numOfPages = table.GetNumberOfPages(page);
-            int pageNumber = 1; 
+            int pageNumber = 1;
             while (true)
             {
                 table.DrawOn(page);
@@ -307,7 +311,7 @@ namespace AjourBT.Controllers
             return tableData;
         }
 
-        
+
 
         public class A0
         {
