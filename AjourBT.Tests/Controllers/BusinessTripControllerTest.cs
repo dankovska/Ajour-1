@@ -5849,7 +5849,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(bTrip), Times.Once);
             Assert.IsInstanceOf(typeof(JsonResult), result);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
-            Assert.AreEqual("Vacation already planned with the same dates for this user. "
+            Assert.AreEqual("Absence already planned on this period for this user. "
                                       + "Please change OrderDates or if BT haven\'t OrderDates "
                                       + "change \'From\' or \'To\'", data);
         }
@@ -9363,7 +9363,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.SaveBusinessTrip(bTrip), Times.Once);
             Assert.IsInstanceOf(typeof(JsonResult), result);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
-            Assert.AreEqual("Vacation already planned with the same dates for this user. "
+            Assert.AreEqual("Absence already planned on this period for this user. "
                                       + "Please change OrderDates or if BT haven\'t OrderDates "
                                       + "change \'From\' or \'To\'", data);
         }

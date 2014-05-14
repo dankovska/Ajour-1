@@ -43,7 +43,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         private string btDatesOverlay = "BT with same dates is already planned for this user. "
                                       + "Please change \'From\' or \'To\'";
 
-        private string btCreationError = "Vacation already planned with the same dates for this user. "
+        private string btCreationError ="Absence already planned on this period for this user. "
                                       + "Please change OrderDates or if BT haven\'t OrderDates "
                                       + "change \'From\' or \'To\'";
 

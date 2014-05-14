@@ -338,6 +338,7 @@ namespace AjourBT.Domain.Concrete
             {
                 throw new VacationAlreadyExistException();
             }
+
             BusinessTrip dbEntry = (from b in BusinessTrips where b.BusinessTripID == bt.BusinessTripID select b).FirstOrDefault();
 
             if (dbEntry != null)
@@ -751,7 +752,7 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
             //Select all CalendarItems for current User
             List<CalendarItem> vacationsList = (from item in CalendarItems 
                                                 where item.EmployeeID == bTrip.EmployeeID &&
-                                                (item.Type == CalendarItemType.PaidVacation || item.Type == CalendarItemType.UnpaidVacation)
+                                                (item.Type != CalendarItemType.BT && item.Type != CalendarItemType.Journey)
                                                 select item).ToList();
             if (vacationsList.Count > 0)
             {
