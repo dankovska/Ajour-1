@@ -73,26 +73,26 @@ namespace AjourBT.Controllers
         public List<EmployeeViewModel> SearchEmployeeData(List<Employee> empList, string selectedDepartment, string searchString)
         {
             List<EmployeeViewModel> data = new List<EmployeeViewModel>();
-             data = (from emp in empList
-                                            where ((selectedDepartment == null || selectedDepartment == String.Empty || emp.Department.DepartmentName == selectedDepartment)
-                                                    && (emp.EID.ToLower().Contains(searchString.ToLower())
-                                                    ||  emp.FirstName.ToLower().Contains(searchString.ToLower())
-                                                    || emp.LastName.ToLower().Contains(searchString.ToLower())
-                                                    || emp.DateEmployed.ToShortDateString().Contains(searchString)
-                                                    || emp.DateDismissed.ToString().Contains(searchString)
-                                                    || emp.BirthDay.ToString().Contains(searchString)
-                                                    ||((emp.FullNameUk!=null) && emp.FullNameUk.ToLower().Contains(searchString.ToLower()))
-                                                    || emp.Position.TitleEn.ToLower().Contains(searchString.ToLower())
-                                                    ||
-                                                          ((System.Web.Security.Membership.GetUser(emp.EID) != null)
-                                                          && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower())))                                                          )
-                                            orderby emp.IsManager descending, emp.LastName
-                                            select new EmployeeViewModel(emp)).ToList();
+            data = (from emp in empList
+                    where ((selectedDepartment == null || selectedDepartment == String.Empty || emp.Department.DepartmentName == selectedDepartment)
+                            && (emp.EID.ToLower().Contains(searchString.ToLower())
+                            || emp.FirstName.ToLower().Contains(searchString.ToLower())
+                            || emp.LastName.ToLower().Contains(searchString.ToLower())
+                            || emp.DateEmployed.ToShortDateString().Contains(searchString)
+                            || emp.DateDismissed.ToString().Contains(searchString)
+                            || emp.BirthDay.ToString().Contains(searchString)
+                            || ((emp.FullNameUk != null) && emp.FullNameUk.ToLower().Contains(searchString.ToLower()))
+                            || emp.Position.TitleEn.ToLower().Contains(searchString.ToLower())
+                            ||
+                                  ((System.Web.Security.Membership.GetUser(emp.EID) != null)
+                                  && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower()))))
+                    orderby emp.IsManager descending, emp.LastName
+                    select new EmployeeViewModel(emp)).ToList();
 
             return data;
 
         }
-        
+
         public SelectList DepartmentsDropDownList()
         {
             var depL = from rep in db.Departments
@@ -105,17 +105,47 @@ namespace AjourBT.Controllers
         public SelectList PositionsDropDownList()
         {
             var posList = from pos in db.Positions
-                               orderby pos.TitleEn
-                               select pos;
+                          orderby pos.TitleEn
+                          select pos;
 
             return new SelectList(posList, "PositionID", "TitleEn");
+        }
+
+
+        public SelectList DropDownListWithSelectedDepartment(string selectedDepartment)
+        {
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+            foreach (Department department in db.Departments)
+            {
+                SelectListItem selectListItem = new SelectListItem
+                {
+                    Text = department.DepartmentName,
+                    Value = department.DepartmentID.ToString(),
+                    Selected = department.DepartmentName.ToString() == selectedDepartment ? true : false
+
+                };
+
+                selectListItems.Add(selectListItem);
+            }
+
+            var allDepartments = from rep in selectListItems.AsEnumerable().OrderBy(m => m.Text)
+                                 orderby rep.Selected == true descending
+                                 select rep;
+
+            var id = from rep in selectListItems
+                     where rep.Selected == true
+                     select rep.Value;
+
+            return new SelectList(allDepartments, "Value", "Text", id);
         }
 
         // Get
         public ViewResult Create(string selectedDepartment = null, string searchString = "")
         {
+
             ViewBag.PositionsList = PositionsDropDownList();
-            ViewBag.DepartmentsList = DepartmentsDropDownList();
+            ViewBag.DepartmentsList = DropDownListWithSelectedDepartment(selectedDepartment);
             ViewBag.SelectedDepartment = selectedDepartment;
             ViewBag.SearchString = searchString;
             return View();
@@ -126,7 +156,7 @@ namespace AjourBT.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Employee emp, string[] Roles = null, string selectedDepartment = null , string searchString = "")
+        public ActionResult Create(Employee emp, string[] Roles = null, string selectedDepartment = null, string searchString = "")
         {
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             if (ModelState.IsValid)
@@ -215,7 +245,7 @@ namespace AjourBT.Controllers
             {
                 return HttpNotFound();
             }
-            if (employee.BusinessTrips.Count != 0 || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null )
+            if (employee.BusinessTrips.Count != 0 || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null)
             {
                 ViewBag.SelectedDepartment = selectedDepartment;
                 ViewBag.SearchString = searchString;
@@ -224,8 +254,8 @@ namespace AjourBT.Controllers
             }
             else
                 ViewBag.SelectedDepartment = selectedDepartment;
-                ViewBag.SearchString = searchString;
-                return View(employee);
+            ViewBag.SearchString = searchString;
+            return View(employee);
         }
 
         //
