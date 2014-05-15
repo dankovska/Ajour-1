@@ -10,7 +10,7 @@
     };
 }
 
-@using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formWTR" }))
+@using (Ajax.BeginForm("GetWTRDataPerEMP", "WTR", ajaxOpts, new { id = "formWTR" }))
 {
     <table class="wtrContainer">
         <tr id="wtrInput">
@@ -27,7 +27,7 @@
         </tr>
     </table>
     <div id="empWtrSubmitButton">
-        <a id="buttonSubmit">Submit</a>
+        <a id="buttonSubmit">Show data</a>
     </div>
 
     var userName = HttpContext.Current.User.Identity.Name.ToString();
