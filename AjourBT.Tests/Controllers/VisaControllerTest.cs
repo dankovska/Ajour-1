@@ -405,14 +405,12 @@ namespace AjourBT.Tests.Controllers
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", view.ViewName);
 
-         
+            Assert.AreEqual(employeeVisaView.Length, 1);
             Assert.AreEqual(employeeVisaView[0].LastName, "Kowwood");
             Assert.AreEqual(employeeVisaView[0].FirstName, "Oleksiy");
             Assert.AreEqual(employeeVisaView[0].EID, "xomi");
 
-            Assert.AreEqual(employeeVisaView[1].LastName, "Struz");
-            Assert.AreEqual(employeeVisaView[1].FirstName, "Anatoliy");
-            Assert.AreEqual(employeeVisaView[1].EID, "ascr");
+
         }
 
         [Test]
@@ -696,14 +694,11 @@ namespace AjourBT.Tests.Controllers
             // Assert - check the result
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", view.ViewName);
-            //Assert.IsTrue(employeeVisaView.Length == 1);
+            Assert.IsTrue(employeeVisaView.Length == 1);
             Assert.AreEqual(employeeVisaView[0].LastName, "Kowwood");
             Assert.AreEqual(employeeVisaView[0].FirstName, "Oleksiy");
             Assert.AreEqual(employeeVisaView[0].EID, "xomi");
-            Assert.AreEqual(employeeVisaView[1].LastName, "Struz");
-            Assert.AreEqual(employeeVisaView[1].FirstName, "Anatoliy");
-            Assert.AreEqual(employeeVisaView[1].EID, "ascr");
-
+ 
         }
 
         [Test]

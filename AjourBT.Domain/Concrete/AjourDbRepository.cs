@@ -51,7 +51,6 @@ namespace AjourBT.Domain.Concrete
                     {
                         throw new DbUpdateConcurrencyException();
                     }
-
                     emp.FirstName = employee.FirstName;
                     emp.LastName = employee.LastName;
                     emp.DepartmentID = employee.DepartmentID;

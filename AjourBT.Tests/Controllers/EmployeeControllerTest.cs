@@ -21,13 +21,14 @@ namespace AjourBT.Tests.Controllers
     public class EmployeeControllerTest
     {
         Mock<IRepository> mock;
-
+        Mock<IRepository> departments;
         [SetUp]
         public void SetUp()
         {
             mock = Mock_Repository.CreateMock();
+
         }
-        
+
         #region GetEmployee
 
         [Test]
@@ -124,8 +125,8 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].FirstName, "Anatoliy");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[3].LastName, "Kowood");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[4].LastName, "Manowens");
-            Assert.AreEqual("Only",result.ToArray<EmployeeViewModel>()[5].LastName);
-            Assert.AreEqual("Only",result.ToArray<EmployeeViewModel>()[7].LastName);
+            Assert.AreEqual("Only", result.ToArray<EmployeeViewModel>()[5].LastName);
+            Assert.AreEqual("Only", result.ToArray<EmployeeViewModel>()[7].LastName);
             Assert.IsTrue(view.ViewName == "");
             Assert.AreEqual(selectedDepartment, ((PartialViewResult)view).ViewBag.SelectedDepartment);
             Assert.AreEqual("dd.mm.yy", ((PartialViewResult)view).ViewBag.JSDatePattern);
@@ -145,7 +146,7 @@ namespace AjourBT.Tests.Controllers
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.IsInstanceOf(typeof(IEnumerable<EmployeeViewModel>), ((PartialViewResult)view).Model);
             Assert.AreEqual(5, result.ToArray<EmployeeViewModel>().Length);
-            Assert.IsTrue(result.ToArray<EmployeeViewModel>().Length == 5);            
+            Assert.IsTrue(result.ToArray<EmployeeViewModel>().Length == 5);
             Assert.AreEqual(5, result.ToArray<EmployeeViewModel>().Length);
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[0].LastName, "Kowwood");
             Assert.AreEqual("Chuck", result.ToArray<EmployeeViewModel>()[1].FirstName);
@@ -178,7 +179,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].FirstName, "Anatoliy");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[3].LastName, "Kowood");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[4].LastName, "Manowens");
-            Assert.AreEqual("Only",result.ToArray<EmployeeViewModel>()[5].LastName);
+            Assert.AreEqual("Only", result.ToArray<EmployeeViewModel>()[5].LastName);
             Assert.AreEqual("Only", result.ToArray<EmployeeViewModel>()[7].LastName);
             Assert.IsTrue(view.ViewName == "");
             Assert.AreEqual(selectedDepartment, ((PartialViewResult)view).ViewBag.SelectedDepartment);
@@ -231,7 +232,7 @@ namespace AjourBT.Tests.Controllers
             // Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
             string selectedDepartment = null;
-            SelectList departmentDropDownList = controller.DepartmentsDropDownList();
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
 
             // Act
             var view = controller.Create(selectedDepartment);
@@ -251,19 +252,19 @@ namespace AjourBT.Tests.Controllers
             // Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
             string selectedDepartment = "";
-            SelectList departmentDropDownList = controller.DepartmentsDropDownList();
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
 
             // Act
             var view = controller.Create(selectedDepartment);
-            SelectList select = ((ViewResult)view).ViewBag.DepartmentsList as SelectList;
+            SelectList selectList = ((ViewResult)view).ViewBag.DepartmentsList as SelectList;
 
 
             // Assert
             Assert.IsTrue(((ViewResult)view).ViewName == "");
             Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
-            Assert.AreEqual(departmentDropDownList.ToArray().Length, select.ToArray().Length);
-            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, select.ToArray()[0].Value);
-            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, select.ToArray()[6].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, selectList.ToArray().Length);
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, selectList.ToArray()[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, selectList.ToArray()[6].Value);
         }
 
         [Test]
@@ -323,7 +324,157 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, select.ToArray()[0].Value);
             Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, select.ToArray()[6].Value);
         }
+        #region DropDownListWithSelectedDepartment
 
+        [Test]
+        public void DropDownListWithSelectedDepartment_Default_ListOfAllDepartments()
+        {
+            //Arrange
+
+            EmployeeController controller = new EmployeeController(mock.Object);
+            //Act
+            string selectedDepartment = "";
+            var result = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+
+            //Asset
+            Assert.IsInstanceOf(typeof(SelectList), result);
+            Assert.IsTrue(result.ToArray().Length == 7);
+            Assert.AreEqual("RAAA1", result.ToArray()[0].Text);
+            Assert.AreEqual("RAAA4", result.ToArray()[3].Text);
+            Assert.AreEqual("TAAAA", result.ToArray()[6].Text);
+        }
+
+        [Test]
+        public void DropDownListWithSelectedDepartment_SelectedDepartmentNull_ViewCreateSelectedDepartmentNull()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = null;
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+
+            // Act
+            var view = controller.Create(selectedDepartment);
+            SelectList select = ((ViewResult)view).ViewBag.DepartmentsList as SelectList;
+
+            // Assert
+            Assert.IsTrue(((ViewResult)view).ViewName == "");
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, select.ToArray().Length);
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, select.ToArray()[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, select.ToArray()[6].Value);
+        }
+
+        [Test]
+        public void DropDownListWithSelectedDepartment_StringEmpty_ViewCreateSelectedDepartmentStringEmpty()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = "";
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+
+            // Act
+            var view = controller.Create(selectedDepartment);
+            SelectList select = ((ViewResult)view).ViewBag.DepartmentsList as SelectList;
+
+
+            // Assert
+            Assert.IsTrue(((ViewResult)view).ViewName == "");
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, select.ToArray().Length);
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, select.ToArray()[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, select.ToArray()[6].Value);
+        }
+
+        [Test]
+        public void DropDownListWithSelectedDepartment_RAAA1_ViewCreateSelectedDepartmentRAAA1()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = "RAAA1";
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+
+            // Act
+            var view = controller.Create(selectedDepartment);
+            SelectList select = ((ViewResult)view).ViewBag.DepartmentsList as SelectList;
+
+
+            // Assert
+            Assert.IsTrue(((ViewResult)view).ViewName == "");
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, select.ToArray().Length);
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, select.ToArray()[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, select.ToArray()[6].Value);
+        }
+
+        [Test]
+        public void DropDownListWithSelectedDepartment_True_ViewCreateSelectedDepartmentRAAA1()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = "RAAA1";
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+            SelectListItem selectListItem3 = new SelectListItem { Text = "RAAA1", Value = "3", Selected = true };
+            SelectListItem selectListItem4 = new SelectListItem { Text = "RAAA2", Value = "4", Selected = false };
+            SelectListItem selectListItem5 = new SelectListItem { Text = "RAAA3", Value = "5", Selected = false };
+            SelectListItem selectListItem6 = new SelectListItem { Text = "RAAA4", Value = "6", Selected = false };
+            SelectListItem selectListItem7 = new SelectListItem { Text = "RAAA5", Value = "7", Selected = false };
+            SelectListItem selectListItem1 = new SelectListItem { Text = "SDDDA", Value = "1", Selected = false };
+            SelectListItem selectListItem2 = new SelectListItem { Text = "TAAAA", Value = "2", Selected = false };
+            selectListItems.Add(selectListItem3);
+            selectListItems.Add(selectListItem4);
+            selectListItems.Add(selectListItem5);
+            selectListItems.Add(selectListItem6);
+            selectListItems.Add(selectListItem7);
+            selectListItems.Add(selectListItem1);
+            selectListItems.Add(selectListItem2);
+
+            // Act
+            var view = controller.Create(selectedDepartment);
+
+            // Assert
+            Assert.IsTrue(((ViewResult)view).ViewName == "");
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, selectListItems.Count());
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, selectListItems[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, selectListItems[6].Value);
+        }
+
+        [Test]
+        public void DropDownListWithSelectedDepartment_SelectedFalse_ViewCreateSelectedDepartmentRAAA1()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = "";
+            SelectList departmentDropDownList = controller.DropDownListWithSelectedDepartment(selectedDepartment);
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+            SelectListItem selectListItem3 = new SelectListItem { Text = "RAAA1", Value = "3", Selected = true };
+            SelectListItem selectListItem4 = new SelectListItem { Text = "RAAA2", Value = "4", Selected = false };
+            SelectListItem selectListItem5 = new SelectListItem { Text = "RAAA3", Value = "5", Selected = false };
+            SelectListItem selectListItem6 = new SelectListItem { Text = "RAAA4", Value = "6", Selected = false };
+            SelectListItem selectListItem7 = new SelectListItem { Text = "RAAA5", Value = "7", Selected = false };
+            SelectListItem selectListItem1 = new SelectListItem { Text = "SDDDA", Value = "1", Selected = false };
+            SelectListItem selectListItem2 = new SelectListItem { Text = "TAAAA", Value = "2", Selected = false };
+            selectListItems.Add(selectListItem3);
+            selectListItems.Add(selectListItem4);
+            selectListItems.Add(selectListItem5);
+            selectListItems.Add(selectListItem6);
+            selectListItems.Add(selectListItem7);
+            selectListItems.Add(selectListItem1);
+            selectListItems.Add(selectListItem2);
+
+            // Act
+            var view = controller.Create(selectedDepartment);
+
+            // Assert
+            Assert.IsTrue(((ViewResult)view).ViewName == "");
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(departmentDropDownList.ToArray().Length, selectListItems.Count());
+            Assert.AreEqual(departmentDropDownList.ToArray()[0].Value, selectListItems[0].Value);
+            Assert.AreEqual(departmentDropDownList.ToArray()[6].Value, selectListItems[6].Value);
+        }
+
+#endregion
         #region CreatePost
         [Test]
         public void PostCreate_NotValidModelSelectedDepartmentNull_ViewCreate()
@@ -419,7 +570,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("", ((RedirectToRouteResult)view).RouteValues["selectedDepartment"]);
             Assert.IsNotInstanceOf(typeof(ViewResult), view);
         }
-       
+
         [Test]
         public void PostCreate_ValidModelSelectedDepartmentRAAA1_ViewRAAA1Employees()
         {
@@ -483,7 +634,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
             Assert.AreEqual(expectedDepartmentList, ((ViewResult)view).ViewBag.DepartmentList);
         }
-        
+
         [Test]
         public void GetEdit_ExistingEmployeeSelectedDepartmentTAAAA_ViewEditSelectedDepartmentTAAAA()
         {
@@ -517,8 +668,8 @@ namespace AjourBT.Tests.Controllers
         }
 
         #endregion
-        
-        
+
+
         [Test]
         public void PostEdit_ValidModelSelectedDepartmentNull_ViewAllEmployee()
         {
@@ -537,7 +688,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(expectedDepartmentList, ((ViewResult)view).ViewBag.DepartmentList);
             Assert.AreEqual(typeof(ViewResult), view.GetType());
         }
-        
+
         [Test]
         public void PostEdit_ValidModelSelectedDepartmentStringEmpty_ViewAllEmployee()
         {
@@ -575,7 +726,7 @@ namespace AjourBT.Tests.Controllers
             Assert.IsTrue(((ViewResult)view).ViewName == "OneRowPU");
             Assert.AreEqual(expectedDepartmentList, ((ViewResult)view).ViewBag.DepartmentList);
             Assert.AreEqual(typeof(ViewResult), view.GetType());
-            
+
         }
 
         [Test]
@@ -588,11 +739,11 @@ namespace AjourBT.Tests.Controllers
             string selectedDepartment = null;
             var expectedDepartmentList = (from m in mock.Object.Departments select m).ToList();
             MvcApplication.JSDatePattern = "dd.mm.yy";
-            
+
             // Act
             JsonResult result = (JsonResult)controller.Edit(employee, null, selectedDepartment);
             string data = (string)(new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(result.Data, "error")).Target;
-            
+
             // Assert
             mock.Verify(m => m.SaveEmployee(It.IsAny<Employee>()), Times.Never);
             Assert.IsTrue(result != null);
@@ -613,11 +764,11 @@ namespace AjourBT.Tests.Controllers
             string selectedDepartment = "";
             var expectedDepartmentList = (from m in mock.Object.Departments select m).ToList();
             MvcApplication.JSDatePattern = "dd.mm.yy";
-            
+
             // Act
             JsonResult result = (JsonResult)controller.Edit(employee, null, selectedDepartment);
             string data = (string)(new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(result.Data, "error")).Target;
-            
+
             // Assert
             mock.Verify(m => m.SaveEmployee(It.IsAny<Employee>()), Times.Never);
             Assert.IsTrue(result != null);
@@ -759,7 +910,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(selectedDepartment, result.ViewBag.SelectedDepartment);
             Assert.AreEqual(selectedDepartment, result.ViewBag.SelectedDepartment);
         }
-        
+
         [Test]
         public void GetDelete_WithPermitSelectedDepartmentRAAA1_ViewCannotDeleteDelete()
         {
@@ -797,7 +948,7 @@ namespace AjourBT.Tests.Controllers
             string selectedDepartment = null;
 
             // Act
-           var result = controller.DeleteConfirmed(3, selectedDepartment);
+            var result = controller.DeleteConfirmed(3, selectedDepartment);
 
 
             // Assert
@@ -869,18 +1020,18 @@ namespace AjourBT.Tests.Controllers
 
         [Test]
         public void ResetPasswordGET_AllParametersNotNull_View()
-        { 
+        {
             //Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
-           string  EID = "andl";
-           string [] Roles ={"ADM", "PU"};
+            string EID = "andl";
+            string[] Roles = { "ADM", "PU" };
             //Act
             var result = controller.ResetPassword(EID, Roles);
             //Assert
             Assert.AreEqual(result.GetType(), typeof(ViewResult));
             Assert.AreEqual(result.ViewName, "");
         }
-       
+
         [Test]
         public void ResetPasswordGET_RolesIsNull_View()
         {
@@ -901,7 +1052,7 @@ namespace AjourBT.Tests.Controllers
             //Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
             string EID = null;
-            string[] Roles = { "ADM", "PU" }; 
+            string[] Roles = { "ADM", "PU" };
             //Act
             var result = controller.ResetPassword(EID, Roles);
             //Assert
@@ -920,7 +1071,7 @@ namespace AjourBT.Tests.Controllers
             //Act
             var result = controller.ResetPasswordConfirmed(EID, Roles);
             //Assert
-            mock.Verify(m => m.SaveRolesForEmployee("andl", new string []{ "ADM", "PU" }), Times.Exactly(1));
+            mock.Verify(m => m.SaveRolesForEmployee("andl", new string[] { "ADM", "PU" }), Times.Exactly(1));
             mock.Verify(m => m.SaveRolesForEmployee(EID, null), Times.Exactly(1));
             Assert.AreEqual(result.GetType(), typeof(string));
             Assert.AreEqual(result, "Password has been changed");
@@ -948,7 +1099,7 @@ namespace AjourBT.Tests.Controllers
             //Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
             string EID = "andl";
-            string[] Roles =null;
+            string[] Roles = null;
             //Act
             var result = controller.ResetPasswordConfirmed(EID, Roles);
             //Assert
