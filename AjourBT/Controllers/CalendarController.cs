@@ -83,7 +83,8 @@ namespace AjourBT.Controllers
             ViewBag.PostponedHolidays = GetPostponedHolidaysData();
             List<Employee> empList = SearchEmployeeData(selectedDepartment);
             List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
-
+            ViewBag.parseFromDate = parseFromDate;
+            ViewBag.parseToDate = parseToDate; 
             //var currentUser = HttpContext.User.Identity.Name;
             if (Request.UrlReferrer != null)
             {
@@ -171,186 +172,89 @@ namespace AjourBT.Controllers
             return dataList;
         }
 
-        public ActionResult printCalendarToPdf()
+        [HttpPost]
+        public ActionResult printCalendarToPdf(string calendarFromDate, string calendarToDate,   string selectedDepartment = null)
         {
-            MemoryStream pdfMemoryStream = new MemoryStream();
-            PDF pdf = new PDF(pdfMemoryStream);
-            ////Font f1 = new Font(pdf, CoreFont.HELVETICA_BOLD);
-            ////Font f2 = new Font(pdf, CoreFont.HELVETICA);
-            ////f1.SetSize(7f);
-            ////f2.SetSize(7f);
+            DateTime parseFromDate;
+            DateTime parseToDate;
+            int currentYear = DateTime.Now.Year;
 
-            ////List<List<Cell>> tableData = new List<List<Cell>>();
-            ////    List<Cell> row = new List<Cell>(); 
-            ////DateTime date = new DateTime(DateTime.Now.Date.Year, 1, 1);
-            ////DateTime lastdate = new DateTime(date.Year+1, 1, 1);
-            ////TimeSpan diff = lastdate - date;
-
-            ////string day = String.Empty; 
-            ////    for (int i = 0; i < diff.TotalDays; i++)
-            ////    {
-            ////        day = i.ToString();
-            ////        if (i < 10)
-            ////            day=day.Insert(0, "  ");
-            ////        else if (i < 100)
-            ////           day=day.Insert(0, " ");
-
-            ////        Cell cell = new Cell(f2, day);
-
-            ////        // WITH:
-            ////        cell.SetTopPadding(2f);
-            ////        cell.SetBottomPadding(2f);
-            ////        cell.SetLeftPadding(2f);
-            ////        cell.SetRightPadding(2f);
-
-            ////        row.Add(cell);
-            ////    }
-            ////    tableData.Add(row);
-
-            Table table = new Table();
-            //table.SetData(CalendarToPdfExporter.CreateCalendarHeader(new DateTime(2011, 12, 29), new DateTime(2013, 01, 02)), 1); 
-            //table.SetData(CalendarToPdfExporter.CreateCalendarLeftPanel(GetCalendarRowData(repository.Employees.ToList(), new DateTime(2011, 12, 29), new DateTime(2014, 01, 02))));
-            table.SetData(CalendarToPdfExporter.CreateCalendar( 
-                GetCalendarRowData(repository.Employees.ToList(), new DateTime(2012, 12, 31), new DateTime(2015, 1, 1)), 
-                repository.Holidays.ToList(), 
-                new DateTime(2012, 12, 31), 
-                new DateTime(2015, 1, 1)));
-            //table.SetLocation(100f, 50f);
-
-            // REPLACED:
-            // table.SetCellMargin(2f);
-
-            ////table.RemoveLineBetweenRows(0, 1);
-
-            //Cell cell3 = table.GetCellAt(1, 1);
-            //cell3.SetBorder(Border.TOP, true);
-
-            //cell3 = table.GetCellAt(1, 2);
-            //cell3.SetBorder(Border.TOP, true);
-
-            //SetFontForRow(table, 0, f1);
-            //SetFontForRow(table, 1, f1);
-
-            table.AutoAdjustColumnWidths();
-
-            //List<Cell> column = table.GetColumn(7);
-            //for (int i = 0; i < column.Count; i++)
-            //{
-            //    Cell cell = column[i];
-            //    cell.SetTextAlignment(Align.CENTER);
-            //}
-
-            //column = table.GetColumn(4);
-            //for (int i = 2; i < column.Count; i++)
-            //{
-            //    Cell cell = column[i];
-            //    try
-            //    {
-            //        cell.SetTextAlignment(Align.CENTER);
-            //        if (Int32.Parse(cell.GetText()) > 40)
-            //        {
-            //            cell.SetBgColor(Color.darkseagreen);
-            //        }
-            //        else
-            //        {
-            //            cell.SetBgColor(Color.yellow);
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e);
-            //    }
-            //}
-
-            //Cell cell2 = table.GetCellAt(0, 1);
-            //cell2.SetColSpan(2);
-            //cell2.SetTextAlignment(Align.CENTER);
-
-            //SetBgColorForRow(table, 0, Color.lightgray);
-            //SetBgColorForRow(table, 1, Color.lightgray);
-
-            //table.SetColumnWidth(3, 10);
-            //blankOutColumn(table, 3);
-
-            //table.SetColumnWidth(8, 10f);
-            //blankOutColumn(table, 8);
-
-            Page page = new Page(pdf, A0.LANDSCAPE);
-            //table.AutoAdjustColumnWidths();
-            //int numOfPages = table.GetNumberOfPages(page);
-            int pageNumber = 1;
-            while (true)
+            if (calendarFromDate == "" && calendarToDate == "")
             {
-                table.DrawOn(page);
-                ////TextLine text = new TextLine(f1);
-                ////text.SetText("Page " + pageNumber++ + " of " + numOfPages);
-                ////text.SetLocation(300f, 780f);
-                ////text.DrawOn(page);
-
-                if (!table.HasMoreData())
-                {
-                    table.ResetRenderedPagesCount();
-                    break;
-                }
-
-                page = new Page(pdf, A0.LANDSCAPE);
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
             }
 
-            pdf.Close();
-
-            return File(pdfMemoryStream.ToArray(), "application/pdf", "Calendar.pdf");
-        }
-
-        public List<List<Cell>> generateCalendarHeader(DateTime from, DateTime to)
-        {
-            List<List<Cell>> tableData = new List<List<Cell>>();
-            List<Cell> row = new List<Cell>();
-
-
-
-            return tableData;
-        }
-
-
-
-        public class A0
-        {
-            public static float[] PORTRAIT = new float[] { 3368.0f, 7146.0f };
-            public static float[] LANDSCAPE = new float[] { 7146.0f, 3368.0f };
-        }
-
-        public void blankOutColumn(Table table, int index)
-        {
-            List<Cell> column = table.GetColumn(index);
-            for (int i = 0; i < column.Count; i++)
+            try
             {
-                Cell cell = column[i];
-                cell.SetBgColor(Color.white);
-                cell.SetBorder(Border.TOP, false);
-                cell.SetBorder(Border.BOTTOM, false);
+                parseFromDate = DateTime.ParseExact(calendarFromDate, "dd.MM.yyyy", null);
+                parseToDate = DateTime.ParseExact(calendarToDate, "dd.MM.yyyy", null);
             }
-        }
-
-
-        public void SetBgColorForRow(Table table, int index, int color)
-        {
-            List<Cell> row = table.GetRow(index);
-            for (int i = 0; i < row.Count; i++)
+            catch (SystemException)
             {
-                Cell cell = row[i];
-                cell.SetBgColor(color);
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
             }
+
+            List<Employee> empList = SearchEmployeeData(selectedDepartment);
+            List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
+
+            //return File(CalendarToPdfExporter.GeneratePDF(GetCalendarRowData(repository.Employees.ToList(), new DateTime(2012, 12, 31), new DateTime(2015, 01, 01)), repository.Holidays.ToList(), new DateTime(2012, 01, 31), new DateTime(2015, 01, 01)).ToArray(), "application/pdf", "Calendar.pdf");
+
+            return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
+
         }
 
+        //public List<List<Cell>> generateCalendarHeader(DateTime from, DateTime to)
+        //{
+        //    List<List<Cell>> tableData = new List<List<Cell>>();
+        //    List<Cell> row = new List<Cell>();
 
-        public void SetFontForRow(Table table, int index, Font font)
-        {
-            List<Cell> row = table.GetRow(index);
-            for (int i = 0; i < row.Count; i++)
-            {
-                row[i].SetFont(font);
-            }
-        }
+
+
+        //    return tableData;
+        //}
+
+
+
+        //public class A0
+        //{
+        //    public static float[] PORTRAIT = new float[] { 3368.0f, 7146.0f };
+        //    public static float[] LANDSCAPE = new float[] { 7146.0f, 3368.0f };
+        //}
+
+        //public void blankOutColumn(Table table, int index)
+        //{
+        //    List<Cell> column = table.GetColumn(index);
+        //    for (int i = 0; i < column.Count; i++)
+        //    {
+        //        Cell cell = column[i];
+        //        cell.SetBgColor(Color.white);
+        //        cell.SetBorder(Border.TOP, false);
+        //        cell.SetBorder(Border.BOTTOM, false);
+        //    }
+        //}
+
+
+        //public void SetBgColorForRow(Table table, int index, int color)
+        //{
+        //    List<Cell> row = table.GetRow(index);
+        //    for (int i = 0; i < row.Count; i++)
+        //    {
+        //        Cell cell = row[i];
+        //        cell.SetBgColor(color);
+        //    }
+        //}
+
+
+        //public void SetFontForRow(Table table, int index, Font font)
+        //{
+        //    List<Cell> row = table.GetRow(index);
+        //    for (int i = 0; i < row.Count; i++)
+        //    {
+        //        row[i].SetFont(font);
+        //    }
+        //}
 
     }
 }

@@ -3,14 +3,15 @@
     
     AjaxOptions ajaxOpts = new AjaxOptions
     {
-        UpdateTargetId = "CalendarData",
-        Url = Url.Action("GetCalendarData")
+        //UpdateTargetId = "CalendarData",
+        //Url = Url.Action("GetCalendarData")
+        Url = Url.Action("printCalendarToPdf")
 
     };
 }
 
 
-@using (Ajax.BeginForm(null, null, ajaxOpts, new { id = "formForABM" }))
+@using (Html.BeginForm("printCalendarToPdf", "Calendar"))
 {
 <div id="calendarDropList">
     @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentDropDownList, "All Departments", new { onchange = "$(this.form).submit();", id = "depDropList" })
@@ -27,11 +28,13 @@
                     <button id="calendarAbsenceButton" type="button">Submit</button>
                 </div>
             </td>
+            <td><button id="pdfPrintBtn" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit">Print</button></td>
         </tr>
 
         <tr id="wtrInput2">
             <td colspan="2"><p id="errorFromAbs"></p></td>
             <td colspan="2"><p id="errorToAbs"></p></td>
+            <td></td>
             <td></td>
         </tr>
     </table>
@@ -40,7 +43,7 @@
             <button id="calendarAbsenceButton" type="button">Submit</button>
         </div>*@
 }
-<div id="CalendarData" style="height: 89%" ">
+<div id="CalendarData" style="height: 89%">
     @{Html.RenderAction("GetCalendarData", "Calendar", new { selectedDepartment = ViewBag.SelectedDepartment });}
 </div>
 
@@ -75,5 +78,17 @@
 
         $('#absenceButton').button();
     })
+
+    $("#calendarAbsenceButton").click(function (event) {
+        $.ajax({
+            cache: false,
+            url: "/Calendar/getCalendarData",
+            type: "Post",
+            data: { calendarFromDate: $('#calendarFromDate').val(), calendarToDate: $("#calendarToDate").val(), selectedDepartment: $('#selectedDepartment :selected').val() },
+            success: function (data) {
+                $("#CalendarData").html(data);
+            }
+        })
+    });
 </script>
 

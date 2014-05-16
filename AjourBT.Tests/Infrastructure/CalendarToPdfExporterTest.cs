@@ -11,6 +11,7 @@ using AjourBT.Domain.Entities;
 using AjourBT.Infrastructure;
 using PDFjet.NET;
 using AjourBT.Models;
+using System.IO;
 
 namespace AjourBT.Tests.Infrastructure
 {
@@ -385,8 +386,8 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(365, result[0][368].GetColSpan());
             Assert.AreEqual(1, result[0][733].GetColSpan());
             Assert.AreEqual(734, result[1].Count);
-            Assert.AreEqual("December", result[1][0].GetText());
-            Assert.AreEqual("January", result[1][733].GetText());
+            Assert.AreEqual("Dec", result[1][0].GetText());
+            Assert.AreEqual("Jan", result[1][733].GetText());
             Assert.AreEqual(734, result[2].Count);
             Assert.AreEqual("W1", result[2][0].GetText());
             Assert.AreEqual("W1", result[2][731].GetText());
@@ -418,7 +419,7 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(1, result[0][0].GetColSpan());
             Assert.AreEqual(Align.CENTER, result[0][0].GetTextAlignment());
             Assert.AreEqual(1, result[1].Count);
-            Assert.AreEqual("December", result[1][0].GetText());
+            Assert.AreEqual("Dec", result[1][0].GetText());
             Assert.AreEqual(1, result[1][0].GetColSpan());
             Assert.AreEqual(Align.CENTER, result[1][0].GetTextAlignment());
             Assert.AreEqual(1, result[2].Count);
@@ -515,7 +516,7 @@ namespace AjourBT.Tests.Infrastructure
         #region getMonthRow
 
         [Test]
-        public void getMonthRow_ProperDates_ProperRow()
+        public void getMonthRow_ProperDatesMoreThanThreeDaysInMonthsOnTable_ProperRow()
         {
             //Arrange
             DateTime from = new DateTime(2011, 12, 30);
@@ -526,7 +527,7 @@ namespace AjourBT.Tests.Infrastructure
 
             //Assert
             Assert.AreEqual(399, result.Count);
-            Assert.AreEqual("December", result[0].GetText());
+            Assert.AreEqual("Dec", result[0].GetText());
             Assert.AreEqual("February", result[33].GetText());
             Assert.AreEqual("December", result[337].GetText());
             Assert.AreEqual("January", result[368].GetText());
@@ -538,7 +539,7 @@ namespace AjourBT.Tests.Infrastructure
         }
 
         [Test]
-        public void getMonthRow_EqualDates_ProperRow()
+        public void getMonthRow_EqualDatesLessThanThreeDaysInMonthOnTable_ProperRowShortedMonthName()
         {
             //Arrange
             DateTime from = new DateTime(2011, 12, 30);
@@ -549,7 +550,7 @@ namespace AjourBT.Tests.Infrastructure
 
             //Assert
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("December", result[0].GetText());
+            Assert.AreEqual("Dec", result[0].GetText());
             Assert.AreEqual(1, result[0].GetColSpan());
 
         }
@@ -819,7 +820,7 @@ namespace AjourBT.Tests.Infrastructure
 
         #endregion
 
-        #region CreateHeaderSpacer
+        #region                     CreateEmployeesList
 
         [Test]
         public void CreateEmployeesList_CalendarModelIsNotEmpty_ProperEmployeesList()
@@ -1451,16 +1452,16 @@ namespace AjourBT.Tests.Infrastructure
         }
 
         [Test]
-        public void GetColorForCalendarItem_GanttMagnetaClass_GanttMagneta()
+        public void GetColorForCalendarItem_GanttMagentaClass_GanttMagenta()
         {
             //Arrange 
-            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttMagneta" };
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttMagenta" };
 
             //Act
             int result = CalendarToPdfExporter.GetColorForCalendarItem(calendarItem);
 
             //Assert
-            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttMagneta, result);
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttMagenta, result);
         }
 
         [Test]
@@ -1487,11 +1488,11 @@ namespace AjourBT.Tests.Infrastructure
             DateTime from = new DateTime(2012, 12, 26);
             DateTime to = new DateTime(2013, 1, 8);
 
-            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false }); 
-            holidays.Add(new Holiday (){HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false }  );
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
             holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
-            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed =true }); 
-            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody( calendarModel, from, to); 
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
 
             //Act
             CalendarToPdfExporter.ApplyHolidays(calendar, holidays, from, to);
@@ -1506,9 +1507,9 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayYellow, calendar[0][2].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayYellow, calendar[4][2].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayYellow, calendar[0][4].GetBgColor());
-            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayYellow, calendar[4][4].GetBgColor());             
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayYellow, calendar[4][4].GetBgColor());
         }
-                
+
         [Test]
         public void ApplyHolidays_CalendarIsNull_NoException()
         {
@@ -1579,7 +1580,7 @@ namespace AjourBT.Tests.Infrastructure
             List<Holiday> holidays = new List<Holiday>();
             DateTime from = new DateTime(2012, 12, 26);
             DateTime to = new DateTime(2013, 1, 8);
-            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to) ;
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
 
             //Act
             CalendarToPdfExporter.ApplyHolidays(calendar, holidays, from, to);
@@ -1680,7 +1681,7 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(-1, calendar[4][2].GetBgColor());
             Assert.AreEqual(-1, calendar[0][4].GetBgColor());
             Assert.AreEqual(-1, calendar[4][4].GetBgColor());
-        } 
+        }
 
         #endregion
 
@@ -1693,14 +1694,14 @@ namespace AjourBT.Tests.Infrastructure
             DateTime from = new DateTime(2012, 12, 26);
             DateTime to = new DateTime(2013, 1, 8);
 
-            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody( calendarModel, from, to); 
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
 
             //Act
             CalendarToPdfExporter.ApplyWeekends(calendar, from, to);
 
             //Assert      
-            Assert.AreEqual(-1 , calendar[0][2].GetBgColor());
-            Assert.AreEqual(-1 , calendar[4][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[0][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][2].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[0][3].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[4][3].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[0][4].GetBgColor());
@@ -1708,7 +1709,7 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[0][10].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[4][10].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[0][11].GetBgColor());
-            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[4][11].GetBgColor());         
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayPink, calendar[4][11].GetBgColor());
         }
         [Test]
         public void ApplyWeekends_CalendarIsNull_NoException()
@@ -1783,9 +1784,502 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(-1, calendar[4][2].GetBgColor());
             Assert.AreEqual(-1, calendar[0][4].GetBgColor());
             Assert.AreEqual(-1, calendar[4][4].GetBgColor());
-        } 
+        }
 
         #endregion
-        
+
+        #region ColorRow
+
+        [Test]
+        public void ColorRow_AllParametersOK_RowIsColoredExceptForTheFirstCell()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
+
+            //Act
+            CalendarToPdfExporter.ColorRow(calendar, 2, 0xff00ff);
+
+            //Assert
+            Assert.AreEqual(-1, calendar[0][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][0].GetBgColor());
+            Assert.AreEqual(0xff00ff, calendar[2][1].GetBgColor());
+            Assert.AreEqual(0xff00ff, calendar[2][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][0].GetBgColor());
+
+        }
+
+        [Test]
+        public void ColorRow_CalendarIsNull_NoException()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            //Act
+            CalendarToPdfExporter.ColorRow(null, 2, 0xff00ff);
+
+            //Assert
+
+        }
+
+        [Test]
+        public void ColorRow_CalendarIsEmpty_NoException()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = new List<List<Cell>>();
+
+            //Act
+            CalendarToPdfExporter.ColorRow(calendar, 2, 0xff00ff);
+
+            //Assert
+
+
+        }
+
+        [Test]
+        public void ColorRow_RowNumberIsGreaterThanLastRowNumber_NothingIsColored()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
+
+            //Act
+            CalendarToPdfExporter.ColorRow(calendar, 5, 0xff00ff);
+
+            //Assert
+            Assert.AreEqual(-1, calendar[0][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][0].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][1].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+
+        }
+
+        [Test]
+        public void ColorRow_RowNumberIsNegative_NothingIsColored()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
+
+            //Act
+            CalendarToPdfExporter.ColorRow(calendar, -1, 0xff00ff);
+
+            //Assert
+            Assert.AreEqual(-1, calendar[0][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][0].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][1].GetBgColor());
+            Assert.AreEqual(-1, calendar[2][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+
+        }
+
+        [Test]
+        public void ColorRow_RowNumberIsZero_ZeroRowIsColored()
+        {
+            //Arrange
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
+
+            //Act
+            CalendarToPdfExporter.ColorRow(calendar, -1, 0xff00ff);
+
+            //Assert
+            Assert.AreEqual(-1, calendar[1][13].GetBgColor());
+            Assert.AreEqual(-1, calendar[0][0].GetBgColor());
+            Assert.AreEqual(-1, calendar[0][1].GetBgColor());
+            Assert.AreEqual(-1, calendar[0][13].GetBgColor());
+
+        }
+
+        #endregion
+
+        #region ApplyHolidaysToHeader
+
+        [Test]
+        public void ApplyHolidaysToHeader_AllParametersAreOK_HolidaysMarkedWithBgColor()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to.AddDays(1));
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, holidays, from, to);
+
+            //Assert       
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[3][2].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[3][3].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[3][5].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[3][12].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[4][2].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[4][3].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[4][5].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.holidayOrange, calendar[4][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][4].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][8].GetBgColor());
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_CalendarNull_NoException()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(null, holidays, from, to);
+
+            //Assert       
+
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_CalendarEmpty_NoException()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+            List<List<Cell>> calendar = new List<List<Cell>>();
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, holidays, from, to);
+
+            //Assert       
+
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_HolidaysAreNull_NothingIsApplied()
+        {
+            //Arrange
+
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to.AddDays(1));
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, null, from, to);
+
+            //Assert       
+            Assert.AreEqual(-1, calendar[3][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][4].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][8].GetBgColor());
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_HolidaysAreEmpty_NothingIsApplied()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to.AddDays(1));
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, holidays, from, to);
+
+            //Assert       
+            Assert.AreEqual(-1, calendar[3][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][4].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][8].GetBgColor());
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_CalendarIsTooBig_NothingIsApplied()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to.AddDays(2));
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, holidays, from, to);
+
+            //Assert       
+            Assert.AreEqual(-1, calendar[3][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][4].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][8].GetBgColor());
+        }
+
+        [Test]
+        public void ApplyHolidaysToHeader_CalendarIsTooSmall_NothingIsApplied()
+        {
+            //Arrange
+
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateEmptyCalendarBody(calendarModel, from, to);
+
+            //Act
+            CalendarToPdfExporter.ApplyHolidaysToHeader(calendar, holidays, from, to);
+
+            //Assert       
+            Assert.AreEqual(-1, calendar[3][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][2].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][3].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][5].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][12].GetBgColor());
+            Assert.AreEqual(-1, calendar[3][4].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][8].GetBgColor());
+        }
+
+        #endregion
+
+        #region GetAbbreviationForCalendarItem
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_UnknownClass_EmptyString()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual("", result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttGreenClass_GanttGreen()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttGreen" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.BT, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_DarkGreenClass_GanttDarkGreen()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttDarkGreen" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.Journey, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttOrangeClass_GanttOrange()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttOrange" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.ReclaimedOvertime, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttBlueClass_GanttBlue()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttBlue" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.PaidVacation, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttVioletClass_GanttViolet()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttViolet" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.SickAbsence, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttRedClass_GanttRed()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttRed" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.UnpaidVacation, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttMagentaClass_GanttMagenta()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttMagenta" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.OvertimeForReclaim, result);
+        }
+
+        [Test]
+        public void GetAbbreviationForCalendarItem_GanttYellowClass_GanttYellow()
+        {
+            //Arrange 
+            CalendarItemViewModel calendarItem = new CalendarItemViewModel() { customClass = "ganttYellow" };
+
+            //Act
+            string result = CalendarToPdfExporter.GetAbbreviationForCalendarItem(calendarItem);
+
+            //Assert
+            Assert.AreEqual(CalendarToPdfExporter.Abbreviations.PrivateMinus, result);
+        }
+
+        #endregion
+
+        #region CreateLegend
+
+        [Test]
+        public void CreateLegend_NoParameters_ProperLegendCreated()
+        {
+            //Arrange
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateLegend(); 
+
+            //Assert        
+            Assert.AreEqual(9, result.Count); 
+
+            Assert.AreEqual("Legend: ", result[0][0].GetText());
+            Assert.AreEqual(2, result[0][0].GetColSpan()); 
+
+            Assert.AreEqual("Business Trip", result[1][1].GetText());
+            Assert.AreEqual("Journey", result[2][1].GetText());
+            Assert.AreEqual("Overtime for Reclaim", result[3][1].GetText());
+            Assert.AreEqual("Paid Vacation", result[4][1].GetText());
+            Assert.AreEqual("Private Minus", result[5][1].GetText());
+            Assert.AreEqual("Reclaimed Overtime", result[6][1].GetText());
+            Assert.AreEqual("Sick Absence", result[7][1].GetText());
+            Assert.AreEqual("Unpaid Vacation", result[8][1].GetText()); 
+
+            Assert.AreEqual("BT", result[1][0].GetText());
+            Assert.AreEqual("J", result[2][0].GetText());
+            Assert.AreEqual("OR", result[3][0].GetText());
+            Assert.AreEqual("PV", result[4][0].GetText());
+            Assert.AreEqual("P-", result[5][0].GetText());
+            Assert.AreEqual("RO", result[6][0].GetText());
+            Assert.AreEqual("SA", result[7][0].GetText());
+            Assert.AreEqual("UV", result[8][0].GetText());
+
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[1][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttDarkGreen, result[2][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttMagenta, result[3][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttBlue, result[4][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttYellow, result[5][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttOrange, result[6][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttViolet, result[7][0].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttRed, result[8][0].GetBgColor()); 
+        }
+
+        #endregion
+
+        #region GeneratePdf 
+
+        [Test]
+        public void GeneratePdf_ProperParameters_ProperMemoryStream()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            var result = CalendarToPdfExporter.GeneratePDF(calendarModel, holidays, from, to); 
+
+            //Assert
+            Assert.AreEqual(typeof(MemoryStream), result.GetType());
+            Assert.AreNotEqual(0, result.GetBuffer().Length);
+        }
+
+
+        #endregion
+
     }
 }

@@ -15,7 +15,7 @@ namespace AjourBT.Infrastructure
         static MemoryStream pdfMemoryStream;
         static PDF pdf;
         static Font font;
-        static List<List<Cell>> tableData = new List<List<Cell>>();
+        static List<List<Cell>> tableData;
         static int headerRowsCount;
         static int fakeEmployeesCount;
         static int daysOfWeekRowNumber;
@@ -23,7 +23,10 @@ namespace AjourBT.Infrastructure
         static int weeksRowNumber;
         static int monthesRowNumber;
 
-        public static class PdfColors
+
+        static double columnWidth;
+
+        public struct PdfColors
         {
             public const int ganttGreen = 0x9acd32;
             public const int ganttDarkGreen = 0x78a407;
@@ -31,7 +34,7 @@ namespace AjourBT.Infrastructure
             public const int ganttBlue = 0x64c8fa;
             public const int ganttViolet = 0x5a009d;
             public const int ganttRed = 0xff0000;
-            public const int ganttMagneta = 0xff00ff;
+            public const int ganttMagenta = 0xff00ff;
             public const int ganttYellow = 0xffd800;
             public const int ganttWhite = 0xffffff;
 
@@ -47,6 +50,19 @@ namespace AjourBT.Infrastructure
 
         }
 
+        public struct Abbreviations
+        {
+            public const string SickAbsence = "SA";
+            public const string PaidVacation = "PV";
+            public const string BT = "BT";
+            public const string Journey = "J";
+            public const string UnpaidVacation = "UV";
+            public const string ReclaimedOvertime = "RO";
+            public const string OvertimeForReclaim = "OR";
+            public const string PrivateMinus = "P-";
+            public const string Unknown = "";
+        }
+
         static CalendarToPdfExporter()
         {
             pdfMemoryStream = new MemoryStream();
@@ -60,6 +76,95 @@ namespace AjourBT.Infrastructure
             daysRowNumber = 3;
             weeksRowNumber = 2;
             monthesRowNumber = 1;
+            columnWidth = 14.0;
+        }
+
+        public struct A0
+        {
+            public static float[] PORTRAIT = new float[] { 3368.0f, 7146.0f };
+            public static float[] LANDSCAPE = new float[] { 7146.0f, 3368.0f };
+        }
+
+        public static MemoryStream GeneratePDF(List<CalendarRowViewModel> calendarData, List<Holiday> holidays, DateTime from, DateTime to)
+        {
+            pdfMemoryStream = new MemoryStream();
+            PDF pdf = new PDF(pdfMemoryStream);
+            Table table = new Table();
+            tableData = CreateCalendar(calendarData, holidays, from, to);
+            table.SetData(tableData);
+            table.SetPosition(36, 36);
+            table.AutoAdjustColumnWidths();
+            AdjustColumnWidths(table);
+            //table.SetColumnWidth(); 
+            //
+            Table legendTable = new Table();
+            List<List<Cell>> legendData = CreateLegend();
+            legendTable.SetData(legendData);
+            legendTable.AutoAdjustColumnWidths();
+            legendTable.SetPosition(36, (tableData.Count + 1) * 12.12 + 36);
+
+            Page page = new Page(pdf, new float[] { table.GetWidth() + 72, (tableData.Count + legendData.Count + 1) * 12.12f + 72 });
+            table.DrawOn(page);
+
+            legendTable.DrawOn(page);
+            pdf.Close();
+
+            return pdfMemoryStream;
+        }
+
+        public static List<List<Cell>> CreateLegend()
+        {
+            List<List<Cell>> legendTable = new List<List<Cell>>();
+            for (int i = 0; i < 9; i++)
+            {
+                legendTable.Add(new List<Cell>());
+            }
+
+            legendTable[0].Add(new Cell(font, "Legend: "));
+            legendTable[0].Add(new Cell(font));
+
+            legendTable[0][0].SetColSpan(2);
+
+            legendTable[1].Add(new Cell(font, Abbreviations.BT));
+            legendTable[2].Add(new Cell(font, Abbreviations.Journey));
+            legendTable[3].Add(new Cell(font, Abbreviations.OvertimeForReclaim));
+            legendTable[4].Add(new Cell(font, Abbreviations.PaidVacation));
+            legendTable[5].Add(new Cell(font, Abbreviations.PrivateMinus));
+            legendTable[6].Add(new Cell(font, Abbreviations.ReclaimedOvertime));
+            legendTable[7].Add(new Cell(font, Abbreviations.SickAbsence));
+            legendTable[8].Add(new Cell(font, Abbreviations.UnpaidVacation));
+
+            legendTable[1][0].SetBgColor(PdfColors.ganttGreen);
+            legendTable[2][0].SetBgColor(PdfColors.ganttDarkGreen);
+            legendTable[3][0].SetBgColor(PdfColors.ganttMagenta);
+            legendTable[4][0].SetBgColor(PdfColors.ganttBlue);
+            legendTable[5][0].SetBgColor(PdfColors.ganttYellow);
+            legendTable[6][0].SetBgColor(PdfColors.ganttOrange);
+            legendTable[7][0].SetBgColor(PdfColors.ganttViolet);
+            legendTable[8][0].SetBgColor(PdfColors.ganttRed);
+
+            for (int i = 1; i < 9; i++)
+            {
+                legendTable[i][0].SetBrushColor(PdfColors.ganttWhite);
+            }
+
+            legendTable[1].Add(new Cell(font, "Business Trip"));
+            legendTable[2].Add(new Cell(font, "Journey"));
+            legendTable[3].Add(new Cell(font, "Overtime for Reclaim"));
+            legendTable[4].Add(new Cell(font, "Paid Vacation"));
+            legendTable[5].Add(new Cell(font, "Private Minus"));
+            legendTable[6].Add(new Cell(font, "Reclaimed Overtime"));
+            legendTable[7].Add(new Cell(font, "Sick Absence"));
+            legendTable[8].Add(new Cell(font, "Unpaid Vacation"));
+            return legendTable;
+        }
+
+        public static void AdjustColumnWidths(Table table)
+        {
+            for (int i = 1; i < table.GetRow(0).Count; i++)
+            {
+                table.SetColumnWidth(i, columnWidth);
+            }
         }
 
         public static List<List<Cell>> CreateCalendar(List<CalendarRowViewModel> calendarData, List<Holiday> holidays, DateTime from, DateTime to)
@@ -113,17 +218,17 @@ namespace AjourBT.Infrastructure
 
             for (int i = 0; i < calendarData.Count - fakeEmployeesCount; i++)
             {
-
-                foreach (CalendarItemViewModel calendarItem in calendarData[i].values)
+                if (calendarData[i].values != null)
                 {
-                    colSpan = (calendarItem.to.Date - calendarItem.from.Date).Days + 1;
-                    colIndex = GetColumnIndexForCalendarItem(calendarItem, from, to);
-                    if (colSpan + colIndex > (to.Date - from.Date).Days)
-                        colSpan = (to.Date - calendarItem.from.Date).Days + 1;
-                    calendarTable[i][colIndex].SetColSpan(colSpan);
-                    calendarTable[i][colIndex].SetBgColor(GetColorForCalendarItem(calendarItem));
-                    //calendarTable[i][colIndex].SetText("s");
-
+                    foreach (CalendarItemViewModel calendarItem in calendarData[i].values)
+                    {
+                        colSpan = GetColumnSpanForCalendarItem(calendarItem, from, to);
+                        colIndex = GetColumnIndexForCalendarItem(calendarItem, from, to);
+                        calendarTable[i][colIndex].SetColSpan(colSpan);
+                        calendarTable[i][colIndex].SetBgColor(GetColorForCalendarItem(calendarItem));
+                        calendarTable[i][colIndex].SetBrushColor(Color.white);
+                        calendarTable[i][colIndex].SetText(GetAbbreviationForCalendarItem(calendarItem));
+                    }
                 }
             }
 
@@ -182,8 +287,8 @@ namespace AjourBT.Infrastructure
                 case "ganttRed":
                     return PdfColors.ganttRed;
 
-                case "ganttMagneta":
-                    return PdfColors.ganttMagneta;
+                case "ganttMagenta":
+                    return PdfColors.ganttMagenta;
 
                 case "ganttYellow":
                     return PdfColors.ganttYellow;
@@ -194,16 +299,51 @@ namespace AjourBT.Infrastructure
 
         }
 
+        public static string GetAbbreviationForCalendarItem(CalendarItemViewModel calendaritem)
+        {
+
+            switch (calendaritem.customClass)
+            {
+                case "ganttGreen":
+                    return Abbreviations.BT;
+
+                case "ganttDarkGreen":
+                    return Abbreviations.Journey;
+
+                case "ganttOrange":
+                    return Abbreviations.ReclaimedOvertime;
+
+                case "ganttBlue":
+                    return Abbreviations.PaidVacation;
+
+                case "ganttViolet":
+                    return Abbreviations.SickAbsence;
+
+                case "ganttRed":
+                    return Abbreviations.UnpaidVacation;
+
+                case "ganttMagenta":
+                    return Abbreviations.OvertimeForReclaim;
+
+                case "ganttYellow":
+                    return Abbreviations.PrivateMinus;
+
+                default:
+                    return Abbreviations.Unknown;
+            }
+
+        }
+
         public static void ApplyHolidaysToHeader(List<List<Cell>> calendar, List<Holiday> holidays, DateTime from, DateTime to)
         {
-            if (calendar != null && holidays != null && calendar.Count != 0 && (to - from).Days +2 == calendar[0].Count)
+            if (calendar != null && holidays != null && calendar.Count != 0 && (to - from).Days + 2 == calendar[0].Count)
             {
                 foreach (Holiday holiday in holidays)
                 {
                     if (holiday.HolidayDate.Date >= from.Date && holiday.HolidayDate.Date <= to.Date)
                     {
-                            calendar[daysRowNumber][(holiday.HolidayDate.Date - from.Date).Days + 1].SetBgColor(PdfColors.holidayOrange);
-                            calendar[daysOfWeekRowNumber][(holiday.HolidayDate.Date - from.Date).Days + 1].SetBgColor(PdfColors.holidayOrange);
+                        calendar[daysRowNumber][(holiday.HolidayDate.Date - from.Date).Days + 1].SetBgColor(PdfColors.holidayOrange);
+                        calendar[daysOfWeekRowNumber][(holiday.HolidayDate.Date - from.Date).Days + 1].SetBgColor(PdfColors.holidayOrange);
                     }
                 }
             }
@@ -213,14 +353,14 @@ namespace AjourBT.Infrastructure
         {
             ColorRow(calendar, weeksRowNumber, PdfColors.headerWeekYellow);
             ColorRow(calendar, monthesRowNumber, PdfColors.headerMonthBlue);
-            ApplyHolidaysToHeader(calendar, holidays, from, to) ;
+            ApplyHolidaysToHeader(calendar, holidays, from, to);
         }
 
         public static void ColorRow(List<List<Cell>> calendar, int rowNumber, int color)
         {
-            if (calendar != null && calendar.Count >= rowNumber)
+            if (calendar != null && rowNumber >= 0 && calendar.Count >= rowNumber + 1)
             {
-                for (int i = 1; i< calendar[0].Count(); i++)
+                for (int i = 1; i < calendar[0].Count(); i++)
                 {
                     calendar[rowNumber][i].SetBgColor(color);
                 }
@@ -267,6 +407,8 @@ namespace AjourBT.Infrastructure
 
         public static List<List<Cell>> CreateEmptyCalendarBody(List<CalendarRowViewModel> calendarData, DateTime from, DateTime to)
         {
+            Cell cell;
+
             List<List<Cell>> calendarTable = new List<List<Cell>>();
             if (calendarData != null)
                 for (int i = 0; i < calendarData.Count - fakeEmployeesCount; i++)
@@ -274,7 +416,10 @@ namespace AjourBT.Infrastructure
                     calendarTable.Add(new List<Cell>());
                     for (DateTime date = from.Date; date <= to.Date; date = date.AddDays(1))
                     {
-                        calendarTable[i].Add(new Cell(font) { });
+                        cell = new Cell(font);
+                        cell.SetTextAlignment(Align.CENTER);
+                        calendarTable[i].Add(cell);
+
                     }
                 }
 
@@ -341,7 +486,6 @@ namespace AjourBT.Infrastructure
                 }
                 from = new DateTime(from.Year + 1, 1, 1);
             }
-
             return yearRow;
         }
 
@@ -357,19 +501,22 @@ namespace AjourBT.Infrastructure
             List<Cell> monthRow = new List<Cell>();
             Cell monthCell;
             DateTimeFormatInfo dfi = new DateTimeFormatInfo() { FirstDayOfWeek = DayOfWeek.Monday, CalendarWeekRule = CalendarWeekRule.FirstDay };
+            DateTime fromCopy = new DateTime(from.Year, from.Month, from.Day);
 
-            while (from.Date <= to.Date)
+            while (fromCopy.Date <= to.Date)
             {
-                monthCell = new Cell(font, dfi.GetMonthName(from.Month));
-                int colSpan = getColSpanForMonth(from, to);
+                monthCell = new Cell(font, dfi.GetMonthName(fromCopy.Month));
+                int colSpan = getColSpanForMonth(fromCopy, to);
+                if(colSpan<3)
+                    monthCell.SetText(monthCell.GetText().Substring(0, 3));
                 monthCell.SetColSpan(colSpan);
                 monthRow.Add(monthCell);
                 for (int i = 1; i < colSpan; i++)
                 {
                     monthRow.Add(new Cell(font));
                 }
-                DateTime lastDate = new DateTime(from.Year + (int)(from.Month / 12), from.Month % 12 + 1, 1);
-                from = lastDate;
+                DateTime lastDate = new DateTime(fromCopy.Year + (int)(fromCopy.Month / 12), fromCopy.Month % 12 + 1, 1);
+                fromCopy = lastDate;
             }
 
             return monthRow;
