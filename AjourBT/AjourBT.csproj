@@ -498,6 +498,7 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
     <Content Include="Views\Employee\CannotDelete.cshtml" />
+	<Content Include="Views\Error\ShowErrorPage.cshtml" />
     <Content Include="Views\Permit\Create.cshtml" />
     <Content Include="Views\Permit\Edit.cshtml" />
     <Content Include="Views\Permit\Delete.cshtml" />
