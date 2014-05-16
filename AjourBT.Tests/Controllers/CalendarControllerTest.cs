@@ -134,7 +134,7 @@ namespace AjourBT.Tests.Controllers
             List<DateTime> expHolidaysList = controller.GetHolidaysData();
             string fromDate = "01.01.2010";
             string toDate = "31.12.2016";
-            
+
             //Act
             var result = controller.GetCalendarData(fromDate, toDate, null) as PartialViewResult;
 
@@ -301,7 +301,7 @@ namespace AjourBT.Tests.Controllers
             DateTime fromDate = new DateTime(2010, 01, 01);
             DateTime toDate = new DateTime(2016, 12, 31);
             //Act
-            List<CalendarRowViewModel> calendarDataList = controller.GetCalendarRowData(empList,fromDate, toDate);
+            List<CalendarRowViewModel> calendarDataList = controller.GetCalendarRowData(empList, fromDate, toDate);
             //Assert
             Assert.AreEqual(1, calendarDataList.Count);
 
@@ -330,7 +330,7 @@ namespace AjourBT.Tests.Controllers
             DateTime fromDate = new DateTime(2010, 01, 01);
             DateTime toDate = new DateTime(2016, 12, 31);
             //Act
-            var dataList = controller.GetCalendarRowData(empList,fromDate, toDate);
+            var dataList = controller.GetCalendarRowData(empList, fromDate, toDate);
             var result = controller.InsertFakeEmployee(dataList, new DateTime(), new DateTime());
             //Assert
             Assert.AreEqual("fake_row", result.Last().id);
@@ -339,6 +339,80 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(2, result.Last().values.Count);
             Assert.AreEqual(dataList.Count, result.Count);
 
+        }
+
+        #endregion
+
+        #region printCalendarToPdf
+
+        [Test]
+        public void PrintCalendarToPdf_EmptyDates_FileReturned()
+        {
+            //Arrange
+            string from = "";
+            string to = "";
+
+            //Act
+            var result = controller.printCalendarToPdf(from, to, "");
+
+            //Assert        
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
+        }
+
+        [Test]
+        public void PrintCalendarToPdf_ProperDates_FileReturned()
+        {
+            //Arrange
+            string from = "01.01.2012";
+            string to = "01.02.2012";
+
+            //Act
+            var result = controller.printCalendarToPdf(from, to, ""); 
+
+            //Assert        
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
+        }
+
+        [Test]
+        public void PrintCalendarToPdf_WrongFromDate_FileReturned()
+        {
+            //Arrange
+            string from = "01a.01.2012";
+            string to = "01.02.2012";
+
+            //Act
+            var result = controller.printCalendarToPdf(from, to, "");
+
+            //Assert        
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
+        }
+
+        [Test]
+        public void PrintCalendarToPdf_WrongToDate_FileReturned()
+        {
+            //Arrange
+            string from = "01.01.2012";
+            string to = "01a.02.2012";
+
+            //Act
+            var result = controller.printCalendarToPdf(from, to, "");
+
+            //Assert        
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
+        }
+
+        [Test]
+        public void PrintCalendarToPdf_FromIsGreater_FileReturned()
+        {
+            //Arrange
+            string from = "02.02.2012";
+            string to = "01.02.2012";
+
+            //Act
+            var result = controller.printCalendarToPdf(from, to, "");
+
+            //Assert        
+            Assert.IsNull(  result  );
         }
 
         #endregion

@@ -20,7 +20,6 @@ namespace AjourBT.Tests.Infrastructure
     {
         List<CalendarRowViewModel> calendarModel;
         List<List<Cell>> calendarTable;
-        List<CalendarRowViewModel> calendarModelForColIndexAndColSpan;
 
         [SetUp]
         public void SetUpFixture()
@@ -2217,13 +2216,13 @@ namespace AjourBT.Tests.Infrastructure
             //Arrange
 
             //Act
-            List<List<Cell>> result = CalendarToPdfExporter.CreateLegend(); 
+            List<List<Cell>> result = CalendarToPdfExporter.CreateLegend();
 
             //Assert        
-            Assert.AreEqual(9, result.Count); 
+            Assert.AreEqual(9, result.Count);
 
             Assert.AreEqual("Legend: ", result[0][0].GetText());
-            Assert.AreEqual(2, result[0][0].GetColSpan()); 
+            Assert.AreEqual(2, result[0][0].GetColSpan());
 
             Assert.AreEqual("Business Trip", result[1][1].GetText());
             Assert.AreEqual("Journey", result[2][1].GetText());
@@ -2232,7 +2231,7 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual("Private Minus", result[5][1].GetText());
             Assert.AreEqual("Reclaimed Overtime", result[6][1].GetText());
             Assert.AreEqual("Sick Absence", result[7][1].GetText());
-            Assert.AreEqual("Unpaid Vacation", result[8][1].GetText()); 
+            Assert.AreEqual("Unpaid Vacation", result[8][1].GetText());
 
             Assert.AreEqual("BT", result[1][0].GetText());
             Assert.AreEqual("J", result[2][0].GetText());
@@ -2250,12 +2249,12 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttYellow, result[5][0].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttOrange, result[6][0].GetBgColor());
             Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttViolet, result[7][0].GetBgColor());
-            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttRed, result[8][0].GetBgColor()); 
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttRed, result[8][0].GetBgColor());
         }
 
         #endregion
 
-        #region GeneratePdf 
+        #region GeneratePdf
 
         [Test]
         public void GeneratePdf_ProperParameters_ProperMemoryStream()
@@ -2271,13 +2270,219 @@ namespace AjourBT.Tests.Infrastructure
             holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
 
             //Act
-            var result = CalendarToPdfExporter.GeneratePDF(calendarModel, holidays, from, to); 
+            var result = CalendarToPdfExporter.GeneratePDF(calendarModel, holidays, from, to);
 
             //Assert
             Assert.AreEqual(typeof(MemoryStream), result.GetType());
             Assert.AreNotEqual(0, result.GetBuffer().Length);
         }
 
+
+        #endregion
+
+        #region getCalendarBody
+
+        [Test]
+        public void getCalendarBody_ProperCalendarItemNotBT_ProperBodyMyTestMethod()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttOrange",
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(2)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(2, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttOrange, result[0][1].GetBgColor());
+        }
+
+        [Test]
+        public void getCalendarBody_OneDayBT_ProperBody ()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(1)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(1, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][1].GetBgColor());
+        }
+
+        [Test]
+        public void getCalendarBody_TwoDaysBT_ProperBody()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(2)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(2, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][1].GetBgColor());
+        }
+
+        [Test]
+        public void getCalendarBody_PairedFirstItemButNotBT_ProperBody()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttOrange",   
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(2)
+            });
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(2),
+                to = dateFrom.AddDays(4)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(2, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttOrange, result[0][1].GetBgColor());
+            Assert.AreNotEqual(false, result[0][1].GetBorder(Border.RIGHT));
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.LEFT));
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.RIGHT));
+            Assert.AreEqual(3, result[0][2].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][2].GetBgColor());
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.LEFT));
+
+        } 
+
+
+        [Test]
+        public void getCalendarBody_PairedSecondItemButNotBT_ProperBody()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(2)
+            });
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttOrange",
+                from = dateFrom.AddDays(2),
+                to = dateFrom.AddDays(4)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(2, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][1].GetBgColor());
+            Assert.AreNotEqual(false, result[0][1].GetBorder(Border.RIGHT));
+            Assert.AreNotEqual(CalendarToPdfExporter.PdfColors.pairedBTGreen, result[0][2].GetBgColor());
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.LEFT));
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.RIGHT));
+            Assert.AreEqual(3, result[0][2].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttOrange, result[0][2].GetBgColor());
+            Assert.AreNotEqual(false, result[0][2].GetBorder(Border.LEFT));
+
+        } 
+
+        [Test]
+        public void getCalendarBody_PairedBTs_ProperBody()
+        {
+            //Arrange
+            DateTime dateFrom = new DateTime(2012, 01, 01);
+            DateTime dateTo = new DateTime(2012, 01, 04);
+
+            calendarModel[0].values = new List<CalendarItemViewModel>();
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(1),
+                to = dateFrom.AddDays(2)
+            });
+
+            calendarModel[0].values.Add(new CalendarItemViewModel()
+            {
+                customClass = "ganttGreen",
+                from = dateFrom.AddDays(2),
+                to = dateFrom.AddDays(4)
+            });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendarBody(calendarModel, new List<Holiday>(), dateFrom, dateTo.AddDays(2));
+
+            //Assert  
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result[0].Count);
+            Assert.AreEqual(1, result[0][1].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][1].GetBgColor());
+            Assert.AreEqual(false, result[0][1].GetBorder(Border.RIGHT));
+            Assert.AreEqual(1, result[0][2].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.pairedBTGreen, result[0][2].GetBgColor());
+            Assert.AreEqual(false, result[0][2].GetBorder(Border.LEFT));
+            Assert.AreEqual(false, result[0][2].GetBorder(Border.RIGHT));
+            Assert.AreEqual(2, result[0][3].GetColSpan());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.ganttGreen, result[0][3].GetBgColor());
+            Assert.AreEqual(false, result[0][3].GetBorder(Border.LEFT));
+
+        } 
 
         #endregion
 

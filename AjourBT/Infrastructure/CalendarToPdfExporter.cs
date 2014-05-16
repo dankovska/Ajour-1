@@ -13,7 +13,6 @@ namespace AjourBT.Infrastructure
     public static class CalendarToPdfExporter
     {
         static MemoryStream pdfMemoryStream;
-        static PDF pdf;
         static Font font;
         static List<List<Cell>> tableData;
         static int headerRowsCount;
@@ -28,7 +27,7 @@ namespace AjourBT.Infrastructure
 
         public struct PdfColors
         {
-            public const int ganttGreen = 0x9acd32;
+            public const int ganttGreen = 0xb9dc70;
             public const int ganttDarkGreen = 0x78a407;
             public const int ganttOrange = 0xff7f00;
             public const int ganttBlue = 0x64c8fa;
@@ -47,6 +46,8 @@ namespace AjourBT.Infrastructure
             public const int headerWeekYellow = 0xfff3b3;
 
             public const int headerMonthBlue = 0xe3ffff;
+
+            public const int pairedBTGreen = 0xa4d146;
 
         }
 
@@ -87,7 +88,7 @@ namespace AjourBT.Infrastructure
 
         public static MemoryStream GeneratePDF(List<CalendarRowViewModel> calendarData, List<Holiday> holidays, DateTime from, DateTime to)
         {
-            pdfMemoryStream = new MemoryStream();
+            pdfMemoryStream = new MemoryStream(); 
             PDF pdf = new PDF(pdfMemoryStream);
             Table table = new Table();
             tableData = CreateCalendar(calendarData, holidays, from, to);
@@ -224,6 +225,26 @@ namespace AjourBT.Infrastructure
                     {
                         colSpan = GetColumnSpanForCalendarItem(calendarItem, from, to);
                         colIndex = GetColumnIndexForCalendarItem(calendarItem, from, to);
+                        if (calendarItem.customClass == "ganttGreen" && calendarItem.from != calendarItem.to)
+                        {
+                            if (calendarData[i].values.Where(c => (c.from == calendarItem.to) && c.customClass == "ganttGreen").FirstOrDefault() != null)
+                            {
+                                colSpan--;
+                                calendarTable[i][colIndex + colSpan].SetBorder(Border.RIGHT, false);
+                                calendarTable[i][colIndex + colSpan].SetBorder(Border.LEFT, false);
+                                calendarTable[i][colIndex].SetBorder(Border.RIGHT, false);
+                                calendarTable[i][colIndex + colSpan].SetBgColor(PdfColors.pairedBTGreen);
+                            }
+                            else if (calendarData[i].values.Where(c => c.to == calendarItem.from && c.customClass == "ganttGreen").FirstOrDefault() != null)
+                            {
+                                colIndex++;
+                                colSpan--;
+                                calendarTable[i][colIndex - 1].SetBorder(Border.RIGHT, false);
+                                calendarTable[i][colIndex - 1].SetBorder(Border.LEFT, false);
+                                calendarTable[i][colIndex].SetBorder(Border.LEFT, false);
+                                calendarTable[i][colIndex - 1].SetBgColor(PdfColors.pairedBTGreen);
+                            }
+                        }
                         calendarTable[i][colIndex].SetColSpan(colSpan);
                         calendarTable[i][colIndex].SetBgColor(GetColorForCalendarItem(calendarItem));
                         calendarTable[i][colIndex].SetBrushColor(Color.white);
@@ -507,7 +528,7 @@ namespace AjourBT.Infrastructure
             {
                 monthCell = new Cell(font, dfi.GetMonthName(fromCopy.Month));
                 int colSpan = getColSpanForMonth(fromCopy, to);
-                if(colSpan<3)
+                if (colSpan < 3)
                     monthCell.SetText(monthCell.GetText().Substring(0, 3));
                 monthCell.SetColSpan(colSpan);
                 monthRow.Add(monthCell);

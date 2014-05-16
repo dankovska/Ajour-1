@@ -199,62 +199,11 @@ namespace AjourBT.Controllers
             List<Employee> empList = SearchEmployeeData(selectedDepartment);
             List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
 
-            //return File(CalendarToPdfExporter.GeneratePDF(GetCalendarRowData(repository.Employees.ToList(), new DateTime(2012, 12, 31), new DateTime(2015, 01, 01)), repository.Holidays.ToList(), new DateTime(2012, 01, 31), new DateTime(2015, 01, 01)).ToArray(), "application/pdf", "Calendar.pdf");
-
-            return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
-
+            if (parseFromDate < parseToDate)
+                return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
+            else
+                return null;
         }
-
-        //public List<List<Cell>> generateCalendarHeader(DateTime from, DateTime to)
-        //{
-        //    List<List<Cell>> tableData = new List<List<Cell>>();
-        //    List<Cell> row = new List<Cell>();
-
-
-
-        //    return tableData;
-        //}
-
-
-
-        //public class A0
-        //{
-        //    public static float[] PORTRAIT = new float[] { 3368.0f, 7146.0f };
-        //    public static float[] LANDSCAPE = new float[] { 7146.0f, 3368.0f };
-        //}
-
-        //public void blankOutColumn(Table table, int index)
-        //{
-        //    List<Cell> column = table.GetColumn(index);
-        //    for (int i = 0; i < column.Count; i++)
-        //    {
-        //        Cell cell = column[i];
-        //        cell.SetBgColor(Color.white);
-        //        cell.SetBorder(Border.TOP, false);
-        //        cell.SetBorder(Border.BOTTOM, false);
-        //    }
-        //}
-
-
-        //public void SetBgColorForRow(Table table, int index, int color)
-        //{
-        //    List<Cell> row = table.GetRow(index);
-        //    for (int i = 0; i < row.Count; i++)
-        //    {
-        //        Cell cell = row[i];
-        //        cell.SetBgColor(color);
-        //    }
-        //}
-
-
-        //public void SetFontForRow(Table table, int index, Font font)
-        //{
-        //    List<Cell> row = table.GetRow(index);
-        //    for (int i = 0; i < row.Count; i++)
-        //    {
-        //        row[i].SetFont(font);
-        //    }
-        //}
-
+               
     }
 }
