@@ -1650,6 +1650,7 @@ namespace AjourBT.Filters
                 #endregion
             }
 
+
             public void InitDBClear()
             {
                 try
@@ -1696,6 +1697,19 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.CreateRole("ABM");
                     }
+
+
+                    if (!WebSecurity.UserExists("admin"))
+                    {
+                        WebSecurity.CreateUserAndAccount("admin", "epol01");
+                    }
+
+
+                    if (!System.Web.Security.Roles.IsUserInRole("admin", "PU"))
+                    {
+                        System.Web.Security.Roles.AddUserToRole("admin", "PU");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -1710,9 +1724,22 @@ namespace AjourBT.Filters
                 Position position = new Position { PositionID = 1, TitleEn = "Unreal", TitleUk = "Нереальна" };
                 context.Positions.Add(position);
                 context.SaveChanges();
-                Employee powerUser = new Employee { EmployeeID = 22, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "rkni", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, BirthDay = new DateTime(1987, 11, 10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 1 };
+                Employee powerUser = //new Employee { EmployeeID = 22, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "rkni", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, BirthDay = new DateTime(1987, 11, 10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 1 };
+                new Employee { EmployeeID = 1, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "admin", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, PositionID = 1, CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() };
                 context.Employees.Add(powerUser);
                 context.SaveChanges();
+
+
+                Country country = new Country { CountryID = 1, CountryName = "Ukraine", Holidays = new List<Holiday>(), Locations = new List<Location>(), Comment = "UTC + 2" };
+                context.Countries.Add(country);
+                context.SaveChanges();
+                //Location location = new Location { LocationID = 1, Title = "AT/BW", Address = "Atherton, 512 Burrows Way St.", CountryID = 1 };
+                //context.Locations.Add(location);
+                //context.SaveChanges();
+                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2013, 04, 10), CountryID = 1, IsPostponed = false };
+                context.Holidays.Add(holiday);
+                context.SaveChanges();
+
             }
 
             //Database.SetInitializer<AjourDbContext>(null);
