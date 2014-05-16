@@ -83,7 +83,7 @@ namespace AjourBT.Models
         public int? DaysUsedInPrivateTrips { get; set; }
         public Passport Passport { get; set; }
 
-
+        public Department Department { get; set; }
         [ConcurrencyCheck]
         [Timestamp]
         public byte[] RowVersion { get; set; }
@@ -98,6 +98,7 @@ namespace AjourBT.Models
             DateDismissed = string.Format("{0:d}", employee.DateDismissed);
             IsManager = employee.IsManager;
             DepartmentID = employee.DepartmentID;
+            Department = employee.Department;
             DepartmentName = employee.Department!=null?employee.Department.DepartmentName:null;
             BusinessTrips = employee.BusinessTrips;
             IsKartaPolaka = employee.Permit == null ? false : employee.Permit.IsKartaPolaka;

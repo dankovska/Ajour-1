@@ -397,17 +397,19 @@ namespace AjourBT.Tests.Controllers
             VisaController controller = new VisaController(mock.Object);
 
             // Act - call the action method
-            IEnumerable<Employee> result = (IEnumerable<Employee>)controller.GetVisaDataBTM("  5/13  ").Model;
+            IEnumerable<Employee> result = (IEnumerable<Employee>)controller.GetVisaDataBTM("  5/13 ").Model;
             var view = controller.GetVisaDataBTM("  5/13  ");
             Employee[] employeeVisaView = result.ToArray();
 
             // Assert - check the result
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", view.ViewName);
-            Assert.IsTrue(employeeVisaView.Length == 1);
+
+            Assert.AreEqual(employeeVisaView.Length, 1);
             Assert.AreEqual(employeeVisaView[0].LastName, "Kowwood");
             Assert.AreEqual(employeeVisaView[0].FirstName, "Oleksiy");
             Assert.AreEqual(employeeVisaView[0].EID, "xomi");
+
 
         }
 
@@ -696,7 +698,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(employeeVisaView[0].LastName, "Kowwood");
             Assert.AreEqual(employeeVisaView[0].FirstName, "Oleksiy");
             Assert.AreEqual(employeeVisaView[0].EID, "xomi");
-
+ 
         }
 
         [Test]
