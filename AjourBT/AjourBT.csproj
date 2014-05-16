@@ -220,6 +220,7 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EMPController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HolidayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -295,6 +296,7 @@
     <Compile Include="Models\CalendarRowViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeViewModelForVU.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\JourneysAndOvertimesModel.cs" />
     <Compile Include="Models\JourneysByEmployeeViewModel.cs" />
     <Compile Include="Models\OvertimeByEmployeeModel.cs" />
@@ -636,6 +638,12 @@
     <Content Include="Views\Journey\GetJourneyDataForEmp.cshtml" />
     <Content Include="Views\Journey\NoData.cshtml" />
     <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
+    <Content Include="Views\EMP\NoBtsInThisYear.cshtml" />
+    <Content Include="Views\EMP\NoAbsenceData.cshtml" />
+    <Content Include="Views\EMP\NoBirthdays.cshtml" />
+    <Content Include="Views\EMP\GetListofYearsEMP.cshtml" />
+    <Content Include="Views\EMP\Empty.cshtml" />
+    <Content Include="Views\EMP\GetBusinessTripByYearsEMP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

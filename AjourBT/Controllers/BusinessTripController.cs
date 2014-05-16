@@ -43,6 +43,10 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         private string btDatesOverlay = "BT with same dates is already planned for this user. "
                                       + "Please change \'From\' or \'To\'";
 
+        private string btCreationError ="Absence already planned on this period for this user. "
+                                      + "Please change OrderDates or if BT haven\'t OrderDates "
+                                      + "change \'From\' or \'To\'";
+
         private StringBuilder comment = new StringBuilder();
         private string defaultAccComment;
 
@@ -174,6 +178,10 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             {
                                 return Json(new { error = modelError });
                             }
+                            //catch (VacationAlreadyExistException)
+                            //{
+                            //    return Json(new { error = btCreationError });
+                            //}
                         }
                     }
                 }
@@ -710,6 +718,11 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     return Json(new { error = modelError });
                 }
+                catch (VacationAlreadyExistException)
+                {
+                    Console.WriteLine("VacancyAlreadyExistException");
+                    return Json(new { error = btCreationError });
+                }
 
                 IEnumerable<Employee> empList = SelectEmployees(selectedDepartment, null);
                 return View("TableViewBTADM", empList.ToList());
@@ -973,6 +986,10 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 catch (DbUpdateConcurrencyException)
                 {
                     return Json(new { error = modelError });
+                }
+                catch (VacationAlreadyExistException)
+                {
+                    return Json(new { error = btCreationError });
                 }
                 selectedBusinessTripsList.Add(bTrip);
                 if (bTrip.Status == BTStatus.Confirmed)

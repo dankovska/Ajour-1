@@ -8,125 +8,34 @@
     ViewBag.Title = "GetLastBTDataPerEmployee";
     BusinessTrip businessTrip = ViewBag.BTsGeneralInformation;
 }
-
-<table>
-    <tr>
-        <td>
-            <table>
-                <tr>
-                    <td><b>Manager </b></td>
-                    <td>@Html.DisplayFor(model => businessTrip.Manager)</td>
-                </tr>
-
-            </table>
-            <table>
-                <tr>
-                    @foreach (var bt in @Model)
-                    {
-                    <tr>
-                        <td><b>From </b></td>
-                        <td>
-                            @bt.StartDate.ToString("dd.MM.yyyy")
-                        </td>
-
-                        <td><b>To </b></td>
-                        <td>
-                            @bt.EndDate.ToString("dd.MM.yyyy")
-                        </td>
-
-                    </tr>
-
-                        <tr>
-                            <td><b>Location </b></td>
-                            <td>
-                                @Html.DisplayFor(model => bt.Location.Title)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><br></td>
-                        </tr>
-
-                    }
-                </table>
-                <table>
-                    <tr>
-                        <td><b>Order Dates</b></td>
-                        @if(businessTrip.OrderStartDate != null && businessTrip.OrderEndDate != null)
-                        {
-                        <td>
-                            @businessTrip.OrderStartDate.Value.ToString("dd.MM.yyyy") - @businessTrip.OrderEndDate.Value.ToString("dd.MM.yyyy")
-                        </td>
-                        }
-                        else
-                        {
-                            <td>
-                                 -
-                            </td>
-                        }
-                    </tr>
-
-                    <tr>
-                        <td></td>
-                    </tr>
-                    @if (businessTrip.AccComment != null)
-                    {
-                        <tr>
-                            <td>
-                                <b>Cash Order</b>
-
-                            </td>
-                            <td width="350" colspan="3">
-                                @Html.DisplayFor(model => businessTrip.AccComment)
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    }
-                </table>
-
-            </td>
-
-            <td>
-                &nbsp;
-            </td>           
-            <td>
-                &nbsp;
-            </td>
-        </tr>
-
-    </table>
-
     <table>
         <tr></tr>
         <tr>
             <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="~/Images/FinReport.pdf" class="customBlueItalic">
                     Finance Report Example
                 </a>
             </td>
 
             <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="~/Images/BTreport.doc" class="customBlueItalic">
                     BT Report Template
                 </a>
             </td>
 
-        </tr>
-
-        <tr>
             <td>
-                <br>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="http://www.bank.gov.ua/control/uk/curmetal/detail/currency?period=daily" class="customBlueItalic">
                     Exchange Rate
                 </a>
             </td>
             <td></td>
+        </tr>
+        <tr>
+            <td>
+                <br>
+            </td>
         </tr>
     </table>
