@@ -1736,7 +1736,7 @@ namespace AjourBT.Filters
                 //Location location = new Location { LocationID = 1, Title = "AT/BW", Address = "Atherton, 512 Burrows Way St.", CountryID = 1 };
                 //context.Locations.Add(location);
                 //context.SaveChanges();
-                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2013, 04, 10), CountryID = 1, IsPostponed = false };
+                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2014, 04, 10), CountryID = 1, IsPostponed = false };
                 context.Holidays.Add(holiday);
                 context.SaveChanges();
 
