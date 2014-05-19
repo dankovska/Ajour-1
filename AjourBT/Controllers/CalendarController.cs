@@ -1,11 +1,14 @@
 ﻿using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
 using AjourBT.Models;
+using PDFjet.NET;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AjourBT.Infrastructure;
 
 namespace AjourBT.Controllers
 {
@@ -70,24 +73,25 @@ namespace AjourBT.Controllers
                 parseFromDate = DateTime.ParseExact(calendarFromDate, "dd.MM.yyyy", null);
                 parseToDate = DateTime.ParseExact(calendarToDate, "dd.MM.yyyy", null);
             }
-            catch (SystemException)            
-            { 
-                parseFromDate = new DateTime(currentYear,01,01);
-                parseToDate = new DateTime(currentYear,12,31);
+            catch (SystemException)
+            {
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
             }
 
             ViewBag.Holidays = GetHolidaysData();
             ViewBag.PostponedHolidays = GetPostponedHolidaysData();
             List<Employee> empList = SearchEmployeeData(selectedDepartment);
             List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
-
+            ViewBag.parseFromDate = parseFromDate;
+            ViewBag.parseToDate = parseToDate; 
             //var currentUser = HttpContext.User.Identity.Name;
             if (Request.UrlReferrer != null)
             {
                 string myUrl = Request.UrlReferrer.OriginalString;
                 if (myUrl.Contains("ABMView"))
                 {
-                    ViewBag.ItemsPerPage = empList.Count +  1; //+1 for fake row  
+                    ViewBag.ItemsPerPage = empList.Count + 1; //+1 for fake row  
                     return PartialView(rowList);
                 }
             }
@@ -140,7 +144,7 @@ namespace AjourBT.Controllers
 
 
 
-            List<CalendarRowViewModel> result = InsertFakeEmployee(calendarDataList, fromDate , toDate);
+            List<CalendarRowViewModel> result = InsertFakeEmployee(calendarDataList, fromDate, toDate);
             return result;
             //return calendarDataList;
         }
@@ -168,6 +172,35 @@ namespace AjourBT.Controllers
             return dataList;
         }
 
+        [HttpPost]
+        public ActionResult printCalendarToPdf(string calendarFromDate, string calendarToDate,   string selectedDepartment = null)
+        {
+            DateTime parseFromDate;
+            DateTime parseToDate;
+            int currentYear = DateTime.Now.Year;
 
+            if (calendarFromDate == "" && calendarToDate == "")
+            {
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
+            }
+
+            try
+            {
+                parseFromDate = DateTime.ParseExact(calendarFromDate, "dd.MM.yyyy", null);
+                parseToDate = DateTime.ParseExact(calendarToDate, "dd.MM.yyyy", null);
+            }
+            catch (SystemException)
+            {
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
+            }
+
+            List<Employee> empList = SearchEmployeeData(selectedDepartment);
+            List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
+
+                return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
+        }
+               
     }
 }

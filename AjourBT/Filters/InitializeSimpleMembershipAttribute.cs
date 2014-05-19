@@ -267,6 +267,8 @@ namespace AjourBT.Filters
                 new BusinessTrip { BusinessTripID = 93, StartDate = new DateTime(2014,03,02), EndDate = new DateTime (2014,03,10), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
                 new BusinessTrip { BusinessTripID = 94, StartDate = new DateTime(2014,03,10), EndDate = new DateTime (2014,03,19), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
                // new BusinessTrip { BusinessTripID = 194, StartDate = new DateTime(2014,02,10), EndDate = new DateTime (2014,02,23), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 22, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
+                new BusinessTrip { BusinessTripID = 96, StartDate = new DateTime(2014,12,01), EndDate = new DateTime (2014,12,04), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
+                new BusinessTrip { BusinessTripID = 95, StartDate = new DateTime(2014,12,04), EndDate = new DateTime (2014,12,05), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
 
                 new BusinessTrip { BusinessTripID = 130, StartDate = new DateTime(2012,11,01), EndDate = new DateTime (2012,12,30), OrderStartDate = new DateTime(2013,10,31), OrderEndDate = new DateTime (2013,12,31), DaysInBtForOrder = 62, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime (2015,12,30), Status= BTStatus.Reported, EmployeeID = 22, LocationID = 1, Manager="ncru", UnitID = 1,Purpose = "Meeting",Responsible= "mter" },
 
@@ -1649,7 +1651,6 @@ namespace AjourBT.Filters
 
                 #endregion
             }
-
 
             public void InitDBClear()
             {
