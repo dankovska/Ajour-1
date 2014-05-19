@@ -412,7 +412,7 @@ namespace AjourBT.Tests.Controllers
             var result = controller.printCalendarToPdf(from, to, "");
 
             //Assert        
-            Assert.IsNull(  result  );
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
         }
 
         #endregion

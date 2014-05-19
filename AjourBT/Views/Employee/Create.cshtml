@@ -5,7 +5,8 @@
 @{
     Layout = null;
     ViewBag.Title = "Create Employee";
-}
+    var selected = ViewBag.SelectedDepartment;
+    }
 
 <script type="text/javascript">
     clearTimeout(timer);
@@ -46,7 +47,15 @@
 
         <tr>
             <td>@Html.Label("Department")</td>
-            <td>@Html.DropDownList("DepartmentID", (SelectList)ViewBag.DepartmentsList, "<Choose department>")
+            <td>
+            @if (selected == "")
+            {
+                   @Html.DropDownList("DepartmentID",  (SelectList)ViewBag.DepartmentsList, "<Choose department>", new {  id = "depDropList"  }) 
+            }
+                                                                                                                                         
+            else{
+           @Html.DropDownList("DepartmentID",  (SelectList)ViewBag.DepartmentsList)
+            }
                 <br />   @Html.ValidationMessageFor(model => model.DepartmentID)</td>
         </tr>
 

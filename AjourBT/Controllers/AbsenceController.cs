@@ -47,14 +47,14 @@ namespace AjourBT.Controllers
             }
             catch (SystemException)
             {
-                return View("NoData");
+                return PartialView("NoAbsenceData");
             }
 
             searchString = searchString != "" ? searchString.Trim() : "";
             List<CalendarItem> calendarItemsList = SearchEmployeeData(parseFromDate, parseToDate, searchString);
             if (calendarItemsList.Count == 0)
             {
-                return View("NoData");
+                return PartialView("NoAbsenceData");
             }
 
             List<int> empID = calendarItemsList.Select(id => id.EmployeeID).Distinct().ToList();

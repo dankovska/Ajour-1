@@ -11,7 +11,7 @@
 }
 
 
-@using (Html.BeginForm("printCalendarToPdf", "Calendar"))
+@using (Html.BeginForm("printCalendarToPdf", "Calendar", FormMethod.Post, new   {id ="printCalendarToPdf", style="height: 11%" }))
 {
 <div id="calendarDropList">
     @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentDropDownList, "All Departments", new { onchange = "$(this.form).submit();", id = "depDropList" })
@@ -33,9 +33,7 @@
 
         <tr id="wtrInput2">
             <td colspan="2"><p id="errorFromAbs"></p></td>
-            <td colspan="2"><p id="errorToAbs"></p></td>
-            <td></td>
-            <td></td>
+            <td colspan="4"><p id="errorToAbs"></p></td>
         </tr>
     </table>
     </div>
@@ -78,17 +76,6 @@
 
         $('#absenceButton').button();
     })
-
-    $("#calendarAbsenceButton").click(function (event) {
-        $.ajax({
-            cache: false,
-            url: "/Calendar/getCalendarData",
-            type: "Post",
-            data: { calendarFromDate: $('#calendarFromDate').val(), calendarToDate: $("#calendarToDate").val(), selectedDepartment: $('#selectedDepartment :selected').val() },
-            success: function (data) {
-                $("#CalendarData").html(data);
-            }
-        })
-    });
+  
 </script>
 

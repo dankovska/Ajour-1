@@ -199,10 +199,7 @@ namespace AjourBT.Controllers
             List<Employee> empList = SearchEmployeeData(selectedDepartment);
             List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
 
-            if (parseFromDate < parseToDate)
                 return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
-            else
-                return null;
         }
                
     }

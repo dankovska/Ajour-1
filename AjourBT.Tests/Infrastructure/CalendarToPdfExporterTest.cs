@@ -463,7 +463,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2014, 1, 1);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getYearRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getYearsRow(from, to);
 
             //Assert
             Assert.AreEqual(734, result.Count);
@@ -486,7 +486,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2011, 12, 30);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getYearRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getYearsRow(from, to);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -503,7 +503,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2011, 12, 29);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getYearRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getYearsRow(from, to);
 
             //Assert
             Assert.AreEqual(0, result.Count);
@@ -522,7 +522,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2013, 1, 31);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getMonthRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getMonthsRow(from, to);
 
             //Assert
             Assert.AreEqual(399, result.Count);
@@ -545,7 +545,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2011, 12, 30);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getMonthRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getMonthsRow(from, to);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -562,7 +562,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2011, 12, 29);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getMonthRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getMonthsRow(from, to);
 
             //Assert
             Assert.AreEqual(0, result.Count);
@@ -582,7 +582,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2013, 1, 23);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getWeekRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getWeeksRow(from, to);
 
             //Assert
             Assert.AreEqual(390, result.Count);
@@ -605,7 +605,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2012, 12, 31);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getWeekRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getWeeksRow(from, to);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -622,7 +622,7 @@ namespace AjourBT.Tests.Infrastructure
             DateTime to = new DateTime(2011, 12, 29);
 
             //Act 
-            List<Cell> result = CalendarToPdfExporter.getWeekRow(from, to);
+            List<Cell> result = CalendarToPdfExporter.getWeeksRow(from, to);
 
             //Assert
             Assert.AreEqual(0, result.Count);
@@ -2277,6 +2277,69 @@ namespace AjourBT.Tests.Infrastructure
             Assert.AreNotEqual(0, result.GetBuffer().Length);
         }
 
+        [Test]
+        public void GeneratePdf_FromGreaterthanTo_EmptyMemoryStream()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2012, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            var result = CalendarToPdfExporter.GeneratePDF(calendarModel, holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(MemoryStream), result.GetType());
+            Assert.AreEqual(0, result.GetBuffer().Length);
+        }
+
+        [Test]
+        public void GeneratePdf_CalendarModelIsNull_EmptyMemoryStream()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            var result = CalendarToPdfExporter.GeneratePDF(null, holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(MemoryStream), result.GetType());
+            Assert.AreEqual(0, result.GetBuffer().Length);
+        }
+
+        [Test]
+        public void GeneratePdf_CalendarmodelIsEmpty_EmptyMemoryStream()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            var result = CalendarToPdfExporter.GeneratePDF(new List<CalendarRowViewModel>(), holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(MemoryStream), result.GetType());
+            Assert.AreEqual(0, result.GetBuffer().Length);
+        }
+
 
         #endregion
 
@@ -2485,6 +2548,206 @@ namespace AjourBT.Tests.Infrastructure
         } 
 
         #endregion
+
+        #region CreateCalendar
+
+        [Test]
+        public void CreateCalendar_ProperParameters_ProperCalendar()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendar(calendarModel, holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(List<List<Cell>>), result.GetType());
+            Assert.AreNotEqual(0, result.Count);
+        }
+
+        [Test]
+        public void CreateCalendar_FromGreaterthanTo_EmptyCalendar()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2012, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendar(calendarModel, holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(List<List<Cell>>), result.GetType());
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void CreateCalendar_CalendarModelIsNull_EmptyCalendar()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendar(null, holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(List<List<Cell>>), result.GetType());
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void CreateCalendar_CalendarmodelIsEmpty_EmptyCalendar()
+        {
+            //Arrange 
+            List<Holiday> holidays = new List<Holiday>();
+            DateTime from = new DateTime(2012, 12, 26);
+            DateTime to = new DateTime(2013, 1, 8);
+
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 30), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 28), IsPostponed = false });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2013, 1, 6), IsPostponed = true });
+            holidays.Add(new Holiday() { HolidayDate = new DateTime(2012, 12, 27), IsPostponed = true });
+
+            //Act
+            List<List<Cell>> result = CalendarToPdfExporter.CreateCalendar(new List<CalendarRowViewModel>(), holidays, from, to);
+
+            //Assert
+            Assert.AreEqual(typeof(List<List<Cell>>), result.GetType());
+            Assert.AreEqual(0, result.Count);
+        }
+
+
+
+
+        #endregion
+
+        #region MarkToday
+
+        [Test]
+        public void MarkToday_TodayIsEqualToFrom_TodayMarked()
+        {
+            //Arrange
+            DateTime from  = DateTime.Now.ToLocalTimeAzure();
+            DateTime to = DateTime.Now.ToLocalTimeAzure().AddDays(1); 
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to); 
+
+            //Assert        
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[3][1].GetBgColor( )); 
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[4][1].GetBgColor( )); 
+        }
+
+        [Test]
+        public void MarkToday_TodayIsEqualToTo_TodayMarked()
+        {
+            //Arrange
+            DateTime from = DateTime.Now.ToLocalTimeAzure().AddDays(-1);
+            DateTime to = DateTime.Now.ToLocalTimeAzure();
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to);
+
+            //Assert        
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[3][2].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[4][2].GetBgColor()); 
+
+        }
+
+        [Test]
+        public void MarkToday_TodayIsBetweenFromAndTo_TodayMarked()
+        {
+            //Arrange
+            DateTime from = DateTime.Now.ToLocalTimeAzure().AddDays(-1);
+            DateTime to = DateTime.Now.ToLocalTimeAzure().AddDays(1);
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to);
+
+            //Assert        
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[3][2].GetBgColor());
+            Assert.AreEqual(CalendarToPdfExporter.PdfColors.todayGreen, calendar[4][2].GetBgColor()); 
+        }
+
+        [Test]
+        public void MarkToday_TodayIsLesserThanFrom_TodayNotMarked()
+        {
+            //Arrange
+            DateTime from = DateTime.Now.ToLocalTimeAzure().AddDays(1);
+            DateTime to = DateTime.Now.ToLocalTimeAzure().AddDays(2);
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to);
+
+            //Assert        
+            Assert.AreEqual(-1, calendar[3][1].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][1].GetBgColor()); 
+        }
+
+        [Test]
+        public void MarkToday_TodayIsGreaterThanTo_TodayNotMarked()
+        {
+            //Arrange
+            DateTime from = DateTime.Now.ToLocalTimeAzure().AddDays(-2);
+            DateTime to = DateTime.Now.ToLocalTimeAzure().AddDays(-1);
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to);
+
+            //Assert        
+            Assert.AreEqual(-1, calendar[3][1].GetBgColor());
+            Assert.AreEqual(-1, calendar[4][1].GetBgColor()); 
+        }
+
+        [Test]
+        public void MarkToday_ToIsLesserThanFrom_NoException()
+        {
+            //Arrange
+            DateTime from = DateTime.Now.ToLocalTimeAzure().AddDays(1);
+            DateTime to = DateTime.Now.ToLocalTimeAzure().AddDays(-1);
+
+            List<List<Cell>> calendar = CalendarToPdfExporter.CreateCalendar(calendarModel, null, from, to);
+
+            //Act 
+            CalendarToPdfExporter.MarkToday(calendar, from, to);
+
+            //Assert        
+
+        }
+
+        #endregion 
+
+
+
 
     }
 }

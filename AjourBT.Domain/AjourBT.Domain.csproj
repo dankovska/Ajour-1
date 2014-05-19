@@ -117,6 +117,7 @@
     <Compile Include="Concrete\ListRepository.cs" />
     <Compile Include="Concrete\Message.cs" />
     <Compile Include="Concrete\Messenger.cs" />
+    <Compile Include="Exceptions\VacationAlreadyExistException.cs" />
     <Compile Include="Concrete\XlsLoader.cs" />
     <Compile Include="CustomAnnotations\GreaterThan.cs" />
     <Compile Include="CustomAnnotations\RequiredIf.cs" />
