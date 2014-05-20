@@ -61,8 +61,8 @@ $(document).on('click', '#CreateHoliday', function (event) {
                     showOn: 'button',
                     buttonImage: '/Content/themes/base/images/calendar2.gif',
                     buttonImageOnly: true,
-                    minDate: new Date(startYear, 0, 01),
-                    maxDate: new Date(endYear, 11, 31)
+                    //minDate: new Date(startYear, 0, 01),
+                    //maxDate: new Date(endYear, 11, 31)
                 })
 
                 $('#buttonSaveHoliday').button();
@@ -143,8 +143,8 @@ $(document).on("click", ".holidayEditDialog", function (event) {
                     showOn: 'button',
                     buttonImage: '/Content/themes/base/images/calendar2.gif',
                     buttonImageOnly: true,
-                    minDate: new Date(startYear, 0, 01),
-                    maxDate: new Date(endYear, 11, 31)
+                    //minDate: new Date(startYear, 0, 01),
+                    //maxDate: new Date(endYear, 11, 31)
                 })
 
                 $("#btnSaveHoliday").click(function (event) {

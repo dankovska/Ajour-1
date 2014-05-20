@@ -1707,6 +1707,7 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.AddUserToRole("admin", "PU");
                     }
+                 
                 }
                 catch (Exception ex)
                 {
@@ -1726,7 +1727,7 @@ namespace AjourBT.Filters
                 Country country = new Country { CountryID = 1, CountryName = "Ukraine", Holidays = new List<Holiday>(), Locations = new List<Location>(), Comment = "UTC + 2" };
                 context.Countries.Add(country);
                 context.SaveChanges();
-                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2014, 04, 10), CountryID = 1, IsPostponed = false };
+                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2013, 04, 10), CountryID = 1, IsPostponed = false };
                 context.Holidays.Add(holiday);
                 context.SaveChanges();
             }
