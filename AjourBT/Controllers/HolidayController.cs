@@ -22,10 +22,18 @@ namespace AjourBT.Controllers
         {        
             ViewBag.YearDropdownList = YearDropDownList();
             ViewBag.CountryDropdownList = CountryDropDownList();
+                 
             var year = (from hol in repository.Holidays
                         orderby hol.HolidayDate descending
                         select hol.HolidayDate.Year).FirstOrDefault();
-            ViewBag.DefaultYear = year;
+            if (repository.Holidays.Any(h => h.HolidayDate.Year == DateTime.Now.Year))
+            {
+                ViewBag.DefaultYear = DateTime.Now.Year;
+            }
+            else
+            {
+                ViewBag.DefaultYear = year;
+            }
             ViewBag.DefaultCountry = SelectDefaultCountryID();
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             return View();
