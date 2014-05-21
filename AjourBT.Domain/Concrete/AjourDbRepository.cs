@@ -1465,45 +1465,48 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
         #region Users
         public IEnumerable<User> Users
         {
-            get { return context.Users; }
+            get { throw new NotImplementedException(); }
+            //get { return context.Users; }
         }
 
         public void SaveUser(User user)
         {
-            if (user.UserId.Equals(default(int)))
-            {
-                context.Users.Add(user);
+                        throw new NotImplementedException();
+            //if (user.UserId.Equals(default(int)))
+            //{
+            //    context.Users.Add(user);
 
-            }
-            else
-            {
-                User usr = context.Users.Find(user.UserId);
+            //}
+            //else
+            //{
+            //    User usr = context.Users.Find(user.UserId);
 
-                if (usr != null)
-                {
-                    if (!usr.RowVersion.SequenceEqual(user.RowVersion))
-                    {
-                        throw new DbUpdateConcurrencyException();
-                    }
-                    usr.FirstName = user.FirstName;
-                    usr.LastName = user.LastName;
-                }
-            }
-            context.SaveChanges();
+            //    if (usr != null)
+            //    {
+            //        if (!usr.RowVersion.SequenceEqual(user.RowVersion))
+            //        {
+            //            throw new DbUpdateConcurrencyException();
+            //        }
+            //        usr.FirstName = user.FirstName;
+            //        usr.LastName = user.LastName;
+            //    }
+            //}
+            //context.SaveChanges();
         }
 
         public User DeleteUser(int userID)
         {
-            User usr = context.Users.Find(userID);
+                        throw new NotImplementedException();
+            //User usr = context.Users.Find(userID);
 
-            if (usr != null)
-            {
-                context.Users.Remove(usr);
-            }
+            //if (usr != null)
+            //{
+            //    context.Users.Remove(usr);
+            //}
 
-            context.SaveChanges();
+            //context.SaveChanges();
 
-            return usr;
+            //return usr;
         }
 
         #endregion
