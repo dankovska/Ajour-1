@@ -42,7 +42,51 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("", ((ViewResult)result).ViewName);
             Assert.AreEqual(expYearList.Items, actualYearList.Items);
             Assert.AreEqual(expCountryList.Items, actualCountryList.Items);
-            Assert.AreEqual(DateTime.Now.Year, ((ViewResult)result).ViewBag.DefaultYear);
+            Assert.AreEqual(expCountryID, ((ViewResult)result).ViewBag.DefaultCountry);
+
+        }
+
+        [Test]
+        public void GetHoliday_DefaultCurrentYear_ReturnDefaultYear()
+        {
+            //Arrange
+            SelectList expYearList = controller.YearDropDownList();
+            SelectList expCountryList = controller.CountryDropDownList();
+            int expCountryID = controller.SelectDefaultCountryID();
+            int selectedYear = 2014;
+            //Act
+            var result = controller.GetHoliday();
+            SelectList actualYearList = ((ViewResult)result).ViewBag.YearDropdownList as SelectList;
+            SelectList actualCountryList = ((ViewResult)result).ViewBag.CountryDropdownList as SelectList;
+
+            //Assert
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+            Assert.AreEqual("", ((ViewResult)result).ViewName);
+            Assert.AreEqual(expYearList.Items, actualYearList.Items);
+            Assert.AreEqual(expCountryList.Items, actualCountryList.Items);
+            Assert.AreEqual(selectedYear, ((ViewResult)result).ViewBag.DefaultYear);
+            Assert.AreEqual(expCountryID, ((ViewResult)result).ViewBag.DefaultCountry);
+
+        }
+        [Test]
+        public void GetHoliday_DefaultLastYear_ReturnDefaultYear()
+        {
+            //Arrange
+            SelectList expYearList = controller.YearDropDownList();
+            SelectList expCountryList = controller.CountryDropDownList();
+            int expCountryID = controller.SelectDefaultCountryID();
+            int selectedYear = 2013;
+            //Act
+            var result = controller.GetHoliday();
+            SelectList actualYearList = ((ViewResult)result).ViewBag.YearDropdownList as SelectList;
+            SelectList actualCountryList = ((ViewResult)result).ViewBag.CountryDropdownList as SelectList;
+
+            //Assert
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+            Assert.AreEqual("", ((ViewResult)result).ViewName);
+            Assert.AreEqual(expYearList.Items, actualYearList.Items);
+            Assert.AreEqual(expCountryList.Items, actualCountryList.Items);
+            Assert.AreEqual(2014, ((ViewResult)result).ViewBag.DefaultYear);
             Assert.AreEqual(expCountryID, ((ViewResult)result).ViewBag.DefaultCountry);
 
         }
@@ -134,6 +178,7 @@ namespace AjourBT.Tests.Controllers
 
         }
 
+
         [Test]
         public void GetHolidayData_2014Ukraine_HolidaysIn2014()
         {
@@ -150,6 +195,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(10, holList.Count);
 
         }
+       
         [Test]
         public void GetHolidayData_2014Poland_HolidaysIn2014()
         {
