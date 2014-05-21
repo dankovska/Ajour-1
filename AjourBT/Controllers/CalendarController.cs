@@ -199,7 +199,13 @@ namespace AjourBT.Controllers
             List<Employee> empList = SearchEmployeeData(selectedDepartment);
             List<CalendarRowViewModel> rowList = GetCalendarRowData(empList, parseFromDate, parseToDate);
 
-                return File(CalendarToPdfExporter.GeneratePDF(rowList, repository.Holidays.ToList(), parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
+            List<Holiday> holidays = new List<Holiday>();
+            foreach (Holiday holiday in repository.Holidays.Where(h => h.CountryID == 1))
+            {
+                holidays.Add(holiday);
+            }
+            return File(CalendarToPdfExporter.GeneratePDF(rowList, holidays, parseFromDate, parseToDate).ToArray(), "application/pdf", "Calendar.pdf");
+
         }
                
     }
