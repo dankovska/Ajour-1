@@ -10,12 +10,6 @@ namespace AjourBT.Controllers
 {
     public class ErrorController : Controller
     {
-        private IRepository repository;
-
-        //public ErrorController(IRepository repo)
-        //{
-        //    repository = repo;
-        //}
 
         public ActionResult ShowErrorPage(int statusCode, Exception exception)
         {
