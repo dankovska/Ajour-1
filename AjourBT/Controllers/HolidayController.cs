@@ -22,7 +22,18 @@ namespace AjourBT.Controllers
         {        
             ViewBag.YearDropdownList = YearDropDownList();
             ViewBag.CountryDropdownList = CountryDropDownList();
-            ViewBag.DefaultYear = DateTime.Now.Year;
+                 
+            var year = (from hol in repository.Holidays
+                        orderby hol.HolidayDate descending
+                        select hol.HolidayDate.Year).FirstOrDefault();
+            if (repository.Holidays.Any(h => h.HolidayDate.Year == DateTime.Now.Year))
+            {
+                ViewBag.DefaultYear = DateTime.Now.Year;
+            }
+            else
+            {
+                ViewBag.DefaultYear = year;
+            }
             ViewBag.DefaultCountry = SelectDefaultCountryID();
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             return View();
@@ -48,8 +59,19 @@ namespace AjourBT.Controllers
         {
             var yearList = (from hol in repository.Holidays
                             select hol.HolidayDate.Date.Year).Distinct().ToList();
-            var yearNow = DateTime.Now.Year;
-            return new SelectList(yearList, yearNow);
+
+            var year = (from hol in repository.Holidays
+                        orderby hol.HolidayDate descending
+                        select hol.HolidayDate.Year).FirstOrDefault();
+                       
+            
+              if (repository.Holidays.Any(h => h.HolidayDate.Year == DateTime.Now.Year))
+              {
+                  return new SelectList(yearList, DateTime.Now.Year );
+              }
+              else
+                      return new SelectList(yearList, year);
+            
         }
 
         public PartialViewResult GetHolidayData(string selectedYear, string selectedCountryID)

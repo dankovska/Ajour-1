@@ -1458,7 +1458,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("andl", employees[0].EID);
             Assert.AreEqual("kaaa", employees[1].EID);
 
-            Assert.AreEqual(5, employees[0].DaysUsedInBt);
+            Assert.AreEqual(6, employees[0].DaysUsedInBt);
             Assert.AreEqual(0, employees[1].DaysUsedInBt);
             CollectionAssert.IsEmpty(employees[1].BusinessTripsByMonth);
             Assert.AreEqual(4, (employees[0].BusinessTripsByMonth.Values).Count());
@@ -1468,8 +1468,8 @@ namespace AjourBT.Tests.Controllers
 
             CollectionAssert.IsEmpty(employees[0].BusinessTripsByMonth.Where(k => k.Key == secondPreviousMonth));
             //thirdprevious month
-            Assert.AreEqual(1, employees[0].BusinessTripsByMonth.ToArray()[2].Value.ToArray().Count());
-            Assert.AreEqual(8, employees[0].BusinessTripsByMonth.ToArray()[2].Value.ToArray()[0].BusinessTripID);
+            Assert.AreEqual(2, employees[0].BusinessTripsByMonth.ToArray()[2].Value.ToArray().Count());
+            Assert.AreEqual(5, employees[0].BusinessTripsByMonth.ToArray()[2].Value.ToArray()[0].BusinessTripID);
             //fourthprevious month
             CollectionAssert.IsEmpty(employees[0].BusinessTripsByMonth.Where(k => k.Key == fourthPreviousMonth));
             //fifthprevoius month
@@ -1477,11 +1477,11 @@ namespace AjourBT.Tests.Controllers
 
             //sixprevoius month
             Assert.AreEqual(1, employees[0].BusinessTripsByMonth.ToArray()[3].Value.ToArray().Count());
-            Assert.AreEqual(9, employees[0].BusinessTripsByMonth.ToArray()[3].Value.ToArray()[0].BusinessTripID);
+            Assert.AreEqual(8, employees[0].BusinessTripsByMonth.ToArray()[3].Value.ToArray()[0].BusinessTripID);
 
             //current month
             Assert.AreEqual(2, employees[0].BusinessTripsByMonth.ToArray()[1].Value.ToArray().Count());
-            Assert.AreEqual(5, employees[0].BusinessTripsByMonth.ToArray()[1].Value.ToArray()[0].BusinessTripID);
+            Assert.AreEqual(3, employees[0].BusinessTripsByMonth.ToArray()[1].Value.ToArray()[0].BusinessTripID);
             Assert.AreEqual(6, employees[0].BusinessTripsByMonth.ToArray()[1].Value.ToArray()[1].BusinessTripID);
         }
 

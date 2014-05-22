@@ -267,6 +267,8 @@ namespace AjourBT.Filters
                 new BusinessTrip { BusinessTripID = 93, StartDate = new DateTime(2014,03,02), EndDate = new DateTime (2014,03,10), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
                 new BusinessTrip { BusinessTripID = 94, StartDate = new DateTime(2014,03,10), EndDate = new DateTime (2014,03,19), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
                // new BusinessTrip { BusinessTripID = 194, StartDate = new DateTime(2014,02,10), EndDate = new DateTime (2014,02,23), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 22, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
+                new BusinessTrip { BusinessTripID = 96, StartDate = new DateTime(2014,12,01), EndDate = new DateTime (2014,12,04), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
+                new BusinessTrip { BusinessTripID = 95, StartDate = new DateTime(2014,12,04), EndDate = new DateTime (2014,12,05), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
 
                 new BusinessTrip { BusinessTripID = 130, StartDate = new DateTime(2012,11,01), EndDate = new DateTime (2012,12,30), OrderStartDate = new DateTime(2013,10,31), OrderEndDate = new DateTime (2013,12,31), DaysInBtForOrder = 62, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime (2015,12,30), Status= BTStatus.Reported, EmployeeID = 22, LocationID = 1, Manager="ncru", UnitID = 1,Purpose = "Meeting",Responsible= "mter" },
 
@@ -1696,12 +1698,22 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.CreateRole("ABM");
                     }
+
+                    if (!WebSecurity.UserExists("admin"))
+                    {
+                        WebSecurity.CreateUserAndAccount("admin", "epol01");
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("admin", "PU"))
+                    {
+                        System.Web.Security.Roles.AddUserToRole("admin", "PU");
+                    }
+                 
                 }
                 catch (Exception ex)
                 {
                     throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
                 }
-
                 context.SaveChanges();
 
                 Department department = new Department { DepartmentID = 1, DepartmentName = "Unreal" };
@@ -1710,8 +1722,14 @@ namespace AjourBT.Filters
                 Position position = new Position { PositionID = 1, TitleEn = "Unreal", TitleUk = "Нереальна" };
                 context.Positions.Add(position);
                 context.SaveChanges();
-                Employee powerUser = new Employee { EmployeeID = 22, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "rkni", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, BirthDay = new DateTime(1987, 11, 10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 1 };
+                Employee powerUser = new Employee { EmployeeID = 1, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "admin", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, PositionID = 1, CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() };
                 context.Employees.Add(powerUser);
+                context.SaveChanges();
+                Country country = new Country { CountryID = 1, CountryName = "Ukraine", Holidays = new List<Holiday>(), Locations = new List<Location>(), Comment = "UTC + 2" };
+                context.Countries.Add(country);
+                context.SaveChanges();
+                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2013, 04, 10), CountryID = 1, IsPostponed = false };
+                context.Holidays.Add(holiday);
                 context.SaveChanges();
             }
 
