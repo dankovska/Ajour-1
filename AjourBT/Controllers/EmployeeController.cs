@@ -161,9 +161,16 @@ namespace AjourBT.Controllers
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             if (ModelState.IsValid)
             {
-                db.SaveEmployee(emp);
-                db.SaveRolesForEmployee(emp.EID, Roles);
-                return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                if (db.Employees.Where(e => e.EID == emp.EID).FirstOrDefault() == null && System.Web.Security.Membership.GetUser(emp.EID) == null)
+                {
+                    db.SaveEmployee(emp);
+                    db.SaveRolesForEmployee(emp.EID, Roles);
+                    return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                }
+                else
+                {
+                    return Json(new { error = "Employee with EID " + emp.EID + " already exists" });
+                }
             }
 
             EmployeeViewModel employee = new EmployeeViewModel(emp);

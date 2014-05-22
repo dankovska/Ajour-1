@@ -21,7 +21,6 @@ namespace AjourBT.Tests.Controllers
     public class EmployeeControllerTest
     {
         Mock<IRepository> mock;
-        Mock<IRepository> departments;
         [SetUp]
         public void SetUp()
         {
@@ -531,7 +530,7 @@ namespace AjourBT.Tests.Controllers
         {
             // Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
-            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false };
+            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false, EID ="andm" };
             string selectedDepartment = null;
 
             // Act
@@ -553,7 +552,7 @@ namespace AjourBT.Tests.Controllers
         {
             // Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
-            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false };
+            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false, EID ="andm" };
             string selectedDepartment = "";
             MvcApplication.JSDatePattern = "dd.mm.yy";
 
@@ -576,7 +575,7 @@ namespace AjourBT.Tests.Controllers
         {
             // Arrange
             EmployeeController controller = new EmployeeController(mock.Object);
-            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false };
+            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false, EID = "andm" };
             string selectedDepartment = "RAAA1";
 
             // Act
@@ -591,6 +590,22 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(1, ((RedirectToRouteResult)view).RouteValues["tab"]);
             Assert.AreEqual("RAAA1", ((RedirectToRouteResult)view).RouteValues["selectedDepartment"]);
             Assert.IsNotInstanceOf(typeof(ViewResult), view);
+        }
+
+        [Test]
+        public void PostCreate_EmployeeAlreadyExists_JsonError()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false, EID = "andl" };
+            string selectedDepartment = "RAAA1";
+
+            // Act
+            JsonResult result = controller.Create(employee, null, selectedDepartment) as JsonResult;
+
+            // Assert
+            mock.Verify(m => m.SaveEmployee(employee),Times.Never); 
+             Assert.AreEqual("{ error = Employee with EID andl already exists }",  result.Data.ToString()); 
         }
 
         #endregion
