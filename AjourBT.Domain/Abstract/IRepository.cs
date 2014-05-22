@@ -29,13 +29,14 @@ namespace AjourBT.Domain.Abstract
         IEnumerable<Overtime> Overtimes { get; }
         IEnumerable<Vacation> Vacations { get; }
         IEnumerable<Sickness> Sicknesses { get; }
+        IEnumerable<User> Users { get; }
+
         void SaveEmployee(Employee employee);
         void SaveDepartment(Department department);
         void SaveVisa(Visa visa, int id);
         void SaveVisaRegistrationDate(VisaRegistrationDate visaRegistDate, int id);
         void SavePermit(Permit permit, int id);
         void SaveBusinessTrip(BusinessTrip bt);
-
         void SaveLocation(Location location);
         void SaveRolesForEmployee(string username, string[] roles);
         void SaveMessage(IMessage message);
@@ -50,6 +51,7 @@ namespace AjourBT.Domain.Abstract
         void SaveOvertime(Overtime overtime);
         void SaveVacation(Vacation vacation);
         void SaveSick(Sickness sick);
+        void SaveUser(User user);
 
         Employee DeleteEmployee(int employeeID);
         Department DeleteDepartment(int departmentID);
@@ -70,6 +72,7 @@ namespace AjourBT.Domain.Abstract
         Unit DeleteUnit(int unitID);
         Overtime DeleteOvertime(int OvertimeID);
         Vacation DeleteVacation(int VacationID);
-        Sickness DeleteSick(int SickID);
+        Sickness DeleteSick(int SickID); 
+        User DeleteUser(int UserId);
     }
 }
