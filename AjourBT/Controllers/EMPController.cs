@@ -29,7 +29,7 @@ namespace AjourBT.Controllers
         private IRepository repository;
 
         public EMPController(IRepository repo)
-            :this()
+            : this()
         {
             repository = repo;
         }
@@ -52,7 +52,7 @@ namespace AjourBT.Controllers
             Employee employee = repository.Employees.FirstOrDefault(e => e.EID == userName);
             if (employee == null)
             {
-                return View("NoData");
+                return PartialView("NoData");
             }
             BusinessTrip bt = (from e in repository.Employees
                                where e.EID == userName
@@ -63,7 +63,7 @@ namespace AjourBT.Controllers
                                select b).FirstOrDefault();
             if (bt == null)
             {
-                return View("NoData");
+                return PartialView("Empty");
             }
 
             ViewBag.BTsGeneralInformation = bt;
@@ -78,13 +78,13 @@ namespace AjourBT.Controllers
 
 
 
-                return View(bts);
+                return PartialView(bts);
             }
             else
             {
                 List<BusinessTrip> lastBtList = new List<BusinessTrip>();
                 lastBtList.Add(bt);
-                return View(lastBtList);
+                return PartialView(lastBtList);
             }
 
 
@@ -126,8 +126,8 @@ namespace AjourBT.Controllers
 
             if (FromAbsence != "" && ToAbsence != "")
             {
-                fromParsed = DateTime.ParseExact(FromAbsence, "dd.MM.yyyy",null); // check this
-                toParse = DateTime.ParseExact(ToAbsence, "dd.MM.yyyy",null);// --------^
+                fromParsed = DateTime.ParseExact(FromAbsence, "dd.MM.yyyy", null); // check this
+                toParse = DateTime.ParseExact(ToAbsence, "dd.MM.yyyy", null);// --------^
                 FromYear = fromParsed.Year;
                 ToYear = toParse.Year;
             }
@@ -226,15 +226,15 @@ namespace AjourBT.Controllers
                                 paidOvertime.ReclaimDate = overtime.ReclaimDate;
 
                                 paidOvertimeList.Add(paidOvertime);
-                                if(overtime.ReclaimDate!= null && overtime.ReclaimDate!=DateTime.MinValue)
+                                if (overtime.ReclaimDate != null && overtime.ReclaimDate != DateTime.MinValue)
                                 {
                                     AbsenceFactorData overtimeData = new AbsenceFactorData();
-                                        overtimeData.AbsenceFactorDataID = overtime.OvertimeID;
-                                        overtimeData.From = overtime.ReclaimDate.Value;
-                                        overtimeData.To = overtime.ReclaimDate.Value;
-                                        overtimeData.ReclaimDate = overtime.Date;
+                                    overtimeData.AbsenceFactorDataID = overtime.OvertimeID;
+                                    overtimeData.From = overtime.ReclaimDate.Value;
+                                    overtimeData.To = overtime.ReclaimDate.Value;
+                                    overtimeData.ReclaimDate = overtime.Date;
 
-                                        overtimeList.Add(overtimeData);
+                                    overtimeList.Add(overtimeData);
                                 }
                                 break;
 
@@ -288,7 +288,7 @@ namespace AjourBT.Controllers
                     }
                 }
             }
-           
+
 
             absenceData.FactorDetails.Add(CalendarItemType.SickAbsence, sicknessList);
             absenceData.FactorDetails.Add(CalendarItemType.PaidVacation, paidVacationList);
@@ -303,7 +303,7 @@ namespace AjourBT.Controllers
                 overtimeList.Count == 0 && paidVacationList.Count == 0 && privateOvertimeList.Capacity == 0 &
                 journeyList.Count == 0)
             {
-                return PartialView("NoData");
+                return PartialView("NoAbsenceData");
             }
 
             ViewBag.FromWeek = cal.GetWeekOfYear(fromParsed, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
@@ -322,14 +322,15 @@ namespace AjourBT.Controllers
             DateTime fromDate = DateTime.Now.Date;
             DateTime toDate = fromDate.AddDays(30).Date;
             List<Employee> birthList = new List<Employee>();
-            List<Employee> emp = (from e in repository.Employees where
-                                      e.BirthDay.HasValue orderby e.BirthDay.Value                                     
+            List<Employee> emp = (from e in repository.Employees
+                                  where
+                                      e.BirthDay.HasValue
+                                  orderby e.BirthDay.Value
                                   select e).ToList();
             DateTime date;
-        //    DateTime date1;
             foreach (Employee e in emp)
             {
-                 date = TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date);
+                date = TransformBirthDate(e.BirthDay.Value, DateTime.Now.Date);
                 if (date >= fromDate.AddDays(-10) && date <= toDate)
                 {
                     birthList.Add(e);
@@ -344,7 +345,7 @@ namespace AjourBT.Controllers
             }
             else
             {
-                return View("NoData");
+                return View("NoBirthdays");
             }
         }
 
@@ -360,7 +361,8 @@ namespace AjourBT.Controllers
             else return tempDate;
         }
 
-        public ActionResult GetReportedBTs(string userName = "")
+        [Authorize(Roles = "EMP")]
+        public PartialViewResult GetBusinessTripByYearsEMP(int selectedYear = 0, string userName = "")
         {
             Employee emp = (from e in repository.Employees where e.EID == userName select e).FirstOrDefault();
 
@@ -369,19 +371,74 @@ namespace AjourBT.Controllers
                 return PartialView("NoData");
             }
 
-            List<BusinessTrip> reportedBTs = (from bts in emp.BusinessTrips where
-                                                  ((bts.Status == (BTStatus.Reported | BTStatus.Confirmed) && bts.Status != BTStatus.Cancelled)||
-                                                  bts.Status == (BTStatus.Reported) ||
-                                                  bts.Status == (BTStatus.Confirmed))                                                  
-                                                  orderby bts.StartDate
-                                              select bts).ToList();
+            List<BusinessTrip> reportedBTs = (from bts in repository.BusinessTrips.AsEnumerable()
 
-            if (reportedBTs.Count == 0)
+                                              where
+                                              ((bts.StartDate.Year == selectedYear) && (bts.BTof.EID == userName) && bts.Status != BTStatus.Cancelled && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) ||
+                                                  bts.Status == (BTStatus.Reported) ||
+                                                  bts.Status == (BTStatus.Confirmed)))
+
+                                              orderby bts.StartDate descending
+                                              select new BusinessTrip(bts)).ToList();
+            if (reportedBTs.Count() != 0)
+            {
+                ViewBag.ReportedBTs = reportedBTs.ToList();
+            }
+
+            var selected = from bts in repository.BusinessTrips.AsEnumerable()
+                           where bts.BTof.EID == userName && bts.Status != BTStatus.Cancelled && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) ||
+                                                  bts.Status == (BTStatus.Reported) ||
+                                                  bts.Status == (BTStatus.Confirmed))
+                           group bts by bts.StartDate.Year into yearGroup
+                           orderby yearGroup.Key
+                           select new { Year = yearGroup.Key };
+
+            ViewBag.SelectedYearEMP = new SelectList(selected, "Year", "Year");
+
+            ViewBag.SelectedYear = selectedYear;
+            ViewBag.UserName = userName;
+            //GetReportedBTs(selectedYear, userName);
+            if (selectedYear != 0)
+            {
+                return PartialView(selectedYear);
+            }
+            else
+            {
+                return PartialView("Empty");
+            }
+        }
+
+
+        public ActionResult GetReportedBTs( int selectedYear = 0, string userName = "")
+        {
+
+            Employee emp = (from e in repository.Employees where e.EID == userName select e).FirstOrDefault();
+
+            if (emp == null)
             {
                 return PartialView("NoData");
             }
 
-            return View(reportedBTs);
+           // ViewBag.SelectedYearEMP = YearDropDownList();
+           List<BusinessTrip> reportedBTs = (from bts in repository.BusinessTrips.AsEnumerable()
+                                            
+                                              where
+                                              ((bts.StartDate.Year == selectedYear) && (bts.BTof.EID==userName) && bts.Status != BTStatus.Cancelled && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) ||
+                                                  bts.Status == (BTStatus.Reported) ||
+                                                  bts.Status == (BTStatus.Confirmed)))
+                         
+                                              orderby bts.StartDate descending
+                                             select new BusinessTrip (bts)).ToList();
+           
+            if (reportedBTs.Count == 0)
+            {
+                return PartialView("NoBtsInThisYear");
+            }
+
+
+            ViewBag.SelectedYear = selectedYear;
+            ViewBag.UserName = userName;
+            return PartialView(reportedBTs.ToList());
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using AjourBT.Models
 @model IEnumerable<CalendarRowViewModel>
-<div class="calendar"></div>
+<div class="calendar" style="height: 100%; overflow-y: scroll; overflow-x: hidden " onscroll="OnScrollDiv()"></div>
 
 <script type="text/javascript">
     $(function () {
@@ -13,7 +13,7 @@
             scale: "days",
             minScale: "days",
             maxScale: "days",
-            itemsPerPage: 15,
+            itemsPerPage: '@ViewBag.ItemsPerPage',
             holidays:holidays,
             postponedHolidays:postponedHolidays,
             onItemClick: function (data) {

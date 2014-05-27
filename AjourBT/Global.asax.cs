@@ -1,6 +1,7 @@
 ﻿using AjourBT.Domain.Concrete;
 using AjourBT.Filters;
 using AjourBT.Infrastructure;
+using AjourBT.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -48,6 +49,39 @@ namespace AjourBT
             AuthConfig.RegisterAuth();
             //Database.SetInitializer<AjourDbContext>(new AjourDbInitializer());
             // DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(AjourBT.Domain.Entities.Permit.RequiredIfAttribute),typeof(RequiredAttributeAdapter));
+        }
+
+        protected void Application_Error()
+        {
+            Exception lastError = Server.GetLastError();
+            Server.ClearError();
+
+            int statusCode = 0;
+
+            if (lastError.GetType() == typeof(HttpException))
+            {
+                statusCode = ((HttpException)lastError).GetHttpCode();
+            }
+            else
+            {
+                statusCode = 500;
+            }
+
+            HttpContextWrapper contextWrapper = new HttpContextWrapper(this.Context);
+
+            RouteData routeData = new RouteData();
+            routeData.Values.Add("controller", "Error");
+            routeData.Values.Add("action", "ShowErrorPage");
+            routeData.Values.Add("statusCode", statusCode);
+            routeData.Values.Add("exception", lastError);
+            //routeData.Values.Add("isAjaxRequet", contextWrapper.Request.IsAjaxRequest());
+
+            IController controller = new ErrorController();
+
+            RequestContext requestContext = new RequestContext(contextWrapper, routeData);
+
+            controller.Execute(requestContext);
+            Response.End();
         }
 
     }

@@ -455,7 +455,7 @@ namespace AjourBT.Tests.Controllers
             List<FactorData> fData = resModel.ToArray()[0].FactorDetails;
 
             //Assert
-            Assert.AreEqual("GetWTRData", result.ViewName);
+            Assert.AreEqual("GetWTRDataPerEMP", result.ViewName);
             Assert.AreEqual(2010, result.ViewBag.FromYear);
             Assert.AreEqual(2017, result.ViewBag.ToYear);
             Assert.AreEqual(13, fData.Count);
@@ -718,6 +718,79 @@ namespace AjourBT.Tests.Controllers
 
         #endregion 
 
+
+        #region WTRExportToExcelForEmp
+
+        [Test]
+        public void CreateCaption_WorkSheet_ProperCaptionWorkSheet()
+        {
+            //Arrange
+            WTRController controller = new WTRController(mock.Object);
+            Worksheet workSheet = new Worksheet("WTR");
+            string[] caption = { "Employee", "Location", "Factor", "Dates", "Hours" };
+
+            //Act
+            controller.CreateCaption(workSheet);
+
+            //Assert
+            for (int i = 0; i < caption.Length; i++)
+            {
+                Assert.AreEqual(caption[i], workSheet.Cells[0, i].Value);
+            }
+        }
+
+        [Test]
+        public void ExportWTRForEMP_FileResult()
+        {
+            //Arrange
+            WTRController controller = new WTRController(mock.Object);
+            string userName = "andl";
+            string fromDate = "01.01.2013";
+            string toDate = "25.12.2014";
+
+            //Act
+            FileResult file = controller.ExportWTRForEMP(userName, fromDate, toDate) as FileResult;
+
+            //Assert
+            Assert.IsInstanceOf(typeof(FileResult), file);
+        }
+
+        [Test]
+        public void WriteWTRDataForEMP_WorkSheetNull_Exception()
+        {
+            //Arrange
+            WTRController controller = new WTRController(mock.Object);
+            string userName = "andl";
+            string fromDate = "01.01.2013";
+            string toDate = "25.12.2014";
+
+            //Act
+
+            //Assert
+            Assert.Throws<NullReferenceException>(() => controller.WriteWTRDataForEMP(null, userName, fromDate, toDate));
+        }
+
+        [Test]
+        public void WriteWTRDataForEMP_WorkSheetNotNull_DataWrittenToFile()
+        {
+            //Arrange
+            WTRController controller = new WTRController(mock.Object);
+            Worksheet workSheet = new Worksheet("NewWTR");
+            string userName = "andl";
+            string fromDate = "01.01.2013";
+            string toDate = "25.12.2014";
+
+            //Act
+            controller.WriteWTRDataForEMP(workSheet, userName, fromDate, toDate);
+
+            //Assert
+            Assert.AreEqual("", workSheet.Cells[1, 0].Value.ToString());
+            Assert.AreEqual("2013- W 1", workSheet.Cells[2, 0].Value.ToString());
+            Assert.AreEqual("", workSheet.Cells[3, 0].Value.ToString());
+            Assert.AreEqual("Zarose Anastasia(andl)", workSheet.Cells[4, 0].Value.ToString());
+        }
+
+        #endregion 
         #region GetWeeksInTimeSpan
             [Test]
         public void GetWeeksInTimeSpan_SingleDay_SingleWeek()

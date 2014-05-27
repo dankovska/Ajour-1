@@ -35,6 +35,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr3.Runtime.PCL.3.5.0.3\lib\portable-win+net40+sl40+wp\Antlr3.Runtime.dll</HintPath>
@@ -73,6 +89,10 @@
     </Reference>
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="PDFjet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AjourBT\Resources\PDFjet.dll</HintPath>
     </Reference>
     <Reference Include="SendGridMail">
       <HintPath>..\packages\SendGrid.1.2.1\lib\SendGridMail.dll</HintPath>
@@ -163,6 +183,7 @@
     <Compile Include="Controllers\CountryControllerTests.cs" />
     <Compile Include="Controllers\DepartmentControllerTest.cs" />
     <Compile Include="Controllers\EMPControllerTest.cs" />
+    <Compile Include="Controllers\ErrorControllerTest.cs" />
     <Compile Include="Controllers\HelpControllerTest.cs" />
     <Compile Include="Controllers\HolidayControllerTest.cs" />
     <Compile Include="Controllers\JourneyControllerTest.cs" />
@@ -190,6 +211,7 @@
     <Compile Include="Helpers\SelectEmployeeByWeekTest.cs" />
     <Compile Include="Helpers\SortingFactorDatesTest.cs" />
     <Compile Include="Helpers\DisplayCityOfRegistrationHelperTest.cs" />
+    <Compile Include="Infrastructure\CalendarToPdfExporterTest.cs" />
     <Compile Include="MockRepository\Mock_Repository.cs" />
     <Compile Include="Controllers\PassportControllerTest.cs" />
     <Compile Include="Controllers\PermitControllerTest.cs" />

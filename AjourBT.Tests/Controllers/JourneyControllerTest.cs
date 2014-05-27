@@ -37,7 +37,6 @@ namespace AjourBT.Tests.Controllers
         public JourneyController SetUpABM()
         {
             JourneyController controller;
-            OvertimeController controller1;
             mock = Mock_Repository.CreateMock();
             Mock<HttpContextBase> context = new Mock<HttpContextBase>();
             Mock<HttpRequestBase> request = new Mock<HttpRequestBase>();
