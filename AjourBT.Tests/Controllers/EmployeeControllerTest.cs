@@ -119,7 +119,7 @@ namespace AjourBT.Tests.Controllers
             // Assert
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.IsInstanceOf(typeof(IEnumerable<EmployeeViewModel>), ((PartialViewResult)view).Model);
-            Assert.AreEqual(24, result.ToArray<EmployeeViewModel>().Length);
+            Assert.AreEqual(25, result.ToArray<EmployeeViewModel>().Length);
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[0].FirstName, "Oleksiy");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].LastName, "Struz");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].FirstName, "Anatoliy");
@@ -173,7 +173,7 @@ namespace AjourBT.Tests.Controllers
             // Assert
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.IsInstanceOf(typeof(IEnumerable<EmployeeViewModel>), ((PartialViewResult)view).Model);
-            Assert.AreEqual(24, result.ToArray<EmployeeViewModel>().Length);
+            Assert.AreEqual(25, result.ToArray<EmployeeViewModel>().Length);
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[0].FirstName, "Oleksiy");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].LastName, "Struz");
             Assert.AreEqual(result.ToArray<EmployeeViewModel>()[1].FirstName, "Anatoliy");
@@ -617,6 +617,25 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
+        public void GetEdit_ExistingUserSelectedDepartmentNull_ViewEditSelectedDepartmentNull()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = null;
+            var expectedDepartmentList = (from d in mock.Object.Departments select d).ToList();
+            // Act
+            var view = controller.Edit(25, selectedDepartment) as ViewResult;
+            EmployeeViewModel employee = view.ViewData.Model as EmployeeViewModel;
+
+            // Assert
+            Assert.IsTrue(view.ViewName == "");
+            Assert.IsInstanceOf(typeof(EmployeeViewModel), view.Model);
+            Assert.IsTrue(employee.EmployeeID == 25);
+            Assert.AreEqual(selectedDepartment, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.AreEqual(expectedDepartmentList, ((ViewResult)view).ViewBag.DepartmentList);
+        }
+
+        [Test]
         public void GetEdit_ExistingEmployeeSelectedDepartmentStringEmpty_ViewEditSelectedDepartmentStringEmpty()
         {
             // Arrange
@@ -675,6 +694,25 @@ namespace AjourBT.Tests.Controllers
         {
             EmployeeController controller = new EmployeeController(mock.Object);
             Employee employee = new Employee { EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, DateDismissed = new DateTime(11 / 01 / 2013), DateEmployed = new DateTime(11 / 02 / 2011), IsManager = false };
+            string selectedDepartment = null;
+            var expectedDepartmentList = (from m in mock.Object.Departments select m).ToList();
+            SelectList departmentList = (from d in mock.Object.Departments select d) as SelectList;
+            // Act
+            var view = controller.Edit(employee, null, selectedDepartment);
+
+            // Assert
+            mock.Verify(m => m.SaveEmployee(employee), Times.Once);
+            mock.Verify(m => m.SaveRolesForEmployee(It.IsAny<string>(), It.IsAny<string[]>()), Times.Once);
+            Assert.IsTrue(((ViewResult)view).ViewName == "OneRowPU");
+            Assert.AreEqual(expectedDepartmentList, ((ViewResult)view).ViewBag.DepartmentList);
+            Assert.AreEqual(typeof(ViewResult), view.GetType());
+        }
+
+        [Test]
+        public void PostEdit_ValidModelUserSelectedDepartmentNull_ViewAllUsers()
+        {
+            EmployeeController controller = new EmployeeController(mock.Object);
+            Employee employee = mock.Object.Users.Where(e => e.EmployeeID == 25).FirstOrDefault();
             string selectedDepartment = null;
             var expectedDepartmentList = (from m in mock.Object.Departments select m).ToList();
             SelectList departmentList = (from d in mock.Object.Departments select d) as SelectList;
@@ -843,6 +881,24 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
+        public void GetDelete_User__WithoutAssociatedDataDepartmentnull_ViewConfrimDeleteSelectedDepartmentnull()
+        {
+            // Arrange
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = null;
+
+            // Act
+            ViewResult result = controller.Delete(25, selectedDepartment) as ViewResult;
+            Employee employee = result.Model as Employee;
+
+            // Assert
+            Assert.AreEqual(result.ViewName, "");
+            Assert.AreEqual(selectedDepartment, result.ViewBag.SelectedDepartment);
+            Assert.IsInstanceOf(typeof(Employee), result.Model);
+            Assert.IsTrue(employee.EmployeeID == 25);
+        }
+
+        [Test]
         public void GetDelete_EmpWithBTDepartmentSDDDA_ViewCannotDeleteDelete()
         {
             // Arrange
@@ -958,6 +1014,24 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
+        public void DeletePost_UserIdSelectedDepartmentNull_RedirectToPUView()
+        {
+            // Arrange
+            //List<Employee> empList = mock.Object.Employees.ToList();
+            EmployeeController controller = new EmployeeController(mock.Object);
+            string selectedDepartment = null;
+
+            // Act
+            var result = controller.DeleteConfirmed(25, selectedDepartment);
+
+
+            // Assert
+            mock.Verify(m => m.DeleteEmployee(25), Times.Once);
+            Assert.AreEqual(((ViewResult)result).GetType(), typeof(ViewResult));
+            Assert.AreEqual(((ViewResult)result).ViewName, "OneRowPU");
+        }
+
+        [Test]
         public void DeletePost_CannotDelete_DataBaseDeleteError()
         {
             // Arrange - create the controller
@@ -977,18 +1051,18 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
-        public void SearchEmployeeDataEmployee_NotEmptyDepartmentEmptySearchStringEmpty_AllEmployees()
+        public void SearchEmployeeDataEmployee_NotEmptyDepartmentEmptySearchStringEmpty_AllUsers()
         {
             //Arrange
-            List<Employee> empList = mock.Object.Employees.ToList();
+            List<Employee> empList = mock.Object.Users.ToList();
             EmployeeController controller = new EmployeeController(mock.Object);
             //Act
             List<EmployeeViewModel> result = controller.SearchEmployeeData(empList, "", "");
             //Assert
-            Assert.AreEqual(24, result.Count());
+            Assert.AreEqual( 25, result.Count());
             Assert.AreEqual(8, result.First().EmployeeID);
             Assert.AreEqual(1, result.Last().EmployeeID);
-        }
+        } 
 
 
         //[Test]

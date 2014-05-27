@@ -74,18 +74,18 @@ namespace AjourBT.Controllers
         {
             List<EmployeeViewModel> data = new List<EmployeeViewModel>();
             data = (from emp in empList
-                    where ((selectedDepartment == null || selectedDepartment == String.Empty || emp.Department.DepartmentName == selectedDepartment)
+                    where ((selectedDepartment == null || selectedDepartment == String.Empty || (emp.Department !=null && emp.Department.DepartmentName == selectedDepartment))
                             && (emp.EID.ToLower().Contains(searchString.ToLower())
                             || emp.FirstName.ToLower().Contains(searchString.ToLower())
                             || emp.LastName.ToLower().Contains(searchString.ToLower())
-                            || emp.DateEmployed.Value.ToShortDateString().Contains(searchString)
-                            || emp.DateDismissed.ToString().Contains(searchString)
-                            || emp.BirthDay.ToString().Contains(searchString)
+                            || ((emp.DateEmployed != null) && emp.DateEmployed.Value != null && emp.DateEmployed.Value.ToShortDateString().Contains(searchString))
+                            || ((emp.DateDismissed != null) && emp.DateDismissed.Value != null && emp.DateDismissed.Value.ToString().Contains(searchString))
+                            || ((emp.BirthDay != null) && emp.BirthDay.Value != null && emp.BirthDay.Value.ToString().Contains(searchString))
                             || ((emp.FullNameUk != null) && emp.FullNameUk.ToLower().Contains(searchString.ToLower()))
-                            || emp.Position.TitleEn.ToLower().Contains(searchString.ToLower())
+                            || ((emp.Position != null) && emp.Position.TitleEn.ToLower().Contains(searchString.ToLower()))
                             ||
                                   ((System.Web.Security.Membership.GetUser(emp.EID) != null)
-                                  && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower()))))
+                                  && System.Web.Security.Roles.GetRolesForUser(emp.EID) !=null && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower()))))
                     orderby emp.IsManager descending, emp.LastName
                     select new EmployeeViewModel(emp)).ToList();
 
@@ -245,7 +245,7 @@ namespace AjourBT.Controllers
             {
                 return HttpNotFound();
             }
-            if (employee.BusinessTrips.Count != 0 || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null)
+            if ( (employee.BusinessTrips!= null && employee.BusinessTrips.Count != 0) || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null)
             {
                 ViewBag.SelectedDepartment = selectedDepartment;
                 ViewBag.SearchString = searchString;

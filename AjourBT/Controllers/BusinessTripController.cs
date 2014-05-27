@@ -98,16 +98,26 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             return PartialView(data.ToList());
         }
 
-        private IEnumerable<Employee> SelectEmployees(string selectedDepartment, string selectedUserDepartment)
+        public IEnumerable<Employee> SelectEmployees(string selectedDepartment, string selectedUserDepartment)
         {
             IEnumerable<Employee> data;
             if (selectedDepartment == null)
             {
+                if (selectedUserDepartment == null)
+                {
+                    data = from emp in repository.Employees.AsEnumerable()
+                           join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
+                           where (emp.DateDismissed == null)
+                           orderby emp.IsManager descending, emp.LastName
+                           select emp;
+                }
+                else { 
                 data = from emp in repository.Employees.AsEnumerable()
                        join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
                        where ((emp.Department.DepartmentName == selectedUserDepartment && (emp.DateDismissed == null)))
                        orderby emp.IsManager descending, emp.LastName
                        select emp;
+                }
 
 
             }
