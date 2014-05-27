@@ -1017,15 +1017,6 @@ namespace AjourBT.Domain.Concrete
             get { throw new NotImplementedException(); }
         }
 
-        public void SaveUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User DeleteUser(int User)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
     }

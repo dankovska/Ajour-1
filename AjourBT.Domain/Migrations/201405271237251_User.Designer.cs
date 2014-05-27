@@ -11,7 +11,7 @@ namespace AjourBT.Domain.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201405261548123_User"; }
+            get { return "201405271237251_User"; }
         }
         
         string IMigrationMetadata.Source

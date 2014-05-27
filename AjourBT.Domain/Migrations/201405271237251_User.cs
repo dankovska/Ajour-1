@@ -10,6 +10,7 @@ namespace AjourBT.Domain.Migrations
             DropForeignKey("dbo.Employees", "PositionID", "dbo.Positions");
             DropIndex("dbo.Employees", new[] { "PositionID" });
             AddColumn("dbo.Employees", "IsUserOnly", c => c.Boolean(nullable: false));
+            AlterColumn("dbo.Employees", "DepartmentID", c => c.Int());
             AlterColumn("dbo.Employees", "DateEmployed", c => c.DateTime());
             AlterColumn("dbo.Employees", "PositionID", c => c.Int());
             AddForeignKey("dbo.Employees", "PositionID", "dbo.Positions", "PositionID");
@@ -22,6 +23,7 @@ namespace AjourBT.Domain.Migrations
             DropForeignKey("dbo.Employees", "PositionID", "dbo.Positions");
             AlterColumn("dbo.Employees", "PositionID", c => c.Int(nullable: false));
             AlterColumn("dbo.Employees", "DateEmployed", c => c.DateTime(nullable: false));
+            AlterColumn("dbo.Employees", "DepartmentID", c => c.Int(nullable: false));
             DropColumn("dbo.Employees", "IsUserOnly");
             CreateIndex("dbo.Employees", "PositionID");
             AddForeignKey("dbo.Employees", "PositionID", "dbo.Positions", "PositionID", cascadeDelete: true);

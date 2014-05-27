@@ -51,7 +51,6 @@ namespace AjourBT.Domain.Abstract
         void SaveOvertime(Overtime overtime);
         void SaveVacation(Vacation vacation);
         void SaveSick(Sickness sick);
-        void SaveUser(User user);
 
         Employee DeleteEmployee(int employeeID);
         Department DeleteDepartment(int departmentID);
@@ -73,6 +72,5 @@ namespace AjourBT.Domain.Abstract
         Overtime DeleteOvertime(int OvertimeID);
         Vacation DeleteVacation(int VacationID);
         Sickness DeleteSick(int SickID); 
-        User DeleteUser(int UserId);
     }
 }
