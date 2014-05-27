@@ -183,7 +183,6 @@
     <Compile Include="Controllers\CountryControllerTests.cs" />
     <Compile Include="Controllers\DepartmentControllerTest.cs" />
     <Compile Include="Controllers\EMPControllerTest.cs" />
-    <Compile Include="Controllers\ErrorControllerTest.cs" />
     <Compile Include="Controllers\HelpControllerTest.cs" />
     <Compile Include="Controllers\HolidayControllerTest.cs" />
     <Compile Include="Controllers\JourneyControllerTest.cs" />
