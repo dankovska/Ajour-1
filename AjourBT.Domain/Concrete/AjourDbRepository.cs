@@ -51,7 +51,6 @@ namespace AjourBT.Domain.Concrete
                     {
                         throw new DbUpdateConcurrencyException();
                     }
-
                     emp.FirstName = employee.FirstName;
                     emp.LastName = employee.LastName;
                     emp.DepartmentID = employee.DepartmentID;
@@ -334,8 +333,12 @@ namespace AjourBT.Domain.Concrete
 
         public void SaveBusinessTrip(BusinessTrip bt)
         {
-            BusinessTrip dbEntry = (from b in BusinessTrips where b.BusinessTripID == bt.BusinessTripID select b).FirstOrDefault();
+            if (!CheckBTCreationPossibility(bt))
+            {
+                throw new VacationAlreadyExistException();
+            }
 
+            BusinessTrip dbEntry = (from b in BusinessTrips where b.BusinessTripID == bt.BusinessTripID select b).FirstOrDefault();
 
             if (dbEntry != null)
             {
@@ -347,12 +350,10 @@ namespace AjourBT.Domain.Concrete
                 if ((dbEntry.Status == (BTStatus.Confirmed | BTStatus.Reported)) && (dbEntry.Status != BTStatus.Cancelled) && (dbEntry.Status != bt.Status))
                 {
                     DeleteBusinessTripCalendarItem(bt, dbEntry);
-
                 }
 
                 else if ((bt.Status == (BTStatus.Confirmed | BTStatus.Reported)) && (bt.Status != BTStatus.Cancelled) && (dbEntry.Status != bt.Status))
                 {
-
                     CreateBusinessTripCalendarItem(bt, dbEntry);
                 }
 
@@ -743,6 +744,45 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
                 }
                 StartDateForJourneyForEndDifference = new DateTime?(StartDateForJourneyForEndDifference.Value.AddDays(1));
             }
+        }
+
+        private bool CheckBTCreationPossibility(BusinessTrip bTrip)
+        {
+            //Select all CalendarItems for current User
+            List<CalendarItem> vacationsList = (from item in CalendarItems 
+                                                where item.EmployeeID == bTrip.EmployeeID &&
+                                                (item.Type != CalendarItemType.BT && item.Type != CalendarItemType.Journey)
+                                                select item).ToList();
+            if (vacationsList.Count > 0)
+            {
+                //Check time periods by OrderDates
+                if(bTrip.OrderStartDate.HasValue && bTrip.OrderEndDate.HasValue)
+                {
+                    foreach (CalendarItem vacations in vacationsList)
+                    {
+                        if (bTrip.OrderStartDate.Value <= vacations.From && bTrip.OrderEndDate.Value >=vacations.From ||
+                            bTrip.OrderStartDate.Value >= vacations.From && bTrip.OrderStartDate.Value <= vacations.To)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                    //Check time periods by Start and EndDates
+                    else
+                    {
+                        foreach (CalendarItem vacations in vacationsList)
+                        {
+                            if (bTrip.StartDate <= vacations.From && bTrip.EndDate >= vacations.From ||
+                                bTrip.StartDate >= vacations.From && bTrip.StartDate <= vacations.To)
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+            }
+            return true;
         }
 
         public BusinessTrip DeleteBusinessTrip(int btID)
@@ -1418,6 +1458,55 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
             }
 
             return dbentry;
+        }
+
+        #endregion
+
+        #region Users
+        public IEnumerable<User> Users
+        {
+            get { throw new NotImplementedException(); }
+            //get { return context.Users; }
+        }
+
+        public void SaveUser(User user)
+        {
+                        throw new NotImplementedException();
+            //if (user.UserId.Equals(default(int)))
+            //{
+            //    context.Users.Add(user);
+
+            //}
+            //else
+            //{
+            //    User usr = context.Users.Find(user.UserId);
+
+            //    if (usr != null)
+            //    {
+            //        if (!usr.RowVersion.SequenceEqual(user.RowVersion))
+            //        {
+            //            throw new DbUpdateConcurrencyException();
+            //        }
+            //        usr.FirstName = user.FirstName;
+            //        usr.LastName = user.LastName;
+            //    }
+            //}
+            //context.SaveChanges();
+        }
+
+        public User DeleteUser(int userID)
+        {
+                        throw new NotImplementedException();
+            //User usr = context.Users.Find(userID);
+
+            //if (usr != null)
+            //{
+            //    context.Users.Remove(usr);
+            //}
+
+            //context.SaveChanges();
+
+            //return usr;
         }
 
         #endregion

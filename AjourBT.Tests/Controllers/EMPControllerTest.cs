@@ -72,7 +72,7 @@ namespace AjourBT.Tests.Controllers
             var view = controller.GetLastBTDataPerEmployee();
 
             //Assert
-            Assert.IsInstanceOf(typeof(ViewResult), view);
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
         }
 
 
@@ -87,12 +87,12 @@ namespace AjourBT.Tests.Controllers
 
             //Act
             var view = controller.GetLastBTDataPerEmployee(userName);
-            List<BusinessTrip> bt = (List<BusinessTrip>)((ViewResult)view).Model;
+            List<BusinessTrip> bt = (List<BusinessTrip>)((PartialViewResult)view).Model;
 
             //Assert
-            Assert.IsTrue(((ViewResult)view).ViewName == "");
-            Assert.IsInstanceOf(typeof(ViewResult), view);
-            Assert.AreEqual(businessTrip, ((ViewResult)view).ViewBag.BTsGeneralInformation);
+            Assert.IsTrue(((PartialViewResult)view).ViewName == "");
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
+            Assert.AreEqual(businessTrip, ((PartialViewResult)view).ViewBag.BTsGeneralInformation);
 
         }
 
@@ -104,7 +104,7 @@ namespace AjourBT.Tests.Controllers
             string userName = "iwpe";
 
             //Act
-            var view = controller.GetLastBTDataPerEmployee(userName) as ViewResult;
+            var view = controller.GetLastBTDataPerEmployee(userName) as PartialViewResult;
             var bView = view.Model as List<BusinessTrip>;
             
 
@@ -124,7 +124,7 @@ namespace AjourBT.Tests.Controllers
             var view = controller.GetLastBTDataPerEmployee(userName);
 
             //Assert
-            Assert.IsInstanceOf(typeof(ViewResult), view);
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
 
         }
 
@@ -139,8 +139,8 @@ namespace AjourBT.Tests.Controllers
             var view = controller.GetLastBTDataPerEmployee(userName);
 
             //Assert
-            Assert.IsInstanceOf(typeof(ViewResult), view);
-            Assert.AreEqual("NoData", ((ViewResult)view).ViewName);
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
+            Assert.AreEqual("Empty", ((PartialViewResult)view).ViewName);
 
         }
 
@@ -155,8 +155,8 @@ namespace AjourBT.Tests.Controllers
             var view = controller.GetLastBTDataPerEmployee(userName);
 
             //Assert
-            Assert.IsInstanceOf(typeof(ViewResult), view);
-            Assert.AreEqual("NoData", ((ViewResult)view).ViewName);
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
+            Assert.AreEqual("Empty", ((PartialViewResult)view).ViewName);
 
         }
 
@@ -171,8 +171,8 @@ namespace AjourBT.Tests.Controllers
             var view = controller.GetLastBTDataPerEmployee(userName);
 
             //Assert
-            Assert.IsInstanceOf(typeof(ViewResult), view);
-            Assert.AreEqual("NoData", ((ViewResult)view).ViewName);
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
+            Assert.AreEqual("Empty", ((PartialViewResult)view).ViewName);
 
         }
 
@@ -187,11 +187,11 @@ namespace AjourBT.Tests.Controllers
             List<BusinessTrip> bts = mock.Object.BusinessTrips.Where(b => b.OrderStartDate == businessTrip.OrderStartDate && b.OrderEndDate == businessTrip.OrderEndDate).ToList();
             //Act
             var view = controller.GetLastBTDataPerEmployee(userName);
-            List<BusinessTrip> bt = (List<BusinessTrip>)((ViewResult)view).Model;
+            List<BusinessTrip> bt = (List<BusinessTrip>)((PartialViewResult)view).Model;
 
             //Assert
-            Assert.IsTrue(((ViewResult)view).ViewName == "");
-            Assert.IsInstanceOf(typeof(ViewResult), view);
+            Assert.IsTrue(((PartialViewResult)view).ViewName == "");
+            Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreNotEqual(bt, bts);
         }
 
@@ -541,6 +541,23 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(1, JourneyValue.Count);
         }
 
+        [Test]
+        public void GetAbsenceDataPerEmp_AllInValid_View()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string fromDate = "01.01.2014";
+            string toDate = "31.12.2018";
+            string userName = "prvol";
+
+            //Act
+            var result = controller.GetAbsenceDataPerEMP(fromDate, toDate, userName) as PartialViewResult;
+            var resModel = result.Model as AbsenceViewModelForEMP;
+
+            //Assert
+            Assert.AreEqual("NoAbsenceData", result.ViewName);
+          
+        }
         #endregion
 
         #region GetBirthday
@@ -556,7 +573,7 @@ namespace AjourBT.Tests.Controllers
             var result = controller.GetBirthdays() as ViewResult;
 
             //Assert
-            Assert.AreEqual("NoData", result.ViewName);
+            Assert.AreEqual("NoBirthdays", result.ViewName);
         
         }
 
@@ -707,9 +724,10 @@ namespace AjourBT.Tests.Controllers
             //Arrange
             EMPController controller = new EMPController(mock.Object);
             string userName = "abcd";
+            int selectedYear = 2012;
 
             //Act
-            var result = controller.GetReportedBTs(userName) as PartialViewResult;
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
 
             //Assert
             Assert.AreEqual("NoData", result.ViewName);
@@ -721,9 +739,10 @@ namespace AjourBT.Tests.Controllers
             //Arrange
             EMPController controller = new EMPController(mock.Object);
             string userName = "iwoo";
+            int selectedYear = 2014;
 
             //Act
-            var result = controller.GetReportedBTs(userName) as ViewResult;
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
 
             //Assert
             Assert.AreEqual("", result.ViewName);
@@ -735,14 +754,120 @@ namespace AjourBT.Tests.Controllers
             //Arrange
             EMPController controller = new EMPController(mock.Object);
             string userName = "tebl";
+            int selectedYear = 2014;
 
             //Act
-            var result = controller.GetReportedBTs(userName) as PartialViewResult;
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoBtsInThisYear", result.ViewName);
+        }
+
+        #endregion
+
+        #region GetBusinessTripByYearsEMP
+        [Test]
+        public void GetBussinessTripByYearsEMP_IncorrectUserName_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "abcd";
+            int selectedYear = 2012;
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
 
             //Assert
             Assert.AreEqual("NoData", result.ViewName);
+            Assert.AreEqual(null, ((PartialViewResult)result).ViewBag.SelectedYear);
         }
 
+
+        [Test]
+        public void GetBussinessTripByYearsEMP_UserNameNull_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "";
+            int selectedYear = 0;
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoData", result.ViewName);
+            Assert.AreEqual(null, ((PartialViewResult)result).ViewBag.SelectedYear);
+        }
+     
+        [Test]
+        public void GetBussinessTripByYearsEMP__EmptyView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "iwoo";
+            int selectedYear = 0;
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("Empty", result.ViewName);
+            Assert.AreEqual(0, ((PartialViewResult)result).ViewBag.SelectedYear);
+        }
+        [Test]
+        public void GetBusinessTripByYearsEMP_View()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "iwoo";
+            int selectedYear = 2014;
+            
+            //selected.Add(2014);
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual(userName, ((PartialViewResult)result).ViewBag.UserName);
+            Assert.AreEqual(selectedYear, ((PartialViewResult)result).ViewBag.SelectedYear);
+
+        }
+
+        [Test]
+        public void GetBusinessTripByYearsEMPNoBTs_NoData()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "tebl";
+            int selectedYear = 2010;
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual(userName, ((PartialViewResult)result).ViewBag.UserName);
+            Assert.AreEqual(selectedYear, ((PartialViewResult)result).ViewBag.SelectedYear);
+        }
+
+        [Test]
+        public void GetBusinessTripByYearsEMPBTs_BtsData()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "tebl";
+            int selectedYear = 2014;
+
+            //Act
+            var result = controller.GetBusinessTripByYearsEMP(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual(userName, ((PartialViewResult)result).ViewBag.UserName);
+            Assert.AreEqual(selectedYear, ((PartialViewResult)result).ViewBag.SelectedYear);
+        }
+        
         #endregion
     }
 }

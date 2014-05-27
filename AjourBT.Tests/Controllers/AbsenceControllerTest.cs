@@ -68,10 +68,10 @@ namespace AjourBT.Tests.Controllers
                 string toDate = "45.67.89";
 
                 //Act
-                var result = controller.GetAbsenceData(fromDate, toDate) as ViewResult;
+                var result = controller.GetAbsenceData(fromDate, toDate) as PartialViewResult;
 
                 //Assert
-                Assert.AreEqual("NoData", result.ViewName);
+                Assert.AreEqual("NoAbsenceData", result.ViewName);
             }
 
             [Test]
@@ -83,11 +83,11 @@ namespace AjourBT.Tests.Controllers
                 string toDate = "10.11.1000";
 
                 //Act
-                var result = controller.GetAbsenceData(fromDate, toDate) as ViewResult;
+                var result = controller.GetAbsenceData(fromDate, toDate) as PartialViewResult;
                 var modelResult = result.Model as List<AbsenceViewModel>;
 
                 //Assert
-                Assert.AreEqual("NoData", result.ViewName);
+                Assert.AreEqual("NoAbsenceData", result.ViewName);
             }
 
             [Test]
@@ -100,11 +100,11 @@ namespace AjourBT.Tests.Controllers
                 string searchString = "ABC";
 
                 //Act
-                var result = controller.GetAbsenceData(fromDate, toDate, searchString) as ViewResult;
+                var result = controller.GetAbsenceData(fromDate, toDate, searchString) as PartialViewResult;
                 var modelResult = result.Model as List<AbsenceViewModel>;
 
                 //Assert
-                Assert.AreEqual("NoData", result.ViewName);
+                Assert.AreEqual("NoAbsenceData", result.ViewName);
             }
 
 
@@ -202,11 +202,11 @@ namespace AjourBT.Tests.Controllers
                 string searchString = "abcdef";
 
                 //Act
-                var result = controller.GetAbsenceData(fromDate, toDate, searchString) as ViewResult;
+                var result = controller.GetAbsenceData(fromDate, toDate, searchString) as PartialViewResult;
                 var modelResult = result.Model as List<AbsenceViewModel>;
 
                 //Assert
-                Assert.AreEqual("NoData", result.ViewName);
+                Assert.AreEqual("NoAbsenceData", result.ViewName);
             }
 
             #endregion

@@ -73,7 +73,8 @@ namespace AjourBT.Domain.Abstract
         BTMRejectsConfirmedOrConfirmedModifiedToResponsible,
         DIRRejectsConfirmedToResponsible, 
         BTMUpdatesConfirmedOrConfirmedModifiedToResponsible,
-        BTMReportsConfirmedOrConfirmedModifiedToResponsib,
+        BTMReportsConfirmedOrConfirmedModifiedToResponsible,
+        ACCModifiesConfirmedReportedToResponsible
 
     }
 }

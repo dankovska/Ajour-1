@@ -67,6 +67,9 @@
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PDFjet">
+      <HintPath>Resources\PDFjet.dll</HintPath>
+    </Reference>
     <Reference Include="SendGridMail">
       <HintPath>..\packages\SendGrid.1.2.1\lib\SendGridMail.dll</HintPath>
     </Reference>
@@ -220,6 +223,7 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EMPController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HolidayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -275,6 +279,7 @@
     <Compile Include="Helpers\StatusHintHelper.cs" />
     <Compile Include="Helpers\StatusHintHelperForVUPreps.cs" />
     <Compile Include="Helpers\WeekIntervalHelper.cs" />
+    <Compile Include="Infrastructure\CalendarToPdfExporter.cs" />
     <Compile Include="Infrastructure\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\JourneyBydateComparer.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
@@ -295,6 +300,7 @@
     <Compile Include="Models\CalendarRowViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeViewModelForVU.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\JourneysAndOvertimesModel.cs" />
     <Compile Include="Models\JourneysByEmployeeViewModel.cs" />
     <Compile Include="Models\OvertimeByEmployeeModel.cs" />
@@ -397,6 +403,9 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Resource Include="Resources\PDFjet.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Scripts\AjourBTScript\ABMDatesValidation.js" />
     <Content Include="Scripts\AjourBTScript\BTsForAcc.js" />
     <Content Include="Scripts\AjourBTScript\BTsForADM.js" />
@@ -496,6 +505,7 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
     <Content Include="Views\Employee\CannotDelete.cshtml" />
+	<Content Include="Views\Error\ShowErrorPage.cshtml" />
     <Content Include="Views\Permit\Create.cshtml" />
     <Content Include="Views\Permit\Edit.cshtml" />
     <Content Include="Views\Permit\Delete.cshtml" />
@@ -635,6 +645,13 @@
     <Content Include="Views\Journey\GetJourneyDataForVU.cshtml" />
     <Content Include="Views\Journey\GetJourneyDataForEmp.cshtml" />
     <Content Include="Views\Journey\NoData.cshtml" />
+    <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
+    <Content Include="Views\EMP\NoBtsInThisYear.cshtml" />
+    <Content Include="Views\EMP\NoAbsenceData.cshtml" />
+    <Content Include="Views\EMP\NoBirthdays.cshtml" />
+    <Content Include="Views\EMP\GetListofYearsEMP.cshtml" />
+    <Content Include="Views\EMP\Empty.cshtml" />
+    <Content Include="Views\EMP\GetBusinessTripByYearsEMP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -661,6 +678,22 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

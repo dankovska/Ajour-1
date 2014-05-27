@@ -267,7 +267,10 @@ namespace AjourBT.Filters
                 new BusinessTrip { BusinessTripID = 93, StartDate = new DateTime(2014,03,02), EndDate = new DateTime (2014,03,10), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
                 new BusinessTrip { BusinessTripID = 94, StartDate = new DateTime(2014,03,10), EndDate = new DateTime (2014,03,19), OrderStartDate = new DateTime(2014,03,01), OrderEndDate = new DateTime (2014,03,20), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed, EmployeeID = 57, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
                // new BusinessTrip { BusinessTripID = 194, StartDate = new DateTime(2014,02,10), EndDate = new DateTime (2014,02,23), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 22, UnitID = 3, LocationID = 1,Responsible= "mter", Comment = "confirmed and reported", Manager = "khal", Purpose = "meeting" },                 
+                new BusinessTrip { BusinessTripID = 96, StartDate = new DateTime(2014,12,01), EndDate = new DateTime (2014,12,04), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
+                new BusinessTrip { BusinessTripID = 95, StartDate = new DateTime(2014,12,04), EndDate = new DateTime (2014,12,05), OrderStartDate = new DateTime(2014,11,29), OrderEndDate = new DateTime (2014,12,06), DaysInBtForOrder = 20, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime(2014,09,21), Status= BTStatus.Confirmed | BTStatus.Reported, EmployeeID = 57, LocationID = 3, UnitID = 3, Responsible= "mter", Comment = "Bt for employee", Manager = "khal", Purpose = "meeting" }, 
 
+                new BusinessTrip { BusinessTripID = 130, StartDate = new DateTime(2012,11,01), EndDate = new DateTime (2012,12,30), OrderStartDate = new DateTime(2013,10,31), OrderEndDate = new DateTime (2013,12,31), DaysInBtForOrder = 62, LastCRUDedBy = "ncru", LastCRUDTimestamp = new DateTime (2015,12,30), Status= BTStatus.Reported, EmployeeID = 22, LocationID = 1, Manager="ncru", UnitID = 1,Purpose = "Meeting",Responsible= "mter" },
 
 
 
@@ -446,10 +449,10 @@ namespace AjourBT.Filters
                 List<CalendarItem> calendarItems = new List<CalendarItem>
                 {
                     new CalendarItem{CalendarItemID = 2,From = new DateTime(2014,01,25),To=new DateTime(2014,02,05),Type=CalendarItemType.PaidVacation,EmployeeID = 1},
-                    new CalendarItem{CalendarItemID = 3,From = new DateTime(2014,01,01),To=new DateTime(2014,01,01),Type=CalendarItemType.ReclaimedOvertime,EmployeeID = 1},
+                  //new CalendarItem{CalendarItemID = 3,From = new DateTime(2014,01,01),To=new DateTime(2014,01,01),Type=CalendarItemType.ReclaimedOvertime,EmployeeID = 1},
                     new CalendarItem{CalendarItemID = 4,From = new DateTime(2014,02,01),To=new DateTime(2014,02,14),Type=CalendarItemType.BT,EmployeeID = 25, Location="KR/B"},
                     new CalendarItem{CalendarItemID = 5,From = new DateTime(2014,03,01),To=new DateTime(2014,03,14),Type=CalendarItemType.UnpaidVacation,EmployeeID = 25},
-                    new CalendarItem{CalendarItemID = 7,From = new DateTime(2014,05,09),To=new DateTime(2014,05,09),Type=CalendarItemType.ReclaimedOvertime,EmployeeID = 25},
+                  //new CalendarItem{CalendarItemID = 7,From = new DateTime(2014,05,09),To=new DateTime(2014,05,09),Type=CalendarItemType.ReclaimedOvertime,EmployeeID = 25},
                     new CalendarItem{CalendarItemID = 8,From = new DateTime(2014,05,09),To=new DateTime(2014,06,09),Type=CalendarItemType.BT,EmployeeID = 2, Location="LD/D"},
                     new CalendarItem{CalendarItemID = 9 ,From = new DateTime(2014,02,24),To = new DateTime(2014,03,01),Type = CalendarItemType.SickAbsence, EmployeeID = 1},
                     new CalendarItem{CalendarItemID = 10 ,From = new DateTime(2014,02,24),To = new DateTime(2014,02,26),Type = CalendarItemType.SickAbsence, EmployeeID = 2},
@@ -698,10 +701,10 @@ namespace AjourBT.Filters
                     new Overtime{OvertimeID = 20, EmployeeID = 20,Date = new DateTime(2013,02,27), ReclaimDate = new DateTime(2013,02,02), DayOff = true, Type = OvertimeType.Overtime },
 
                     new Overtime{OvertimeID = 21, EmployeeID = 21,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 22, EmployeeID = 22,Date = new DateTime(2014,03,02), DayOff = true, Type = OvertimeType.Overtime, ReclaimDate = new DateTime(2013,02,02) },
+                    new Overtime{OvertimeID = 22, EmployeeID = 32,Date = new DateTime(2014,03,02), DayOff = true, Type = OvertimeType.Overtime, ReclaimDate = new DateTime(2013,04,02) },
                     new Overtime{OvertimeID = 23, EmployeeID = 23,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Overtime },
                     new Overtime{OvertimeID = 24, EmployeeID = 24,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Paid },
-                    new Overtime{OvertimeID = 25, EmployeeID = 25,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Paid },
+                    new Overtime{OvertimeID = 25, EmployeeID = 25,Date = new DateTime(2014,02,23), DayOff = false, Type = OvertimeType.Paid },
                     new Overtime{OvertimeID = 26, EmployeeID = 26,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Private },
                     new Overtime{OvertimeID = 27, EmployeeID = 27,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Private },
                     new Overtime{OvertimeID = 28, EmployeeID = 28,Date = new DateTime(2014,03,02), DayOff = false, Type = OvertimeType.Overtime },
@@ -716,7 +719,7 @@ namespace AjourBT.Filters
                     new Overtime{OvertimeID = 36, EmployeeID = 36,Date = new DateTime(2014,11,05), ReclaimDate = new DateTime(2014,12,14), DayOff = true, Type = OvertimeType.Overtime },
                     new Overtime{OvertimeID = 37, EmployeeID = 37,Date = new DateTime(2014,11,04), ReclaimDate = new DateTime(2014,12,05), DayOff = true, Type = OvertimeType.Private },
                     new Overtime{OvertimeID = 38, EmployeeID = 38,Date = new DateTime(2014,11,03), ReclaimDate = new DateTime(2014,12,15), DayOff = true, Type = OvertimeType.Overtime },
-                    new Overtime{OvertimeID = 39, EmployeeID = 39,Date = new DateTime(2014,11,02), ReclaimDate = new DateTime(2014,12,06), DayOff = true, Type = OvertimeType.Paid },
+                  //  new Overtime{OvertimeID = 39, EmployeeID = 39,Date = new DateTime(2014,11,02), ReclaimDate = new DateTime(2014,12,06), DayOff = true, Type = OvertimeType.Paid },
                     new Overtime{OvertimeID = 40, EmployeeID = 40,Date = new DateTime(2014,11,01), ReclaimDate = new DateTime(2014,12,16), DayOff = true, Type = OvertimeType.Overtime },
 
                     new Overtime{OvertimeID = 41, EmployeeID = 41,Date = new DateTime(2013,01,01), DayOff = false, Type = OvertimeType.Overtime },
@@ -752,28 +755,28 @@ namespace AjourBT.Filters
                     new Overtime{OvertimeID = 69, EmployeeID = 69,Date = new DateTime(2013,04,05), ReclaimDate = new DateTime(2013,05,09), DayOff = true, Type = OvertimeType.Paid },
                     new Overtime{OvertimeID = 70, EmployeeID = 70,Date = new DateTime(2014,03,24), ReclaimDate = new DateTime(2014,04,10), DayOff = true, Type = OvertimeType.Paid },
 
-                    new Overtime{OvertimeID = 71, EmployeeID = 1,Date = new DateTime(2013,01,01),  DayOff = false, Type = OvertimeType.Overtime },
-                    new Overtime{OvertimeID = 72, EmployeeID = 1,Date = new DateTime(2013,06,07), ReclaimDate = new DateTime(2013,07,30), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 73, EmployeeID = 1,Date = new DateTime(2014,06,07), ReclaimDate = new DateTime(2014,07,30), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 74, EmployeeID = 1,Date = new DateTime(2014,07,01), ReclaimDate = new DateTime(2014,12,21), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 75, EmployeeID = 1,Date = new DateTime(2014,06,02), ReclaimDate = new DateTime(2014,11,22), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 76, EmployeeID = 1,Date = new DateTime(2014,05,03), DayOff = false, Type = OvertimeType.Overtime },
-                    new Overtime{OvertimeID = 77, EmployeeID = 1,Date = new DateTime(2014,04,04), ReclaimDate = new DateTime(2014,10,23), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 78, EmployeeID = 1,Date = new DateTime(2014,03,05), ReclaimDate = new DateTime(2014,09,24), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 79, EmployeeID = 1,Date = new DateTime(2014,02,06), ReclaimDate = new DateTime(2014,08,25), DayOff = true, Type = OvertimeType.Private },
-                    new Overtime{OvertimeID = 80, EmployeeID = 1,Date = new DateTime(2014,01,07), DayOff = false, Type = OvertimeType.Overtime },
+                    new Overtime{OvertimeID = 71, EmployeeID = 11,Date = new DateTime(2013,01,01),  DayOff = false, Type = OvertimeType.Overtime },
+                    new Overtime{OvertimeID = 72, EmployeeID = 12,Date = new DateTime(2013,06,07), ReclaimDate = new DateTime(2013,07,30), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 73, EmployeeID = 13,Date = new DateTime(2014,06,07), ReclaimDate = new DateTime(2014,07,30), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 74, EmployeeID = 14,Date = new DateTime(2014,07,01), ReclaimDate = new DateTime(2014,12,21), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 75, EmployeeID = 15,Date = new DateTime(2014,06,02), ReclaimDate = new DateTime(2014,11,22), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 76, EmployeeID = 16,Date = new DateTime(2014,05,03), DayOff = false, Type = OvertimeType.Overtime },
+                    new Overtime{OvertimeID = 77, EmployeeID = 17,Date = new DateTime(2014,04,04), ReclaimDate = new DateTime(2014,10,23), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 78, EmployeeID = 18,Date = new DateTime(2014,03,05), ReclaimDate = new DateTime(2014,09,24), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 79, EmployeeID = 19,Date = new DateTime(2014,02,06), ReclaimDate = new DateTime(2014,08,25), DayOff = true, Type = OvertimeType.Private },
+                    new Overtime{OvertimeID = 80, EmployeeID = 20,Date = new DateTime(2014,01,07), DayOff = false, Type = OvertimeType.Overtime },
                     
                     new Overtime{OvertimeID = 81, EmployeeID = 22,Date = new DateTime(2014,03,05), DayOff = true, Type = OvertimeType.Overtime },
                     new Overtime{OvertimeID = 82, EmployeeID = 22,Date = new DateTime(2014,04,05), DayOff = true, Type = OvertimeType.Overtime, ReclaimDate = new DateTime(2014,05,05)},
-                    new Overtime{OvertimeID = 83, EmployeeID = 22,Date = new DateTime(2014,05,05), DayOff = true, Type = OvertimeType.Paid, ReclaimDate = new DateTime(2014,05,05)},
-                    new Overtime{OvertimeID = 84, EmployeeID = 22,Date = new DateTime(2014,06,05), DayOff = true, Type = OvertimeType.Private, ReclaimDate = new DateTime(2014,07,05)},
+                    new Overtime{OvertimeID = 83, EmployeeID = 22,Date = new DateTime(2014,07,05), DayOff = true, Type = OvertimeType.Paid, ReclaimDate = new DateTime(2014,08,05)},
+                    new Overtime{OvertimeID = 84, EmployeeID = 22,Date = new DateTime(2014,06,05), DayOff = true, Type = OvertimeType.Private, ReclaimDate = new DateTime(2014,09,05)},
 
                 };
 
 
                 List<Vacation> vacations = new List<Vacation>
                 {
-                    new Vacation{VacationID = 1, EmployeeID = 1, From = new DateTime(2014,02,12), To = new DateTime(2014,02,28), Type = VacationType.PaidVacation},
+                    new Vacation{VacationID = 1, EmployeeID = 1, From = new DateTime(2014,02,12), To = new DateTime(2014,02,20), Type = VacationType.PaidVacation},
                     new Vacation{VacationID = 2, EmployeeID = 2, From = new DateTime(2014,03,12), To = new DateTime(2014,03,28), Type = VacationType.UnpaidVacation},
                     new Vacation{VacationID = 3, EmployeeID = 3, From = new DateTime(2014,04,12), To = new DateTime(2014,04,28), Type = VacationType.PaidVacation},
                     new Vacation{VacationID = 4, EmployeeID = 4, From = new DateTime(2014,05,12), To = new DateTime(2014,05,28), Type = VacationType.UnpaidVacation},
@@ -783,8 +786,8 @@ namespace AjourBT.Filters
                     new Vacation{VacationID = 8, EmployeeID = 8, From = new DateTime(2014,09,12), To = new DateTime(2014,09,28), Type = VacationType.UnpaidVacation},
                     new Vacation{VacationID = 9, EmployeeID = 9, From = new DateTime(2014,10,12), To = new DateTime(2014,10,28), Type = VacationType.PaidVacation},
                     new Vacation{VacationID = 10, EmployeeID = 10, From = new DateTime(2014,11,12), To = new DateTime(2014,11,28), Type = VacationType.UnpaidVacation},
-                    new Vacation{VacationID = 11, EmployeeID = 22, From = new DateTime(2014,01,01), To = new DateTime(2014,01,15), Type = VacationType.PaidVacation},
-                    new Vacation{VacationID = 12, EmployeeID = 22, From = new DateTime(2014,03,03), To = new DateTime(2014,03,20), Type = VacationType.UnpaidVacation},
+                    new Vacation{VacationID = 11, EmployeeID = 22, From = new DateTime(2014,01,01), To = new DateTime(2014,01,14), Type = VacationType.PaidVacation},
+                    new Vacation{VacationID = 12, EmployeeID = 22, From = new DateTime(2014,02,13), To = new DateTime(2014,02,20), Type = VacationType.UnpaidVacation},
 
 
                 };
@@ -1038,26 +1041,38 @@ namespace AjourBT.Filters
                                            type = overTimes.Type //Change diff type of Overtime
                                        };
 
-                foreach (var emp in empWithOvertimes)
+                foreach (var overtime in empWithOvertimes)
                 {
-                    Employee correctEmp = (from empl in employees where empl.EmployeeID == emp.employeeID select empl).FirstOrDefault();
+                    Employee correctEmp = (from empl in employees where empl.EmployeeID == overtime.employeeID select empl).FirstOrDefault();
                     CalendarItem item = new CalendarItem();
 
-                    item.Employee = emp.empl;
-                    item.EmployeeID = emp.employeeID;
-                    item.From = emp.date;
-                    item.To = emp.date;
+                    item.Employee = overtime.empl;
+                    item.EmployeeID = overtime.employeeID;
+                    item.From = overtime.date;
+                    item.To = overtime.date;
                     //item.Type = emp.type;
-                    switch (emp.type)
+                    switch (overtime.type)
                     {
-                        case OvertimeType.Overtime:
-                            {
-                                item.Type = CalendarItemType.ReclaimedOvertime;
-                            }
-                            break;
+                        //case OvertimeType.Overtime:
+                        //    {
+                        //        item.Type = CalendarItemType.ReclaimedOvertime;
+                        //    }
+                        //    break;
                         case OvertimeType.Paid:
                             {
                                 item.Type = CalendarItemType.OvertimeForReclaim;
+                                if (overtime.reclaimDate != null)
+                                {
+                                    CalendarItem reclaimed = new CalendarItem();
+                                    reclaimed.Employee = overtime.empl;
+                                    reclaimed.EmployeeID = overtime.employeeID;
+                                    reclaimed.From = overtime.reclaimDate.Value;
+                                    reclaimed.To = overtime.reclaimDate.Value;
+                                    reclaimed.Type = CalendarItemType.ReclaimedOvertime;
+                                    correctEmp.CalendarItems.Add(reclaimed);
+                                    context.SaveChanges();
+                                }
+
                             }
                             break;
                         case OvertimeType.Private:
@@ -1683,12 +1698,22 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.CreateRole("ABM");
                     }
+
+                    if (!WebSecurity.UserExists("admin"))
+                    {
+                        WebSecurity.CreateUserAndAccount("admin", "epol01");
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("admin", "PU"))
+                    {
+                        System.Web.Security.Roles.AddUserToRole("admin", "PU");
+                    }
+                 
                 }
                 catch (Exception ex)
                 {
                     throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
                 }
-
                 context.SaveChanges();
 
                 Department department = new Department { DepartmentID = 1, DepartmentName = "Unreal" };
@@ -1697,8 +1722,14 @@ namespace AjourBT.Filters
                 Position position = new Position { PositionID = 1, TitleEn = "Unreal", TitleUk = "Нереальна" };
                 context.Positions.Add(position);
                 context.SaveChanges();
-                Employee powerUser = new Employee { EmployeeID = 22, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "rkni", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, BirthDay = new DateTime(1987, 11, 10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 1 };
+                Employee powerUser = new Employee { EmployeeID = 1, FirstName = "Robert", LastName = "Knight", DepartmentID = 1, EID = "admin", DateEmployed = new DateTime(2006, 04, 11), IsManager = true, PositionID = 1, CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() };
                 context.Employees.Add(powerUser);
+                context.SaveChanges();
+                Country country = new Country { CountryID = 1, CountryName = "Ukraine", Holidays = new List<Holiday>(), Locations = new List<Location>(), Comment = "UTC + 2" };
+                context.Countries.Add(country);
+                context.SaveChanges();
+                Holiday holiday = new Holiday { HolidayID = 1, Title = "NewYear", HolidayDate = new DateTime(2013, 04, 10), CountryID = 1, IsPostponed = false };
+                context.Holidays.Add(holiday);
                 context.SaveChanges();
             }
 

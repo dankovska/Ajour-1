@@ -1,0 +1,36 @@
+﻿@using AjourBT.Infrastructure
+@using System.Web.Configuration
+
+@{
+    Layout = null;
+    var year = @ViewBag.SelectedYear;
+    var reportedBTs = @ViewBag.ReportedBTs;
+    var name = @ViewBag.UserName;
+}
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "btsByDatesEMP",
+        Url = Url.Action("GetReportedBTs")
+    };
+}
+
+@using (Ajax.BeginForm("GetReportedBTs", "EMP", ajaxOpts, new { id = "formEMP" }))
+{
+    <div class="destination9">
+        @if (reportedBTs != null)
+        {
+            @Html.DropDownList("selectedYear", (SelectList)ViewBag.SelectedYearEMP, new { onchange = "$(formEMP).submit();" })
+        }
+    </div>
+    var userName = HttpContext.Current.User.Identity.Name.ToString();
+      @Html.Hidden("userName", userName);
+}
+
+<div id="btsByDatesEMP">
+  @{Html.RenderAction("GetReportedBTs", "EMP");}
+        </div>
+
+
+

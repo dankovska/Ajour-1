@@ -43,6 +43,10 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         private string btDatesOverlay = "BT with same dates is already planned for this user. "
                                       + "Please change \'From\' or \'To\'";
 
+        private string btCreationError ="Absence already planned on this period for this user. "
+                                      + "Please change OrderDates or if BT haven\'t OrderDates "
+                                      + "change \'From\' or \'To\'";
+
         private StringBuilder comment = new StringBuilder();
         private string defaultAccComment;
 
@@ -174,6 +178,10 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             {
                                 return Json(new { error = modelError });
                             }
+                            //catch (VacationAlreadyExistException)
+                            //{
+                            //    return Json(new { error = btCreationError });
+                            //}
                         }
                     }
                 }
@@ -710,6 +718,11 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     return Json(new { error = modelError });
                 }
+                catch (VacationAlreadyExistException)
+                {
+                    Console.WriteLine("VacancyAlreadyExistException");
+                    return Json(new { error = btCreationError });
+                }
 
                 IEnumerable<Employee> empList = SelectEmployees(selectedDepartment, null);
                 return View("TableViewBTADM", empList.ToList());
@@ -974,11 +987,16 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     return Json(new { error = modelError });
                 }
+                catch (VacationAlreadyExistException)
+                {
+                    return Json(new { error = btCreationError });
+                }
                 selectedBusinessTripsList.Add(bTrip);
                 if (bTrip.Status == BTStatus.Confirmed)
                 {
                     messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
-                    //messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
+                    //messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author)); 
+                    messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
                 }
             }
             else
@@ -1153,6 +1171,8 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
+                    messenger.Notify(new Message(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, selectedBusinessTripsList, author));
+
                 }
             }
             List<Employee> empList = SearchBusinessTripDataBTM(repository.Employees.ToList(), searchString);
@@ -1592,6 +1612,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToBTM, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToDIR, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToEMP, selectedBusinessTripsList, author));
+                            messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToResponsible, selectedBusinessTripsList, author)); 
                         }
                         catch (DbUpdateConcurrencyException)
                         {

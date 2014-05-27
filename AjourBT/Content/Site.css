@@ -1772,6 +1772,14 @@ blue {
     font-size: 0.85em;
 }
 
+.destination9 {
+    width: 7%;
+    position: absolute;
+    top: 75px;
+    left: 20px;
+    font-size: 1em;
+}
+
 .destination00 {
     width: 6%;
     position: relative;
@@ -1966,7 +1974,7 @@ redText {
 }
 
 .wtrContainer {
-    width: 60%;
+    width: 70%;
     display: inline-block;
 }
 
