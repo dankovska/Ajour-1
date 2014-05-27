@@ -183,7 +183,6 @@
     <Compile Include="Controllers\CountryControllerTests.cs" />
     <Compile Include="Controllers\DepartmentControllerTest.cs" />
     <Compile Include="Controllers\EMPControllerTest.cs" />
-    <Compile Include="Controllers\ErrorControllerTest.cs" />
     <Compile Include="Controllers\HelpControllerTest.cs" />
     <Compile Include="Controllers\HolidayControllerTest.cs" />
     <Compile Include="Controllers\JourneyControllerTest.cs" />
@@ -238,6 +237,7 @@
     <Compile Include="Messaging Subsystem\MessageTest.cs" />
     <Compile Include="Messaging Subsystem\MessengerTest.cs" />
     <Compile Include="Messaging Subsystem\TestRoleProvider.cs" />
+    <Compile Include="MockRepository\TestMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Routes\RouteTest.cs" />

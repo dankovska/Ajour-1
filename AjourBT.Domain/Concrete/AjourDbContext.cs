@@ -59,7 +59,7 @@ namespace AjourBT.Domain.Concrete
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Employee>()
-               .HasRequired(u => u.Department)
+               .HasOptional(u => u.Department)
                .WithMany(b => b.Employees)
                .WillCascadeOnDelete(false);
 
@@ -93,7 +93,6 @@ namespace AjourBT.Domain.Concrete
         public DbSet<Overtime> Overtimes { get; set; }
         public DbSet<Vacation> Vacations { get; set; }
         public DbSet<Sickness> Sicknesses { get; set; }
-        //public DbSet<User> Users { get; set; }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

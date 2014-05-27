@@ -102,7 +102,7 @@ namespace AjourBT.Controllers
         public ActionResult Login(string returnUrl)
         {
             if (HttpContext.User.Identity.Name != "")
-                //HttpRuntime.Cache["CurrentUserName"] = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).Select(e => e.FirstName).FirstOrDefault();
+                //HttpRuntime.Cache["CurrentUserName"] = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).Select(e => e.FirstName).FirstOrDefault();
                 ViewBag.ReturnUrl = returnUrl;
 
             string[] roles = System.Web.Security.Roles.GetUsersInRole("PU");
@@ -153,7 +153,7 @@ namespace AjourBT.Controllers
                     //add the list into the cache
                     HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
                 }
-                HttpRuntime.Cache["CurrentUserName"] = repository.Employees.Where(e => e.EID == model.UserName).Select(e => e.FirstName).FirstOrDefault();
+                HttpRuntime.Cache["CurrentUserName"] = repository.Users.Where(e => e.EID == model.UserName).Select(e => e.FirstName).FirstOrDefault();
                 if (model.Password == ConfigurationManager.AppSettings["DefaultPassword"])
                     return RedirectToAction("Manage", new { Message = "You must change your password!" });
                 else
@@ -504,7 +504,7 @@ namespace AjourBT.Controllers
 
         public string ConvertEIDToName(string eid)
         {
-            Employee emp = repository.Employees.Where(e => e.EID == eid).FirstOrDefault();
+            Employee emp = repository.Users.Where(e => e.EID == eid).FirstOrDefault();
             return emp != null ? emp.FirstName : "";
         }
     }

@@ -152,6 +152,7 @@ namespace AjourBT.Tests.MockRepository
             AddEmployee(new Employee { EmployeeID = 22, FirstName = "Overtime", LastName = "Only", DepartmentID = 5, EID = "ovol", DateEmployed = new DateTime(), BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() });
             AddEmployee(new Employee { EmployeeID = 23, FirstName = "PaidOvertime", LastName = "Only", DepartmentID = 5, EID = "povol", DateEmployed = new DateTime(), BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() });
             AddEmployee(new Employee { EmployeeID = 24, FirstName = "PrvOvertime", LastName = "Only", DepartmentID = 5, EID = "prvol", DateEmployed = new DateTime(), BusinessTrips = new List<BusinessTrip>(), CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(), Sicknesses = new List<Sickness>() });
+            AddEmployee(new Employee { EmployeeID = 25, FirstName = "User", LastName = "User", EID = "User", IsUserOnly = true });
 
             //AddEmployee(new Employee { EmployeeID = 17, FirstName = "Ivan", LastName = "Petriv", DepartmentID = 5, EID = "iwpe", DateEmployed = new DateTime(2011, 04, 11), IsManager = false, BusinessTrips = new List<BusinessTrip>() });
 
@@ -397,7 +398,7 @@ namespace AjourBT.Tests.MockRepository
             AddSickItem(new Sickness { SickID = 7, EmployeeID = 19, From = new DateTime(2014, 02, 27), To = new DateTime(2014, 03, 27), SicknessType = "Test" });
 
             mock.Setup(m => m.Departments).Returns(departments.AsQueryable());
-            mock.Setup(m => m.Employees).Returns(employees.AsQueryable());
+            mock.Setup(m => m.Users).Returns(employees.AsQueryable());
             mock.Setup(m => m.Locations).Returns(locations.AsQueryable());
             mock.Setup(m => m.Visas).Returns(visas.AsQueryable());
             mock.Setup(m => m.VisaRegistrationDates).Returns(visaRegistrationDates.AsQueryable());
@@ -415,6 +416,7 @@ namespace AjourBT.Tests.MockRepository
             mock.Setup(m => m.Vacations).Returns(vacations.AsQueryable());
             mock.Setup(m => m.Sicknesses).Returns(sicks.AsQueryable());
             mock.Setup(m => m.CalendarItems).Returns(calendarItems.AsQueryable());
+            mock.Setup(m => m.Employees).Returns(employees.Where(e => e.IsUserOnly == false).AsQueryable());
         }
 
         public static void AddEmployee(Employee emp)
@@ -425,8 +427,11 @@ namespace AjourBT.Tests.MockRepository
 
         private static void SetEmployeeRelations(Employee emp)
         {
+            if(!emp.IsUserOnly)
+            {
             departments.Find(d => d.DepartmentID == emp.DepartmentID).Employees.Add(employees.Find(e => e.EmployeeID == emp.EmployeeID));
             employees.Find(e => e.EmployeeID == emp.EmployeeID).Department = departments.Find(v => v.DepartmentID == emp.DepartmentID);
+            }
         }
 
         public static void AddLocation(Location location)
