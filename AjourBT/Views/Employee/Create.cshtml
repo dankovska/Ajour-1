@@ -19,7 +19,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    
 
     <input type="hidden" name="selectedDepartment" value="@ViewBag.SelectedDepartment" />
     <input type="hidden" name="searchString" value="@ViewBag.SearchString" />
@@ -44,7 +43,9 @@
         <tr>
             <td>@Html.LabelFor(model => model.EID)</td>
             <td>@Html.EditorFor(model => model.EID)
-                <br /> @Html.ValidationMessageFor(model => model.EID)</td>
+                <br /> @Html.ValidationMessageFor(model => model.EID)
+                <div id="ModelError" class="field-validation-error"></div>
+            </td>
         </tr>
 
         <tr>
