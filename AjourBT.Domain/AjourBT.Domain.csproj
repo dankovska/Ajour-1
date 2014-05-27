@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201404180947323_Holidays_CheckBox.Designer.cs">
       <DependentUpon>201404180947323_Holidays_CheckBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405261548123_User.cs" />
+    <Compile Include="Migrations\201405261548123_User.Designer.cs">
+      <DependentUpon>201405261548123_User.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -259,6 +263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404180947323_Holidays_CheckBox.resx">
       <DependentUpon>201404180947323_Holidays_CheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405261548123_User.resx">
+      <DependentUpon>201405261548123_User.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

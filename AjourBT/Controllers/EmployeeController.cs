@@ -30,8 +30,8 @@ namespace AjourBT.Controllers
         public PartialViewResult GetEmployeeData(string selectedDepartment = null, string searchString = "")
         {
             searchString = searchString != "" ? searchString.Trim() : "";
-            List<EmployeeViewModel> data = SearchEmployeeData(db.Employees.ToList(), selectedDepartment, searchString);
-            //IEnumerable<EmployeeViewModel> data = from emp in db.Employees.AsEnumerable()
+            List<EmployeeViewModel> data = SearchEmployeeData(db.Users.ToList(), selectedDepartment, searchString);
+            //IEnumerable<EmployeeViewModel> data = from emp in db.Users.AsEnumerable()
             //                                      join dep in db.Departments on emp.DepartmentID equals dep.DepartmentID
             //                                      join pos in db.Positions on emp.PositionID equals pos.PositionID
             //                                      where selectedDepartment == null || selectedDepartment == String.Empty || dep.DepartmentName == selectedDepartment
@@ -78,7 +78,7 @@ namespace AjourBT.Controllers
                             && (emp.EID.ToLower().Contains(searchString.ToLower())
                             || emp.FirstName.ToLower().Contains(searchString.ToLower())
                             || emp.LastName.ToLower().Contains(searchString.ToLower())
-                            || emp.DateEmployed.ToShortDateString().Contains(searchString)
+                            || emp.DateEmployed.Value.ToShortDateString().Contains(searchString)
                             || emp.DateDismissed.ToString().Contains(searchString)
                             || emp.BirthDay.ToString().Contains(searchString)
                             || ((emp.FullNameUk != null) && emp.FullNameUk.ToLower().Contains(searchString.ToLower()))
@@ -183,7 +183,7 @@ namespace AjourBT.Controllers
             ViewBag.PositionList = (from p in db.Positions select p).ToList();
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
 
-            Employee emp = db.Employees.FirstOrDefault(e => e.EmployeeID == id);
+            Employee emp = db.Users.FirstOrDefault(e => e.EmployeeID == id);
 
             if (emp == null)
             {
@@ -218,7 +218,7 @@ namespace AjourBT.Controllers
                 {
                     db.SaveEmployee(emp);
                     db.SaveRolesForEmployee(emp.EID, Roles);
-                    List<Employee> empl = db.Employees.ToList();
+                    List<Employee> empl = db.Users.ToList();
                     List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
                     return View("OneRowPU", empList);
                     //return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
@@ -240,7 +240,7 @@ namespace AjourBT.Controllers
 
         public ActionResult Delete(int id = 0, string selectedDepartment = null, string searchString = "")
         {
-            Employee employee = db.Employees.FirstOrDefault(e => e.EmployeeID == id);
+            Employee employee = db.Users.FirstOrDefault(e => e.EmployeeID == id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -267,7 +267,7 @@ namespace AjourBT.Controllers
         {
             try
             {
-                db.DeleteUser(db.Employees.FirstOrDefault(e => e.EmployeeID == id).EID);
+                db.DeleteUser(db.Users.FirstOrDefault(e => e.EmployeeID == id).EID);
                 db.DeleteEmployee(id);
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException)
@@ -275,7 +275,7 @@ namespace AjourBT.Controllers
                 return RedirectToAction("DataBaseDeleteError", "Home");
             }
 
-            List<Employee> empl = db.Employees.ToList();
+            List<Employee> empl = db.Users.ToList();
             List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
             return View("OneRowPU", empList);
 

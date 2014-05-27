@@ -8,6 +8,8 @@
     var selected = ViewBag.SelectedDepartment;
     }
 
+<script src="~/Scripts/AjourBTScript/RequiredIfValidation.js"></script>
+
 <script type="text/javascript">
     clearTimeout(timer);
     timer = window.setTimeout(function () { location.reload(); }, timeout);
@@ -120,6 +122,14 @@
             <td>
                 @Html.EditorFor(model => model.Comment)
                 @Html.ValidationMessageFor(model => model.Comment)
+            </td>
+        </tr> 
+
+         <tr>
+             <td>@Html.LabelFor(model => model.IsUserOnly)</td>
+             <td>
+                 @Html.EditorFor(model => model.IsUserOnly)
+             <br />@Html.ValidationMessageFor(model => model.IsUserOnly)
             </td>
         </tr>
 </table>

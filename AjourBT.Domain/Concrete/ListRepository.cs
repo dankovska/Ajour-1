@@ -1011,7 +1011,8 @@ namespace AjourBT.Domain.Concrete
         #endregion
 
         #region User
-        public IEnumerable<User> Users
+
+        public IQueryable<Employee> Users
         {
             get { throw new NotImplementedException(); }
         }

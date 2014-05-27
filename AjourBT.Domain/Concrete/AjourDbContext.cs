@@ -59,7 +59,7 @@ namespace AjourBT.Domain.Concrete
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Employee>()
-               .HasRequired(u => u.Department)
+               .HasOptional(u => u.Department)
                .WithMany(b => b.Employees)
                .WillCascadeOnDelete(false);
 

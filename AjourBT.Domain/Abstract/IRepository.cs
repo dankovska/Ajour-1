@@ -29,7 +29,7 @@ namespace AjourBT.Domain.Abstract
         IEnumerable<Overtime> Overtimes { get; }
         IEnumerable<Vacation> Vacations { get; }
         IEnumerable<Sickness> Sicknesses { get; }
-        IEnumerable<User> Users { get; }
+        IQueryable<Employee> Users { get; }
 
         void SaveEmployee(Employee employee);
         void SaveDepartment(Department department);

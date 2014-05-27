@@ -31,7 +31,7 @@ namespace AjourBT.Domain.Concrete
         #region Employees
         public IQueryable<Employee> Employees
         {
-            get { return context.Employees; }
+            get { return context.Employees.Where(e => e.IsUserOnly == false); }
         }
 
         public void SaveEmployee(Employee employee)
@@ -62,6 +62,7 @@ namespace AjourBT.Domain.Concrete
                     emp.Comment = employee.Comment;
                     emp.FullNameUk = employee.FullNameUk;
                     emp.PositionID = employee.PositionID;
+                    emp.IsUserOnly = employee.IsUserOnly; 
                 }
             }
             context.SaveChanges();
@@ -1463,9 +1464,9 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
         #endregion
 
         #region Users
-        public IEnumerable<User> Users
+        public IQueryable<Employee> Users
         {
-            get { throw new NotImplementedException(); }
+            get { return context.Employees; }
             //get { return context.Users; }
         }
 
