@@ -48,7 +48,7 @@ namespace AjourBT.Controllers
             {
                 db.SaveUnit(unit);
 
-                return RedirectToAction("PUView", "Home", new { tab = 5});
+                return RedirectToAction("PUView", "Home", new { tab = 4});
             }
 
             return View(unit);
@@ -82,7 +82,7 @@ namespace AjourBT.Controllers
                 if (ModelState.IsValid)
                 {
                     db.SaveUnit(unit);
-                    return RedirectToAction("PUView", "Home", new { tab = 5 });
+                    return RedirectToAction("PUView", "Home", new { tab = 4 });
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -132,7 +132,7 @@ namespace AjourBT.Controllers
 
             }
 
-            return RedirectToAction("PUView", "Home", new { tab = 5 });
+            return RedirectToAction("PUView", "Home", new { tab = 4 });
         }
     }
 }
