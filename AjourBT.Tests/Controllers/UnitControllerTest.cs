@@ -288,7 +288,7 @@ namespace AjourBT.Tests.Controllers
             mock.Verify(m => m.DeleteUnit(1), Times.Once);
             Assert.AreEqual("Home", result.RouteValues["controller"]);
             Assert.AreEqual("PUView", result.RouteValues["action"]);
-            Assert.AreEqual(5, result.RouteValues["tab"]);
+            Assert.AreEqual(4, result.RouteValues["tab"]);
             Assert.IsFalse(result.Permanent);
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
