@@ -14,6 +14,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Threading;
 
 namespace AjourBT
 {
@@ -49,6 +50,7 @@ namespace AjourBT
             AuthConfig.RegisterAuth();
             //Database.SetInitializer<AjourDbContext>(new AjourDbInitializer());
             // DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(AjourBT.Domain.Entities.Permit.RequiredIfAttribute),typeof(RequiredAttributeAdapter));
+            Scheduler.Start(new TimeSpan(15, 22, 00));
         }
 
 #if !DEBUG

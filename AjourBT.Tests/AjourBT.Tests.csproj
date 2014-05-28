@@ -211,6 +211,7 @@
     <Compile Include="Helpers\SortingFactorDatesTest.cs" />
     <Compile Include="Helpers\DisplayCityOfRegistrationHelperTest.cs" />
     <Compile Include="Infrastructure\CalendarToPdfExporterTest.cs" />
+    <Compile Include="Infrastructure\SchedulerTest.cs" />
     <Compile Include="MockRepository\Mock_Repository.cs" />
     <Compile Include="Controllers\PassportControllerTest.cs" />
     <Compile Include="Controllers\PermitControllerTest.cs" />
