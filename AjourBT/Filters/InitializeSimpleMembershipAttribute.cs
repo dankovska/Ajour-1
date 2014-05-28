@@ -1355,6 +1355,16 @@ namespace AjourBT.Filters
                         System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "DIR" });
                     }
 
+                    if (!System.Web.Security.Roles.IsUserInRole("briv", "EMP"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "EMP" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("briv", "ABM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "ABM" });
+                    }
+
                     #endregion
 
                     #region User - all rolles - rolles added
@@ -1392,6 +1402,11 @@ namespace AjourBT.Filters
                     if (!System.Web.Security.Roles.IsUserInRole("User", "EMP"))
                     {
                         System.Web.Security.Roles.AddUserToRoles("User", new string[] { "EMP" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "ABM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "ABM" });
                     }
 
                     #endregion
