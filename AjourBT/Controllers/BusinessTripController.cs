@@ -98,16 +98,26 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             return PartialView(data.ToList());
         }
 
-        private IEnumerable<Employee> SelectEmployees(string selectedDepartment, string selectedUserDepartment)
+        public IEnumerable<Employee> SelectEmployees(string selectedDepartment, string selectedUserDepartment)
         {
             IEnumerable<Employee> data;
             if (selectedDepartment == null)
             {
+                if (selectedUserDepartment == null)
+                {
+                    data = from emp in repository.Employees.AsEnumerable()
+                           join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
+                           where (emp.DateDismissed == null)
+                           orderby emp.IsManager descending, emp.LastName
+                           select emp;
+                }
+                else { 
                 data = from emp in repository.Employees.AsEnumerable()
                        join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
                        where ((emp.Department.DepartmentName == selectedUserDepartment && (emp.DateDismissed == null)))
                        orderby emp.IsManager descending, emp.LastName
                        select emp;
+                }
 
 
             }
@@ -157,7 +167,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (selectedPlannedBTs != null && selectedPlannedBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedPlannedBTs)
                 {
@@ -215,7 +225,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         //    {
         //        if (((businessTrip.Status & BTStatus.Planned) == BTStatus.Planned) && businessTrip.RejectComment == null)
         //        {
-        //            Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+        //            Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
         //            List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
         //            businessTrip.Status = (businessTrip.Status | BTStatus.Registered) & ~BTStatus.Planned;
         //            AddLastCRUDDataToBT(businessTrip);
@@ -244,7 +254,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (selectedPlannedBTs != null && selectedPlannedBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedPlannedBTs)
                 {
@@ -292,7 +302,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (selectedRegisteredBTs != null && selectedRegisteredBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedRegisteredBTs)
                 {
@@ -340,7 +350,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (selectedRegisteredBTs != null && selectedRegisteredBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedRegisteredBTs)
                 {
@@ -389,7 +399,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (selectedRegisteredBTs != null && selectedRegisteredBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedRegisteredBTs)
                 {
@@ -437,7 +447,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     try
                     {
-                        Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                        Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                         List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                         selectedBT.Status = (selectedBT.Status | BTStatus.Cancelled);
                         AddLastCRUDDataToBT(selectedBT);
@@ -476,7 +486,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         //    {
         //        if (((businessTrip.Status & BTStatus.Planned) == BTStatus.Planned) && businessTrip.RejectComment == null)
         //        {
-        //            Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+        //            Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
         //            List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
         //            businessTrip.Status = (businessTrip.Status | BTStatus.Confirmed) & ~BTStatus.Planned;
         //            AddLastCRUDDataToBT(businessTrip);
@@ -534,7 +544,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     {
                         selectedBT.Status = (BTStatus.Planned | BTStatus.Cancelled);
                         AddLastCRUDDataToBT(selectedBT);
-                        Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                        Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                         List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                         repository.SaveBusinessTrip(selectedBT);
                         selectedBusinessTripsList.Add(selectedBT);
@@ -977,7 +987,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 {
                     bTrip.Status = bTrip.Status & ~BTStatus.Modified;
                 }
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 try
                 {
@@ -1135,7 +1145,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             if (selectedConfirmedBTs != null && selectedConfirmedBTs.Length != 0)
             {
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                 foreach (string bt in selectedConfirmedBTs)
                 {
@@ -1219,7 +1229,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
                 if ((businessTrip.RejectComment != null) && (businessTrip.RejectComment != String.Empty))
                 {
-                    Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                    Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                     List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                     BTStatus oldBTStatus = businessTrip.Status;
                     businessTrip.Status = BTStatus.Planned | BTStatus.Modified;
@@ -1410,7 +1420,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
                 if ((businessTrip.RejectComment != null) && (businessTrip.RejectComment != String.Empty))
                 {
-                    Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                    Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                     List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                     businessTrip.Status = BTStatus.Planned | BTStatus.Modified;
                     businessTrip.OrderStartDate = null;
@@ -1558,7 +1568,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                         && businessTrip.OrderStartDate == btFromRepository.OrderStartDate
                         && businessTrip.OrderEndDate == btFromRepository.OrderEndDate))
                     {
-                        Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                        Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                         List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
 
                         businessTrip.Status = (btFromRepository.Status | BTStatus.Modified) & ~BTStatus.Reported;
@@ -1688,7 +1698,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 if ((businessTrip.Status == (BTStatus.Confirmed | BTStatus.Reported))
                     && ((businessTrip.CancelComment != null) && (businessTrip.CancelComment != String.Empty)))
                 {
-                    Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                    Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                     List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
                     businessTrip.Status = BTStatus.Confirmed | BTStatus.Cancelled;
 

@@ -42,14 +42,14 @@ namespace AjourBT.Tests.Controllers
             }
 
             var fakeHttpContext = new Mock<HttpContextBase>();
-            var fakeIdentity = new GenericIdentity("andl");
+            var fakeIdentity = new GenericIdentity("User");
             var principal = new GenericPrincipal(fakeIdentity, null);
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
-            fakeHttpContext.Setup(t => t.User.Identity.Name).Returns("andl");
+            fakeHttpContext.Setup(t => t.User.Identity.Name).Returns("User");
             controllerContext = new Mock<ControllerContext>();
             controllerContext.Setup(t => t.HttpContext).Returns(fakeHttpContext.Object);
-            controllerContext.Setup(t => t.HttpContext.User.Identity.Name).Returns("andl");
+            controllerContext.Setup(t => t.HttpContext.User.Identity.Name).Returns("User");
 
             //List<Department> departments = new List<Department>{
             //    new Department{DepartmentID = 1, DepartmentName = "SDDDA",Employees = new List<Employee>()},
@@ -179,6 +179,7 @@ namespace AjourBT.Tests.Controllers
 
             // Assert - check the result 
             mock.Verify(m => m.SaveVisaRegistrationDate(visaRegDate, 5), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCreateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Once);
             Assert.AreEqual("as", ((ViewResult)result).ViewBag.SearchString);
             Assert.AreEqual("dd.mm.yyyy", ((ViewResult)result).ViewBag.JSDatePattern);
             Assert.AreEqual("TableViewVisasAndPermitsBTM", ((ViewResult)result).ViewName);
@@ -200,6 +201,7 @@ namespace AjourBT.Tests.Controllers
 
             // Assert - check the result 
             mock.Verify(m => m.SaveVisaRegistrationDate(It.IsAny<VisaRegistrationDate>(), It.IsAny<int>()), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCreateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Never);
             Assert.IsInstanceOf(typeof(RegistrationDateViewModel), result.ViewData.Model);
             Assert.IsInstanceOf(typeof(ViewResult), result);
         }
@@ -221,6 +223,7 @@ namespace AjourBT.Tests.Controllers
 
             //Assert
             mock.Verify(d => d.SaveVisaRegistrationDate(visaRegDate, visaRegDate.EmployeeID), Times.Once());
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCreateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Never);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
         }
@@ -299,6 +302,7 @@ namespace AjourBT.Tests.Controllers
 
             // Assert - check the result 
             mock.Verify(m => m.SaveVisaRegistrationDate(visaRegDate, 5), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMUpdateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Once);
             Assert.AreEqual("TableViewVisasAndPermitsBTM", ((ViewResult)result).ViewName);
             Assert.IsInstanceOf(typeof(List<Employee>), ((ViewResult)result).Model);
             Assert.AreEqual("", ((ViewResult)result).ViewBag.SearchString);
@@ -319,6 +323,7 @@ namespace AjourBT.Tests.Controllers
 
             // Assert - check the result 
             mock.Verify(m => m.SaveVisaRegistrationDate(visaRegDate, 1), Times.Never);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCreateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Never);
             Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual("", ((ViewResult)result).ViewName);
             Assert.IsInstanceOf(typeof(RegistrationDateViewModel),((ViewResult)result).ViewData.Model);
@@ -341,6 +346,7 @@ namespace AjourBT.Tests.Controllers
 
             //Assert
             mock.Verify(d => d.SaveVisaRegistrationDate(visaRegDate, visaRegDate.EmployeeID), Times.Once());
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCreateVisaRegistrationDateToEMP) && msg.ReplyTo == "User User")), Times.Never);
             Assert.AreEqual(typeof(JsonResult), result.GetType());
             Assert.AreEqual(modelError, data);
         }

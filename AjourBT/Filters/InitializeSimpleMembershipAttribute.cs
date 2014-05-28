@@ -144,7 +144,8 @@ namespace AjourBT.Filters
                 new Employee {EmployeeID = 77,FirstName = "Edward",LastName = "Little",DepartmentID = 8, EID = "mtuc", DateEmployed = new DateTime(2012,09,04), IsManager = true, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
                 new Employee {EmployeeID = 78,FirstName = "Andrea",LastName = "Lewis",DepartmentID = 7, EID = "kwal", DateEmployed = new DateTime(2013,07,21), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
                 new Employee {EmployeeID = 79,FirstName = "Donald",LastName = "Hawkins",DepartmentID = 7, EID = "jdun", DateEmployed = new DateTime(2011,04,11), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 80,FirstName = "Richard",LastName = "Shaw",DepartmentID = 8, EID = "jmil", DateEmployed = new DateTime(2012,09,04), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()}
+                new Employee {EmployeeID = 80,FirstName = "Richard",LastName = "Shaw",DepartmentID = 8, EID = "jmil", DateEmployed = new DateTime(2012,09,04), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()}, 
+                new Employee {EmployeeID = 81, FirstName = "User", LastName = "User", EID = "User", IsUserOnly = true }
 
              };
                 List<Location> locations = new List<Location>
@@ -1166,6 +1167,14 @@ namespace AjourBT.Filters
 
                     #endregion
 
+                    #region User - all rolles - password added
+                    if (!WebSecurity.UserExists("User"))
+                    {
+                        WebSecurity.CreateUserAndAccount("User", "qwezxc");
+                    }
+
+                    #endregion 
+
                     #region briv - all rolles - password added
                     if (!WebSecurity.UserExists("briv"))
                     {
@@ -1344,6 +1353,45 @@ namespace AjourBT.Filters
                     if (!System.Web.Security.Roles.IsUserInRole("briv", "DIR"))
                     {
                         System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "DIR" });
+                    }
+
+                    #endregion
+
+                    #region User - all rolles - rolles added
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "VU"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "VU" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "ADM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "ADM" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "BTM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "BTM" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "ACC"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "ACC" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "DIR"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "DIR" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "PU"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "PU" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "EMP"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "EMP" });
                     }
 
                     #endregion

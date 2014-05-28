@@ -19,10 +19,10 @@ namespace AjourBT.Models
         public string LastName { get; set; }
         [Required(ErrorMessage = "Field EID is required")]
         public string EID { get; set; }
-        [Required(ErrorMessage = "Field Department is required")]
-        public int DepartmentID { get; set; }
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Field DepartmentID Is Required")]
+        public Nullable<int> DepartmentID { get; set; }
         public string DepartmentName { get; set; }
-        [Required(ErrorMessage = "Field Date Employed is required")]
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Field Date Employed Is Required")]
         [Display(Name = "Date Employed")]
         public string DateEmployed { get; set; }
         [GreaterThan("DateEmployed",ErrorMessage = "Date Dismissed should be greater than Date Employed")]
@@ -32,9 +32,9 @@ namespace AjourBT.Models
         public bool IsManager { get; set; }
 
         public List<BusinessTrip> BusinessTrips { get; set; }
-         
-        [Required(ErrorMessage = "Field Position  is required")]
-        public int PositionID { get; set; }
+
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Field Position Is Required")]
+        public Nullable<int> PositionID { get; set; }
         public Position Position { get; set; }
 
         public string BirthDay { get; set; }
@@ -57,10 +57,10 @@ namespace AjourBT.Models
         public string PermitNumber { get; set; }
 
         //=-------------Visa
-        [Required]
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Field Position Is Required")]
         [Display(Name = "From")]
         public string VisaStartDate { get; set; }
-        [Required]
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Field Position Is Required")]
         [Display(Name = "To")]
         public string VisaDueDate { get; set; }
         [Display(Name = "Registration")]
@@ -87,6 +87,8 @@ namespace AjourBT.Models
         [ConcurrencyCheck]
         [Timestamp]
         public byte[] RowVersion { get; set; }
+
+        public bool IsUserOnly;
 
         public EmployeeViewModel(Employee employee)
         {
@@ -123,6 +125,7 @@ namespace AjourBT.Models
             TitleEn = employee.Position == null ? null : employee.Position.TitleEn;
             TitleUk = employee.Position == null ? null : employee.Position.TitleUk;
             RowVersion = employee.RowVersion;
+            IsUserOnly = employee.IsUserOnly; 
         }
 
     }

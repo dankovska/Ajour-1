@@ -18,7 +18,7 @@ Here are a few steps needed to start contributing to the Project.
  * [Syncing a fork](https://help.github.com/articles/syncing-a-fork)
  * [Writing on GitHub](https://help.github.com/categories/88/articles)
  * [Be Social](https://help.github.com/articles/be-social)
-4. Tasks are added by adding Issues that can be discussed by all contributors. Project Maintainer (PM) assigns labels and a milestone to the Issue (like "Sprint 9 week 1") to reflect its priority. 
+4. Tasks are added by adding Issues that can be discussed by all contributors. Project Maintainer (PM) assigns labels and a milestone to the Issue (like "Sprint 9 week 1") to reflect its priority. Author of an Issue can place his proposal of label at the end of issue title in square brackets, for ex.: "Create button is not clickable [bug]".
 5. Currently our workflow looks as follows:
   * Fork a repository
   * Sync forked repository 

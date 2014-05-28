@@ -74,7 +74,7 @@ namespace AjourBT.Controllers
                 }
                 List<Employee> empList = GetEmployeeData(repository.Employees.ToList(), searchString);
 
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 Employee empWithVisa = (from emp in repository.Employees where emp.EmployeeID == visaRegDate.EmployeeID select emp).FirstOrDefault();
                 messenger.Notify(new Message(MessageType.BTMCreateVisaRegistrationDateToEMP, null, author, empWithVisa));
 
@@ -131,7 +131,7 @@ namespace AjourBT.Controllers
 
                 List<Employee> empList = GetEmployeeData(repository.Employees.ToList(), searchString);
 
-                Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                 Employee empWithVisa = (from emp in repository.Employees where emp.EmployeeID == visaRegDate.EmployeeID select emp).FirstOrDefault();
                 messenger.Notify(new Message(MessageType.BTMUpdateVisaRegistrationDateToEMP, null, author, empWithVisa));
 

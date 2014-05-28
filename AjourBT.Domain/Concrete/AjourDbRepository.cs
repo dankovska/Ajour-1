@@ -31,7 +31,7 @@ namespace AjourBT.Domain.Concrete
         #region Employees
         public IQueryable<Employee> Employees
         {
-            get { return context.Employees; }
+            get { return context.Employees.Where(e => e.IsUserOnly == false); }
         }
 
         public void SaveEmployee(Employee employee)
@@ -62,6 +62,7 @@ namespace AjourBT.Domain.Concrete
                     emp.Comment = employee.Comment;
                     emp.FullNameUk = employee.FullNameUk;
                     emp.PositionID = employee.PositionID;
+                    emp.IsUserOnly = employee.IsUserOnly; 
                 }
             }
             context.SaveChanges();
@@ -1463,50 +1464,10 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
         #endregion
 
         #region Users
-        public IEnumerable<User> Users
+        public IQueryable<Employee> Users
         {
-            get { throw new NotImplementedException(); }
+            get { return context.Employees; }
             //get { return context.Users; }
-        }
-
-        public void SaveUser(User user)
-        {
-                        throw new NotImplementedException();
-            //if (user.UserId.Equals(default(int)))
-            //{
-            //    context.Users.Add(user);
-
-            //}
-            //else
-            //{
-            //    User usr = context.Users.Find(user.UserId);
-
-            //    if (usr != null)
-            //    {
-            //        if (!usr.RowVersion.SequenceEqual(user.RowVersion))
-            //        {
-            //            throw new DbUpdateConcurrencyException();
-            //        }
-            //        usr.FirstName = user.FirstName;
-            //        usr.LastName = user.LastName;
-            //    }
-            //}
-            //context.SaveChanges();
-        }
-
-        public User DeleteUser(int userID)
-        {
-                        throw new NotImplementedException();
-            //User usr = context.Users.Find(userID);
-
-            //if (usr != null)
-            //{
-            //    context.Users.Remove(usr);
-            //}
-
-            //context.SaveChanges();
-
-            //return usr;
         }
 
         #endregion

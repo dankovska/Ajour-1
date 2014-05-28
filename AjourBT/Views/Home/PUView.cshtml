@@ -28,7 +28,6 @@
         <li><a href="#tabs2">Employees</a></li>
         <li><a href="#tabs3">Locations</a></li>
         <li><a href="#tabs4">Positions</a></li>
-        <li><a href="#tabs5">Data</a></li>
         <li><a href="#tabs8">Units</a></li>
         <li><a href="#tabs6">Log</a></li>
         @*<li><a href="#tabs7">Countries</a></li>*@
@@ -37,8 +36,7 @@
     <div id="tabs2">@{Html.RenderAction("GetEmployee", "Employee", new { selectedDepartment = @ViewBag.SelectedDepartment, searchString = @ViewBag.SearchString });}</div>
     <div id="tabs3">@{Html.RenderAction("Index", "Location");}</div>
     <div id="tabs4">@{Html.RenderAction("Index", "Position");}</div>
-    <div id="tabs5"></div>
-    <div id="tabs6">@{Html.RenderAction("GetMessagesForRole", "Message", new { role = "PU", tab = 6, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+    <div id="tabs6">@{Html.RenderAction("GetMessagesForRole", "Message", new { role = "PU", tab = 5, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
     @*<div id="tabs7">@{Html.RenderAction("Index", "Country");}</div>*@
     <div id="tabs8">@{Html.RenderAction("Index", "Unit");}</div>
 </div>

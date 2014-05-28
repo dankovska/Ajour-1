@@ -43,14 +43,14 @@ namespace AjourBT.Tests.Controllers
             }
 
             var fakeHttpContext = new Mock<HttpContextBase>();
-            var fakeIdentity = new GenericIdentity("andl");
+            var fakeIdentity = new GenericIdentity("User");
             var principal = new GenericPrincipal(fakeIdentity, null);
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
-            fakeHttpContext.Setup(t => t.User.Identity.Name).Returns("andl");
+            fakeHttpContext.Setup(t => t.User.Identity.Name).Returns("User");
             controllerContext = new Mock<ControllerContext>();
             controllerContext.Setup(t => t.HttpContext).Returns(fakeHttpContext.Object);
-            controllerContext.Setup(t => t.HttpContext.User.Identity.Name).Returns("andl");
+            controllerContext.Setup(t => t.HttpContext.User.Identity.Name).Returns("User");
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("TableViewVisasAndPermitsBTM", ((ViewResult)result).ViewName);
             Assert.IsInstanceOf(typeof(List<Employee>), ((ViewResult)result).Model);
             mock.Verify(m => m.SavePermit(permit, 5), Times.Once);
-            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMCancelsPermitToADM))), Times.Once);
+            messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => (msg.messageType.Equals(MessageType.BTMCancelsPermitToADM)) && msg.ReplyTo == "User User")), Times.Once);
         }
 
         [Test]
