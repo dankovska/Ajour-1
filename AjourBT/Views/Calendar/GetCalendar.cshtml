@@ -14,7 +14,7 @@
 @using (Html.BeginForm("printCalendarToPdf", "Calendar", FormMethod.Post, new   {id ="printCalendarToPdf", style="height: 11%" }))
 {
 <div id="calendarDropList">
-    @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentDropDownList, "All Departments", new { onchange = "$(this.form).submit();", id = "depDropList" })
+    @Html.DropDownList("selectedDepartment", (SelectList)ViewBag.DepartmentDropDownList, "All Departments", new {    id = "depDropList" })
 </div>
    <div id="rangeCalendar">
        <table class="wtrContainer">

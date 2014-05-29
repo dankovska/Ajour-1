@@ -51,6 +51,7 @@ namespace AjourBT
             // DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(AjourBT.Domain.Entities.Permit.RequiredIfAttribute),typeof(RequiredAttributeAdapter));
         }
 
+#if !DEBUG
         protected void Application_Error()
         {
             Exception lastError = Server.GetLastError();
@@ -83,6 +84,7 @@ namespace AjourBT
             controller.Execute(requestContext);
             Response.End();
         }
+#endif
 
     }
 }

@@ -43,7 +43,7 @@ namespace AjourBT.Controllers
             var selected = from emp in repository.Employees
                            join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
                            where (((emp.Department.DepartmentName == selectedUserDepartment || (selectedDepartment == String.Empty && userName == String.Empty))
-                                   || (dep.DepartmentName == selectedDepartment))
+                                   || (dep.DepartmentName == selectedDepartment) || (selectedUserDepartment == String.Empty && selectedDepartment == String.Empty))
                                    && (emp.DateDismissed == null))
                            orderby emp.IsManager descending, emp.LastName
                            select emp;

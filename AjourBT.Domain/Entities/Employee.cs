@@ -1,4 +1,5 @@
-﻿using AjourBT.Domain.CustomAnnotations;
+﻿using AjourBT.CustomAnnotation;
+using AjourBT.Domain.CustomAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,13 +21,15 @@ namespace AjourBT.Domain.Entities
         [Required]
         public string EID { get; set; }
 
-        [Required]
-        public int DepartmentID { get; set; }
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Required")]
+        public Nullable<int> DepartmentID { get; set; }
         public virtual Department Department { get; set; }
 
-        public DateTime DateEmployed { get; set; }
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Required")]
+        public DateTime? DateEmployed { get; set; }
 
-        public int PositionID { get; set; }
+        [RequiredIf("IsUserOnly", false, ErrorMessage = "Required")]
+        public Nullable<int> PositionID { get; set; }
         public virtual Position Position { get; set; }
 
         public DateTime? BirthDay { get; set; }
@@ -50,6 +53,8 @@ namespace AjourBT.Domain.Entities
         public byte[] RowVersion { get; set; }
 
         public string BTRestrictions { get; set; }
+
+        public bool IsUserOnly { get; set; }
     }
 }
 

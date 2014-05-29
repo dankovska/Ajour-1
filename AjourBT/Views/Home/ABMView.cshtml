@@ -106,3 +106,27 @@
         })
     })
 </script>
+
+<script type="text/javascript"> 
+    $(document).ready(function () {
+    $('[href=#tabs-27]').click(function () {
+        var oTable; 
+            oTable = $('#journeysViewABM').DataTable({
+                "sScrollY": "415px",
+                "bPaginate": false,
+                "bDestroy": true,
+                "bFilter": false,
+                "bStateSave": false,
+                "bScrollCollapse": true,
+                "aaSorting": [],
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    { "sType": "date" },
+                ],
+            })
+            $("div.dataTables_scrollBody").scrollTop(window.scrollPositionACC);
+        });
+    });
+</script>

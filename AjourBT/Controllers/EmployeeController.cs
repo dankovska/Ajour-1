@@ -30,8 +30,8 @@ namespace AjourBT.Controllers
         public PartialViewResult GetEmployeeData(string selectedDepartment = null, string searchString = "")
         {
             searchString = searchString != "" ? searchString.Trim() : "";
-            List<EmployeeViewModel> data = SearchEmployeeData(db.Employees.ToList(), selectedDepartment, searchString);
-            //IEnumerable<EmployeeViewModel> data = from emp in db.Employees.AsEnumerable()
+            List<EmployeeViewModel> data = SearchEmployeeData(db.Users.ToList(), selectedDepartment, searchString);
+            //IEnumerable<EmployeeViewModel> data = from emp in db.Users.AsEnumerable()
             //                                      join dep in db.Departments on emp.DepartmentID equals dep.DepartmentID
             //                                      join pos in db.Positions on emp.PositionID equals pos.PositionID
             //                                      where selectedDepartment == null || selectedDepartment == String.Empty || dep.DepartmentName == selectedDepartment
@@ -74,18 +74,18 @@ namespace AjourBT.Controllers
         {
             List<EmployeeViewModel> data = new List<EmployeeViewModel>();
             data = (from emp in empList
-                    where ((selectedDepartment == null || selectedDepartment == String.Empty || emp.Department.DepartmentName == selectedDepartment)
+                    where ((selectedDepartment == null || selectedDepartment == String.Empty || (emp.Department !=null && emp.Department.DepartmentName == selectedDepartment))
                             && (emp.EID.ToLower().Contains(searchString.ToLower())
                             || emp.FirstName.ToLower().Contains(searchString.ToLower())
                             || emp.LastName.ToLower().Contains(searchString.ToLower())
-                            || emp.DateEmployed.ToShortDateString().Contains(searchString)
-                            || emp.DateDismissed.ToString().Contains(searchString)
-                            || emp.BirthDay.ToString().Contains(searchString)
+                            || ((emp.DateEmployed != null) && emp.DateEmployed.Value != null && emp.DateEmployed.Value.ToShortDateString().Contains(searchString))
+                            || ((emp.DateDismissed != null) && emp.DateDismissed.Value != null && emp.DateDismissed.Value.ToString().Contains(searchString))
+                            || ((emp.BirthDay != null) && emp.BirthDay.Value != null && emp.BirthDay.Value.ToString().Contains(searchString))
                             || ((emp.FullNameUk != null) && emp.FullNameUk.ToLower().Contains(searchString.ToLower()))
-                            || emp.Position.TitleEn.ToLower().Contains(searchString.ToLower())
+                            || ((emp.Position != null) && emp.Position.TitleEn.ToLower().Contains(searchString.ToLower()))
                             ||
                                   ((System.Web.Security.Membership.GetUser(emp.EID) != null)
-                                  && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower()))))
+                                  && System.Web.Security.Roles.GetRolesForUser(emp.EID) !=null && String.Join(", ", System.Web.Security.Roles.GetRolesForUser(emp.EID)).ToLower().Contains(searchString.ToLower()))))
                     orderby emp.IsManager descending, emp.LastName
                     select new EmployeeViewModel(emp)).ToList();
 
@@ -161,9 +161,16 @@ namespace AjourBT.Controllers
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
             if (ModelState.IsValid)
             {
-                db.SaveEmployee(emp);
-                db.SaveRolesForEmployee(emp.EID, Roles);
-                return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                if (db.Employees.Where(e => e.EID == emp.EID).FirstOrDefault() == null && System.Web.Security.Membership.GetUser(emp.EID) == null)
+                {
+                    db.SaveEmployee(emp);
+                    db.SaveRolesForEmployee(emp.EID, Roles);
+                    return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                }
+                else
+                {
+                    return Json(new { error = "Employee with EID " + emp.EID + " already exists" });
+                }
             }
 
             EmployeeViewModel employee = new EmployeeViewModel(emp);
@@ -183,7 +190,7 @@ namespace AjourBT.Controllers
             ViewBag.PositionList = (from p in db.Positions select p).ToList();
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;
 
-            Employee emp = db.Employees.FirstOrDefault(e => e.EmployeeID == id);
+            Employee emp = db.Users.FirstOrDefault(e => e.EmployeeID == id);
 
             if (emp == null)
             {
@@ -218,7 +225,7 @@ namespace AjourBT.Controllers
                 {
                     db.SaveEmployee(emp);
                     db.SaveRolesForEmployee(emp.EID, Roles);
-                    List<Employee> empl = db.Employees.ToList();
+                    List<Employee> empl = db.Users.ToList();
                     List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
                     return View("OneRowPU", empList);
                     //return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
@@ -240,12 +247,12 @@ namespace AjourBT.Controllers
 
         public ActionResult Delete(int id = 0, string selectedDepartment = null, string searchString = "")
         {
-            Employee employee = db.Employees.FirstOrDefault(e => e.EmployeeID == id);
+            Employee employee = db.Users.FirstOrDefault(e => e.EmployeeID == id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
-            if (employee.BusinessTrips.Count != 0 || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null)
+            if ( (employee.BusinessTrips!= null && employee.BusinessTrips.Count != 0) || employee.Visa != null || employee.Permit != null || employee.VisaRegistrationDate != null || employee.Passport != null)
             {
                 ViewBag.SelectedDepartment = selectedDepartment;
                 ViewBag.SearchString = searchString;
@@ -267,7 +274,7 @@ namespace AjourBT.Controllers
         {
             try
             {
-                db.DeleteUser(db.Employees.FirstOrDefault(e => e.EmployeeID == id).EID);
+                db.DeleteUser(db.Users.FirstOrDefault(e => e.EmployeeID == id).EID);
                 db.DeleteEmployee(id);
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException)
@@ -275,7 +282,7 @@ namespace AjourBT.Controllers
                 return RedirectToAction("DataBaseDeleteError", "Home");
             }
 
-            List<Employee> empl = db.Employees.ToList();
+            List<Employee> empl = db.Users.ToList();
             List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
             return View("OneRowPU", empList);
 
