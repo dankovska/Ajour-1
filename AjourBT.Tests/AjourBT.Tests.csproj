@@ -180,6 +180,7 @@
     <Compile Include="Controllers\AbsenceControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\CalendarControllerTest.cs" />
+    <Compile Include="Controllers\GreetingControllerTest.cs" />
     <Compile Include="Controllers\CountryControllerTests.cs" />
     <Compile Include="Controllers\DepartmentControllerTest.cs" />
     <Compile Include="Controllers\EMPControllerTest.cs" />

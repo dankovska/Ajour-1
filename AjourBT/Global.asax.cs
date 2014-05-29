@@ -16,6 +16,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Threading;
 
+using AjourBT.Domain.Concrete;
+
 namespace AjourBT
 {
     public class MvcApplication : System.Web.HttpApplication

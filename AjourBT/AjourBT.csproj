@@ -224,6 +224,7 @@
     <Compile Include="Controllers\EMPController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GreetingController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HolidayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -403,7 +404,13 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Content Include="Scripts\AjourBTScript\GreetingScript.js" />
     <Content Include="Views\Shared\NoAbsenceData.cshtml" />
+    <Content Include="Views\Greeting\Create.cshtml" />
+    <Content Include="Views\Greeting\Delete.cshtml" />
+    <Content Include="Views\Greeting\Edit.cshtml" />
+    <Content Include="Views\Greeting\Index.cshtml" />
+    <Content Include="Views\Home\BDMView.cshtml" />
     <Resource Include="Resources\PDFjet.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

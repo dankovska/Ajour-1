@@ -802,6 +802,15 @@ namespace AjourBT.Filters
                     new Sickness{EmployeeID = 22, SickID = 5, From = new DateTime(2014,09,09), To = new DateTime(2014,09,20), SicknessType = "ABC"}
                 };
 
+                List<Greeting> greetings = new List<Greeting>
+                {
+                    new Greeting{GreetingId = 1,GreetingHeader = "Greeting 1", GreetingBody = "May your birthday and every day be filled with the warmth of sunshine, the happiness of smiles, the sounds of laughter, the feeling of love and the sharing of good cheer."},
+                    new Greeting{GreetingId = 2,GreetingHeader = "Greeting 2", GreetingBody = "I hope you have a wonderful day and that the year ahead is filled with much love, many wonderful surprises and gives you lasting memories that you will cherish in all the days ahead. Happy Birthday."}, 
+                    new Greeting{GreetingId = 3,GreetingHeader = "Greeting 3", GreetingBody = "On this special day, i wish you all the very best, all the joy you can ever have and may you be blessed abundantly today, tomorrow and the days to come! May you have a fantastic birthday and many more to come... HAPPY BIRTHDAY!!!!"},               
+                    new Greeting{GreetingId = 4,GreetingHeader = "Greeting 4", GreetingBody = "They say that you can count your true friends on 1 hand - but not the candles on your birthday cake! #1Happybirthday"}, 
+                    new Greeting{GreetingId = 5,GreetingHeader = "Greeting 5", GreetingBody = "Celebrate your birthday today. Celebrate being Happy every day"}
+                };
+
 
 
                 ////    List<UserProfile> userProfile = new List<UserProfile>{new Permit { EmployeeID = 51, Number = "04/2012", StartDate = new DateTime (2012, 08, 01), EndDate = new DateTime(2013, 12, 30), IsKartaPolaka = false, PermitOf = employees.Find(e => e.EmployeeID == 51)},
@@ -951,6 +960,11 @@ namespace AjourBT.Filters
                 {
                     context.Vacations.Add(vacation);
                 }
+
+                foreach (Greeting greeting in greetings)
+	            {
+		            context.Greetings.Add(greeting);
+	            }
 
                 #region Binding
 
@@ -1327,6 +1341,11 @@ namespace AjourBT.Filters
                         System.Web.Security.Roles.CreateRole("ABM");
                     }
 
+                    if (!System.Web.Security.Roles.RoleExists("BDM"))
+                    {
+                        System.Web.Security.Roles.CreateRole("BDM");
+                    }
+
 
                     #region briv - all rolles - rolles added
 
@@ -1364,6 +1383,11 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "ABM" });
                     }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("briv", "BDM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "BDM" });
+                    }  
 
                     #endregion
 
@@ -1408,6 +1432,11 @@ namespace AjourBT.Filters
                     {
                         System.Web.Security.Roles.AddUserToRoles("User", new string[] { "ABM" });
                     }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "BDM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "BDM" });
+                    }  
 
                     #endregion
 
@@ -1502,6 +1531,10 @@ namespace AjourBT.Filters
                         System.Web.Security.Roles.AddUserToRole("rkni", "EMP");
                     }
 
+                    if (!System.Web.Security.Roles.IsUserInRole("rkni", "BDM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("rkni", new string[] { "BDM" });
+                    } 
 
                     if (!System.Web.Security.Roles.IsUserInRole("lmor", "ADM"))
                     {
@@ -1760,6 +1793,11 @@ namespace AjourBT.Filters
                     if (!System.Web.Security.Roles.RoleExists("ABM"))
                     {
                         System.Web.Security.Roles.CreateRole("ABM");
+                    }
+
+                    if (!System.Web.Security.Roles.RoleExists("BDM"))
+                    {
+                        System.Web.Security.Roles.CreateRole("BDM");
                     }
 
                     if (!WebSecurity.UserExists("admin"))

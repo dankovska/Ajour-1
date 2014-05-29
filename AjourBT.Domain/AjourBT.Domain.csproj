@@ -118,6 +118,7 @@
     <Compile Include="Concrete\Message.cs" />
     <Compile Include="Concrete\Messenger.cs" />
     <Compile Include="Concrete\Scheduler.cs" />
+    <Compile Include="Entities\Greeting.cs" />
     <Compile Include="Exceptions\VacationAlreadyExistException.cs" />
     <Compile Include="Concrete\XlsLoader.cs" />
     <Compile Include="CustomAnnotations\GreaterThan.cs" />

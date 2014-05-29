@@ -397,6 +397,15 @@ namespace AjourBT.Tests.MockRepository
             AddSickItem(new Sickness { SickID = 6, EmployeeID = 4, From = new DateTime(2014, 04, 24), To = new DateTime(2014, 04, 28), SicknessType = "GRZ" });
             AddSickItem(new Sickness { SickID = 7, EmployeeID = 19, From = new DateTime(2014, 02, 27), To = new DateTime(2014, 03, 27), SicknessType = "Test" });
 
+            List<Greeting> greetings = new List<Greeting>
+                {
+                    new Greeting{GreetingId = 1,GreetingHeader = "Greeting 1", GreetingBody = "May your birthday and every day be filled with the warmth of sunshine, the happiness of smiles, the sounds of laughter, the feeling of love and the sharing of good cheer."},
+                    new Greeting{GreetingId = 2,GreetingHeader = "Greeting 2", GreetingBody = "I hope you have a wonderful day and that the year ahead is filled with much love, many wonderful surprises and gives you lasting memories that you will cherish in all the days ahead. Happy Birthday."}, 
+                    new Greeting{GreetingId = 3,GreetingHeader = "Greeting 3", GreetingBody = "On this special day, i wish you all the very best, all the joy you can ever have and may you be blessed abundantly today, tomorrow and the days to come! May you have a fantastic birthday and many more to come... HAPPY BIRTHDAY!!!!"},               
+                    new Greeting{GreetingId = 4,GreetingHeader = "Greeting 4", GreetingBody = "They say that you can count your true friends on 1 hand - but not the candles on your birthday cake! #1Happybirthday"}, 
+                    new Greeting{GreetingId = 5,GreetingHeader = "Greeting 5", GreetingBody = "Celebrate your birthday today. Celebrate being Happy every day"}
+                };
+
             mock.Setup(m => m.Departments).Returns(departments.AsQueryable());
             mock.Setup(m => m.Users).Returns(employees.AsQueryable());
             mock.Setup(m => m.Locations).Returns(locations.AsQueryable());
@@ -417,6 +426,7 @@ namespace AjourBT.Tests.MockRepository
             mock.Setup(m => m.Sicknesses).Returns(sicks.AsQueryable());
             mock.Setup(m => m.CalendarItems).Returns(calendarItems.AsQueryable());
             mock.Setup(m => m.Employees).Returns(employees.Where(e => e.IsUserOnly == false).AsQueryable());
+            mock.Setup(m => m.Greetings).Returns(greetings);
         }
 
         public static void AddEmployee(Employee emp)
