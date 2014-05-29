@@ -13,7 +13,7 @@ namespace XLSLoader
         public string EID { get; set; }
         public string FullNameUk { get; set; }
         public DateTime? BirthDay { get; set; }
-        public DateTime DateEmployed { get; set; }
+        public DateTime? DateEmployed { get; set; }
         public DateTime? DateDismissed { get; set; }
         public string DepartmentName { get; set; }
         public bool IsManager { get; set; }

@@ -75,7 +75,6 @@ namespace AjourBT.Tests.Controllers
             SelectList expYearList = controller.YearDropDownList();
             SelectList expCountryList = controller.CountryDropDownList();
             int expCountryID = controller.SelectDefaultCountryID();
-            int selectedYear = 2013;
             //Act
             var result = controller.GetHoliday();
             SelectList actualYearList = ((ViewResult)result).ViewBag.YearDropdownList as SelectList;

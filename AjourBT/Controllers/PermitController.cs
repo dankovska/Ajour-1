@@ -130,7 +130,7 @@ namespace AjourBT.Controllers
                 Employee emp = repository.Employees.Where(e => e.EmployeeID == permit.EmployeeID).FirstOrDefault();
                 if (permit.CancelRequestDate != null)
                 {
-                    Employee author = repository.Employees.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
+                    Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
                     Employee employeeForPermit = repository.Employees.Where(p => p.EmployeeID == permit.EmployeeID).FirstOrDefault();
                     messenger.Notify(new Message(MessageType.BTMCancelsPermitToADM, null, author, employeeForPermit));
                 }

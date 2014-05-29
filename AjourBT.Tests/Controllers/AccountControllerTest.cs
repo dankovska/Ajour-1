@@ -363,6 +363,18 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
+        public void ConvertEIDToName_ProperUserEID_ProperName()
+        {
+            //Arrange
+
+            //Act
+            string result = controller.ConvertEIDToName("User");
+
+            //Assert   
+            Assert.AreEqual("User", result);
+        }
+
+        [Test]
         public void ConvertEIDToName_NotValidEID_EmptyString()
         {
             //Arrange
