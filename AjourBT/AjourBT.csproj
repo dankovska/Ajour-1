@@ -403,6 +403,7 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Content Include="Views\Shared\NoAbsenceData.cshtml" />
     <Resource Include="Resources\PDFjet.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -505,7 +506,7 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
     <Content Include="Views\Employee\CannotDelete.cshtml" />
-	<Content Include="Views\Error\ShowErrorPage.cshtml" />
+    <Content Include="Views\Error\ShowErrorPage.cshtml" />
     <Content Include="Views\Permit\Create.cshtml" />
     <Content Include="Views\Permit\Edit.cshtml" />
     <Content Include="Views\Permit\Delete.cshtml" />
@@ -647,7 +648,6 @@
     <Content Include="Views\Journey\NoData.cshtml" />
     <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
     <Content Include="Views\EMP\NoBtsInThisYear.cshtml" />
-    <Content Include="Views\EMP\NoAbsenceData.cshtml" />
     <Content Include="Views\EMP\NoBirthdays.cshtml" />
     <Content Include="Views\EMP\GetListofYearsEMP.cshtml" />
     <Content Include="Views\EMP\Empty.cshtml" />

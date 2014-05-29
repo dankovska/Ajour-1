@@ -140,11 +140,11 @@ namespace AjourBT.Filters
                 new Employee {EmployeeID = 74,FirstName = "Jerry",LastName = "Garza",DepartmentID = 6, EID = "jasn", DateDismissed = new DateTime(2013,01,01), DateEmployed = new DateTime(2009,04,17), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
                 
                 new Employee {EmployeeID = 75,FirstName = "Marie",LastName = "Andrews",DepartmentID = 7, EID = "maad", DateEmployed = new DateTime(2013,07,21), IsManager = true, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 76,FirstName = "John",LastName = "Reyes",DepartmentID = 7, EID = "ljac", DateEmployed = new DateTime(2011,04,11), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 77,FirstName = "Edward",LastName = "Little",DepartmentID = 8, EID = "mtuc", DateEmployed = new DateTime(2012,09,04), IsManager = true, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 78,FirstName = "Andrea",LastName = "Lewis",DepartmentID = 7, EID = "kwal", DateEmployed = new DateTime(2013,07,21), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 79,FirstName = "Donald",LastName = "Hawkins",DepartmentID = 7, EID = "jdun", DateEmployed = new DateTime(2011,04,11), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
-                new Employee {EmployeeID = 80,FirstName = "Richard",LastName = "Shaw",DepartmentID = 8, EID = "jmil", DateEmployed = new DateTime(2012,09,04), IsManager = false, BirthDay = new DateTime(1987,11,10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()}, 
+                new Employee {EmployeeID = 76,FirstName = "John",LastName = "Reyes",DepartmentID = 7, EID = "ljac", DateEmployed = new DateTime(2011,04,11), IsManager = false, BirthDay =  DateTime.Now.ToLocalTimeAzure().AddDays(-11), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
+                new Employee {EmployeeID = 77,FirstName = "Edward",LastName = "Little",DepartmentID = 8, EID = "mtuc", DateEmployed = new DateTime(2012,09,04), IsManager = true, BirthDay =  DateTime.Now.ToLocalTimeAzure().AddDays(30), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
+                new Employee {EmployeeID = 78,FirstName = "Andrea",LastName = "Lewis",DepartmentID = 7, EID = "kwal", DateEmployed = new DateTime(2013,07,21), IsManager = false, BirthDay = DateTime.Now.ToLocalTimeAzure().AddDays(31), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
+                new Employee {EmployeeID = 79,FirstName = "Donald",LastName = "Hawkins",DepartmentID = 7, EID = "jdun", DateEmployed = new DateTime(2011,04,11), IsManager = false, BirthDay = DateTime.Now.ToLocalTimeAzure(), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()},
+                new Employee {EmployeeID = 80,FirstName = "Richard",LastName = "Shaw",DepartmentID = 8, EID = "jmil", DateEmployed = new DateTime(2012,09,04), IsManager = false, BirthDay = DateTime.Now.ToLocalTimeAzure().AddDays(-10), FullNameUk = "Джоні Роус", Comment = "Happy Birthday!!!", PositionID = 2,CalendarItems = new List<CalendarItem>(), Overtimes = new List<Overtime>(), Vacations = new List<Vacation>(),Sicknesses = new List<Sickness>()}, 
                 new Employee {EmployeeID = 81, FirstName = "User", LastName = "User", EID = "User", IsUserOnly = true }
 
              };
@@ -1355,6 +1355,16 @@ namespace AjourBT.Filters
                         System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "DIR" });
                     }
 
+                    if (!System.Web.Security.Roles.IsUserInRole("briv", "EMP"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "EMP" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("briv", "ABM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("briv", new string[] { "ABM" });
+                    }
+
                     #endregion
 
                     #region User - all rolles - rolles added
@@ -1392,6 +1402,11 @@ namespace AjourBT.Filters
                     if (!System.Web.Security.Roles.IsUserInRole("User", "EMP"))
                     {
                         System.Web.Security.Roles.AddUserToRoles("User", new string[] { "EMP" });
+                    }
+
+                    if (!System.Web.Security.Roles.IsUserInRole("User", "ABM"))
+                    {
+                        System.Web.Security.Roles.AddUserToRoles("User", new string[] { "ABM" });
                     }
 
                     #endregion
