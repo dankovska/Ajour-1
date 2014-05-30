@@ -46,8 +46,8 @@ namespace AjourBT.Domain.Concrete
 
         public void StoreMessage(IMessage message)
         {
-            if(GetMailingListForRole(message).Length!=0)
-            repository.SaveMessage(message);
+            if (GetMailingListForRole(message).Length != 0)
+                repository.SaveMessage(message);
         }
 
         public string[] GetMailingListForRole(IMessage message)
@@ -133,7 +133,7 @@ namespace AjourBT.Domain.Concrete
                 }
                 else
                 {
-                    mailingList.Add(message.Role);
+                    mailingList.Add(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
                 }
             }
             return mailingList.ToArray<string>();
@@ -229,28 +229,34 @@ namespace AjourBT.Domain.Concrete
             notesDocument.Send(false);
         }
 
-        public List<Message> GetGreetingMessages(DateTime date)
+        public List<IMessage> GetGreetingMessages(DateTime date)
         {
-            List<Message> BirthdayMessages = new List<Message>();
-            List<Employee> employeesBornToday = repository.Employees.Where(e => e.BirthDay.Value.Day == date.Day &&
+            List<IMessage> BirthdayMessages = new List<IMessage>();
+            List<Employee> employeesBornToday = new List<Employee>();
+            employeesBornToday = repository.Employees.Where(e => e.BirthDay != null && e.BirthDay.HasValue && e.BirthDay.Value.Day == date.Day &&
                 e.BirthDay.Value.Month == date.Month).ToList();
             foreach (Employee emp in employeesBornToday)
             {
-                BirthdayMessages.Add(new Message(GetRandomGreetingBody(), "", emp.EID);
-));
+                BirthdayMessages.Add(new Message(GetRandomGreetingBody(), WebConfigurationManager.AppSettings["GreetingsAuthor"], emp,
+                    WebConfigurationManager.AppSettings["GreetingsSubject"]));
             }
-            return BirthdayMessages; 
+            return BirthdayMessages;
         }
 
         public string GetRandomGreetingBody()
         {
-            Random random    = new Random(); 
-            int greetingsCount =  repository.Greetings.Count();
-            int randomNumber = random.Next(0, greetingsCount - 1);
+            Random random = new Random();
+            int greetingsCount = repository.Greetings.Count();
+            if(greetingsCount > 0)
+            {
+            int randomNumber = random.Next(0, greetingsCount) - 1;
+
             if (repository.Greetings.Skip(randomNumber).FirstOrDefault() != null)
                 return repository.Greetings.Skip(randomNumber).FirstOrDefault().GreetingBody;
             else
                 return "";
+            }
+            return "";
         }
 
         public void SendGreetingMessages(DateTime date)

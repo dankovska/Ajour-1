@@ -15,8 +15,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Threading;
+using AjourBT.Domain.Abstract;
 
-using AjourBT.Domain.Concrete;
 
 namespace AjourBT
 {
@@ -52,7 +52,9 @@ namespace AjourBT
             AuthConfig.RegisterAuth();
             //Database.SetInitializer<AjourDbContext>(new AjourDbInitializer());
             // DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(AjourBT.Domain.Entities.Permit.RequiredIfAttribute),typeof(RequiredAttributeAdapter));
-            Scheduler.Start(new TimeSpan(15, 22, 00));
+            NinjectDependencyResolver res = new NinjectDependencyResolver(); 
+
+            Scheduler.Start(TimeSpan.Parse(WebConfigurationManager.AppSettings["GreetingsSendTime"]), res.GetService<IMessenger>());
         }
 
 #if !DEBUG

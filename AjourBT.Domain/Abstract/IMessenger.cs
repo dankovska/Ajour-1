@@ -13,5 +13,8 @@ namespace AjourBT.Domain.Abstract
         void StoreMessage(IMessage message);
         string[] GetMailingListForRole(IMessage message);
         void SendToMailingList(string[] mailingList, IMessage message);
+        List<IMessage> GetGreetingMessages(DateTime date);
+        string GetRandomGreetingBody(); 
+        void SendGreetingMessages(DateTime date); 
     }
 }

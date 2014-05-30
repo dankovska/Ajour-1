@@ -325,6 +325,33 @@ namespace AjourBT.Tests.Messaging_Subsystem
         }
 
         [Test]
+        public void MessageConstructor_GreetingOverload_ProperGreetingMessage()
+        {
+            //Arrange
+
+            //Act
+            Employee employee = mock.Object.Employees.FirstOrDefault(); 
+
+            string messageBody = "happyBirthday!";
+
+
+            Message message = new Message(messageBody, "andl", employee, "Happy Birthday!"); 
+
+            //Assert        
+            Assert.AreEqual(null, message.Author);
+            Assert.AreEqual("happyBirthday!", message.Body);
+            Assert.AreEqual(null, message.BTList);
+            Assert.AreEqual("", message.Link);
+            Assert.AreEqual(0, message.MessageID);
+            Assert.AreEqual(MessageType.Greeting, message.messageType);
+            Assert.AreEqual("andl", message.ReplyTo);
+            Assert.AreEqual("", message.Role);
+            Assert.AreEqual("Happy Birthday, Anastasia!", message.Subject);
+            Assert.LessOrEqual(message.TimeStamp, DateTime.Now.ToLocalTimeAzure());
+            Assert.AreEqual(employee, message.employee); 
+        }
+
+        [Test]
         [TestCase(MessageType.UnknownType, Result = "Unknown Subject")]
         [TestCase(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, Result = "For BTM: BT Confirmation")]
         [TestCase(MessageType.ADMConfirmsPlannedOrRegisteredToDIR, Result = "For DIR: BT Confirmation")]
@@ -1220,6 +1247,6 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Assert  
             Assert.AreEqual(excpectedResult, result);
-        }
+        } 
     }
 }

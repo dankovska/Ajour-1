@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using AjourBT.Domain.Concrete;
+using AjourBT.Domain.Abstract;
+using Moq;
+using AjourBT.Domain.Infrastructure;
+using System.Threading;
 
 namespace AjourBT.Tests.Infrastructure
 {
@@ -124,6 +128,69 @@ namespace AjourBT.Tests.Infrastructure
             //Assert        
             Assert.AreEqual(new TimeSpan(12, 00, 00), result);
         }
-    #endregion
+    #endregion 
+
+        #region Start
+        [Test]
+        //[Explicit]
+        public void Start_TimerActivates()
+        {
+            //Arrange
+            Mock<IMessenger> _messenger = new Mock<IMessenger>();
+            _messenger.Setup(m => m.SendGreetingMessages(It.IsAny<DateTime>())).Verifiable();
+            TimeSpan eventTime = DateTime.Now.ToLocalTimeAzure().AddMilliseconds(1300).TimeOfDay;
+
+            //Act
+            Scheduler.Start(eventTime, _messenger.Object);
+            Thread.Sleep(1350);
+            //Assert        
+            Assert.AreEqual(eventTime, Scheduler.eventTime);
+            _messenger.Verify(m => m.SendGreetingMessages(It.IsAny<DateTime>()), Times.Once); 
+
+        }
+        #endregion 
+
+        #region Stop
+        [Test]
+        //[Explicit]
+        public void Stop_BeforeTimerActivates_TimerNotActivated()
+        {
+            //Arrange
+            Mock<IMessenger> _messenger = new Mock<IMessenger>();
+            _messenger.Setup(m => m.SendGreetingMessages(It.IsAny<DateTime>())).Verifiable();
+            TimeSpan eventTime = DateTime.Now.ToLocalTimeAzure().AddMilliseconds(1300).TimeOfDay;
+
+            //Act
+            Scheduler.Start(eventTime, _messenger.Object);
+            Scheduler.Stop();
+            Thread.Sleep(1600);  
+            //Assert        
+            Assert.AreEqual(eventTime, Scheduler.eventTime);
+            _messenger.Verify(m => m.SendGreetingMessages(It.IsAny<DateTime>()), Times.Never);
+
+        }
+        #endregion 
+
+        #region OnTimerElapsed
+        [Test]
+        //  [Explicit]
+        public void OnTimerElapsed_Notify()
+        {
+            //Arrange
+            Mock<IMessenger> _messenger = new Mock<IMessenger>();
+            _messenger.Setup(m => m.SendGreetingMessages(It.IsAny<DateTime>())).Verifiable();
+            TimeSpan eventTime = DateTime.Now.ToLocalTimeAzure().AddMilliseconds(1300).TimeOfDay;
+
+            //Act
+            Scheduler.Start(eventTime, _messenger.Object);
+            Scheduler.Stop();
+            Thread.Sleep(1600);
+            //Assert        
+            Assert.AreEqual(eventTime, Scheduler.eventTime);
+            _messenger.Verify(m => m.SendGreetingMessages(It.IsAny<DateTime>()), Times.Never);
+
+        }
+
+        #endregion 
     }
 }
