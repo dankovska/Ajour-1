@@ -224,6 +224,7 @@
     <Compile Include="Controllers\EMPController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GreetingController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HolidayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -403,6 +404,13 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Content Include="Scripts\AjourBTScript\GreetingScript.js" />
+    <Content Include="Views\Shared\NoAbsenceData.cshtml" />
+    <Content Include="Views\Greeting\Create.cshtml" />
+    <Content Include="Views\Greeting\Delete.cshtml" />
+    <Content Include="Views\Greeting\Edit.cshtml" />
+    <Content Include="Views\Greeting\Index.cshtml" />
+    <Content Include="Views\Home\BDMView.cshtml" />
     <Resource Include="Resources\PDFjet.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -505,7 +513,7 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
     <Content Include="Views\Employee\CannotDelete.cshtml" />
-	<Content Include="Views\Error\ShowErrorPage.cshtml" />
+    <Content Include="Views\Error\ShowErrorPage.cshtml" />
     <Content Include="Views\Permit\Create.cshtml" />
     <Content Include="Views\Permit\Edit.cshtml" />
     <Content Include="Views\Permit\Delete.cshtml" />
@@ -618,7 +626,7 @@
     <Content Include="Views\Unit\Edit.cshtml" />
     <Content Include="Views\Journey\EditJourney.cshtml" />
     <Content Include="Views\Shared\TableViewJourneyAndOvertimeData.cshtml" />
-    <Content Include="Views\EMP\NoData.cshtml" />
+    <Content Include="Views\Shared\NoData.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />
     <Content Include="Views\Country\Edit.cshtml" />
     <Content Include="Views\Country\CannotDelete.cshtml" />
@@ -644,10 +652,8 @@
     <Content Include="Views\Absence\GetAbsenceData.cshtml" />
     <Content Include="Views\Journey\GetJourneyDataForVU.cshtml" />
     <Content Include="Views\Journey\GetJourneyDataForEmp.cshtml" />
-    <Content Include="Views\Journey\NoData.cshtml" />
     <Content Include="Views\WTR\GetWTRDataPerEMP.cshtml" />
     <Content Include="Views\EMP\NoBtsInThisYear.cshtml" />
-    <Content Include="Views\EMP\NoAbsenceData.cshtml" />
     <Content Include="Views\EMP\NoBirthdays.cshtml" />
     <Content Include="Views\EMP\GetListofYearsEMP.cshtml" />
     <Content Include="Views\EMP\Empty.cshtml" />

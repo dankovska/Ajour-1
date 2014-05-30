@@ -106,8 +106,14 @@
                             <li id="EMPLink">
                                 @Html.ActionLink("EMP", "EMPView", "Home")
                             </li>
-                        }
+                        } 
 
+                        @if (HttpContext.Current.User.IsInRole("BDM"))
+                        {
+                            <li id="EMPLink">
+                                @Html.ActionLink("BDM", "BDMView", "Home")
+                            </li>
+                        }
 
                         <li id="HelpLink">
                             @Html.ActionLink("Help", "Map", "Help")
@@ -158,6 +164,7 @@
     <script src="~/Scripts/AjourBTScript/HolidayScript.js"></script>
     <script src="~/Scripts/AjourBTScript/OvertimeScript.js"></script>
     <script src="~/Scripts/AjourBTScript/CRUD_CalendarItems.js"></script>
+    <script src="~/Scripts/AjourBTScript/GreetingScript.js"></script>
         <footer style="height: 3%">
             <script type="text/javascript">
                 $(function () {

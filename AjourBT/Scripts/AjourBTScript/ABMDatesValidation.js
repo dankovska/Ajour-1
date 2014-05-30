@@ -142,7 +142,48 @@ $('#calendarAbsenceSubmitBtn').click(function () {
             cache: false,
             url: "/Calendar/getCalendarData",
             type: "Post",
-            data: { calendarFromDate: $('#calendarFromDate').val(), calendarToDate: $("#calendarToDate").val(), selectedDepartment: $('#selectedDepartment :selected').val() },
+            data: { calendarFromDate: $('#calendarFromDate').val(), calendarToDate: $("#calendarToDate").val(), selectedDepartment: $('#depDropList :selected').val() },
+            success: function (data) {
+                $("#CalendarData").html(data);
+            }
+        })
+    }
+    else {
+        if ($('#calendarFromDate').val().length == 0) {
+            $('#errorFromAbs').text('');
+            $('#errorFromAbs').append('The From field is required');
+            $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
+        }
+
+        if ($('#calendarToDate').val().length == 0) {
+            $('#errorToAbs').text('');
+            $('#errorToAbs').append('The To field is required');
+            $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
+        }
+
+        if (from > to) {
+            $('#errorFromAbs').text('');
+            $('#errorToAbs').text('');
+            $('#errorToAbs').append('The From Date must be less than To date');
+        }
+    }
+})
+
+$('#depDropList').on("change", function () {
+    var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
+    var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
+    if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
+
+        $('#errorFromAbs').text('');
+        $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
+        $('#errorToAbs').text('');
+        $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
+
+        $.ajax({
+            cache: false,
+            url: "/Calendar/getCalendarData",
+            type: "Post",
+            data: { calendarFromDate: $('#calendarFromDate').val(), calendarToDate: $("#calendarToDate").val(), selectedDepartment: $('#depDropList :selected').val() },
             success: function (data) {
                 $("#CalendarData").html(data);
             }

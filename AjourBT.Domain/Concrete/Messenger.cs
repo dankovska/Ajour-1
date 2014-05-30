@@ -46,8 +46,8 @@ namespace AjourBT.Domain.Concrete
 
         public void StoreMessage(IMessage message)
         {
-            if(GetMailingListForRole(message).Length!=0)
-            repository.SaveMessage(message);
+            if (GetMailingListForRole(message).Length != 0)
+                repository.SaveMessage(message);
         }
 
         public string[] GetMailingListForRole(IMessage message)
@@ -55,80 +55,86 @@ namespace AjourBT.Domain.Concrete
             List<string> mailingList = new List<string>();
             if (message != null)
             {
-                switch (message.Role)
+                if (message.messageType != MessageType.Greeting)
                 {
-                    case "EMP":
-                        if (message.employee != null)
-                        {
-                            mailingList.Add(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
-                            break;
-                        }
-
-                        foreach (BusinessTrip bt in message.BTList)
-                        {
-                            if (!mailingList.Contains(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]))
-                                mailingList.Add(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]);
-                        }
-                        break;
-                    case "ADM":
-                        if (message.employee != null)
-                        {
-                           Department depNum = (from dep in repository.Departments
-                                         where dep.DepartmentID == message.employee.DepartmentID
-                                         select dep).FirstOrDefault();
-                           foreach (Employee emp in depNum.Employees)
-                           {
-                               if (System.Web.Security.Roles.IsUserInRole(emp.EID, "ADM"))
-                                   mailingList.Add(emp.EID);
-                           }
-                           break;
-                        }
-
-                        foreach (BusinessTrip bt in message.BTList)
-                        {
-                            if (!mailingList.Contains(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]))
-                                mailingList.Add(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]);
-                        }
-                        break;
-                    case "Unknown Role":
-                        {
-                            Regex regex = new Regex(@"^[\w]+$", RegexOptions.IgnoreCase);
-                            List<string> userIDs = new List<string>();
-                            if (message.BTList!=null && message.BTList.Count != 0)
+                    switch (message.Role)
+                    {
+                        case "EMP":
+                            if (message.employee != null)
                             {
-                                foreach (BusinessTrip bt in message.BTList)
-                                {
-                                    if (bt.Location.ResponsibleForLoc != null)
-                                    {
-                                        userIDs = userIDs.Concat(Regex.Split(bt.Location.ResponsibleForLoc, @"\W+").ToList()).ToList<string>();                                        
-                                    }
-                                    if (bt.Responsible != null && bt.Responsible != String.Empty)
-                                    {
+                                mailingList.Add(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
+                                break;
+                            }
 
-                                        Match match = regex.Match(bt.Responsible.Trim());
-                                        if (match.Success)
-                                        {
-                                            userIDs.Add(bt.Responsible.Trim());
-                                        }
-                                    }
-                                    foreach (string userID in userIDs)
+                            foreach (BusinessTrip bt in message.BTList)
+                            {
+                                if (!mailingList.Contains(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]))
+                                    mailingList.Add(bt.BTof.EID + WebConfigurationManager.AppSettings["MailAlias"]);
+                            }
+                            break;
+                        case "ADM":
+                            if (message.employee != null)
+                            {
+                                Department depNum = (from dep in repository.Departments
+                                                     where dep.DepartmentID == message.employee.DepartmentID
+                                                     select dep).FirstOrDefault();
+                                foreach (Employee emp in depNum.Employees)
+                                {
+                                    if (System.Web.Security.Roles.IsUserInRole(emp.EID, "ADM"))
+                                        mailingList.Add(emp.EID);
+                                }
+                                break;
+                            }
+
+                            foreach (BusinessTrip bt in message.BTList)
+                            {
+                                if (!mailingList.Contains(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]))
+                                    mailingList.Add(bt.LastCRUDedBy + WebConfigurationManager.AppSettings["MailAlias"]);
+                            }
+                            break;
+                        case "Unknown Role":
+                            {
+                                Regex regex = new Regex(@"^[\w]+$", RegexOptions.IgnoreCase);
+                                List<string> userIDs = new List<string>();
+                                if (message.BTList != null && message.BTList.Count != 0)
+                                {
+                                    foreach (BusinessTrip bt in message.BTList)
                                     {
-                                        if (!mailingList.Contains(userID + WebConfigurationManager.AppSettings["MailAlias"]))
-                                            mailingList.Add(userID + WebConfigurationManager.AppSettings["MailAlias"]);
+                                        if (bt.Location.ResponsibleForLoc != null)
+                                        {
+                                            userIDs = userIDs.Concat(Regex.Split(bt.Location.ResponsibleForLoc, @"\W+").ToList()).ToList<string>();
+                                        }
+                                        if (bt.Responsible != null && bt.Responsible != String.Empty)
+                                        {
+
+                                            Match match = regex.Match(bt.Responsible.Trim());
+                                            if (match.Success)
+                                            {
+                                                userIDs.Add(bt.Responsible.Trim());
+                                            }
+                                        }
+                                        foreach (string userID in userIDs)
+                                        {
+                                            if (!mailingList.Contains(userID + WebConfigurationManager.AppSettings["MailAlias"]))
+                                                mailingList.Add(userID + WebConfigurationManager.AppSettings["MailAlias"]);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        break;
-                    default:
-                        mailingList = System.Web.Security.Roles.GetUsersInRole(message.Role).ToList<string>();
-                        for (int i = 0; i < mailingList.Count(); i++)
-                        {
-                            mailingList[i] += WebConfigurationManager.AppSettings["MailAlias"];
-                        }
-                        break;
+                            break;
+                        default:
+                            mailingList = System.Web.Security.Roles.GetUsersInRole(message.Role).ToList<string>();
+                            for (int i = 0; i < mailingList.Count(); i++)
+                            {
+                                mailingList[i] += WebConfigurationManager.AppSettings["MailAlias"];
+                            }
+                            break;
+                    }
                 }
-
+                else
+                {
+                    mailingList.Add(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
+                }
             }
             return mailingList.ToArray<string>();
         }
@@ -221,6 +227,44 @@ namespace AjourBT.Domain.Concrete
             mimeItem.SetContentFromText(notesStream, "text/html; charset=UTF-8", MIME_ENCODING.ENC_NONE);
 
             notesDocument.Send(false);
+        }
+
+        public List<IMessage> GetGreetingMessages(DateTime date)
+        {
+            List<IMessage> BirthdayMessages = new List<IMessage>();
+            List<Employee> employeesBornToday = new List<Employee>();
+            employeesBornToday = repository.Employees.Where(e => e.BirthDay != null && e.BirthDay.HasValue && e.BirthDay.Value.Day == date.Day &&
+                e.BirthDay.Value.Month == date.Month).ToList();
+            foreach (Employee emp in employeesBornToday)
+            {
+                BirthdayMessages.Add(new Message(GetRandomGreetingBody(), WebConfigurationManager.AppSettings["GreetingsAuthor"], emp,
+                    WebConfigurationManager.AppSettings["GreetingsSubject"]));
+            }
+            return BirthdayMessages;
+        }
+
+        public string GetRandomGreetingBody()
+        {
+            Random random = new Random();
+            int greetingsCount = repository.Greetings.Count();
+            if(greetingsCount > 0)
+            {
+            int randomNumber = random.Next(0, greetingsCount) - 1;
+
+            if (repository.Greetings.Skip(randomNumber).FirstOrDefault() != null)
+                return repository.Greetings.Skip(randomNumber).FirstOrDefault().GreetingBody;
+            else
+                return "";
+            }
+            return "";
+        }
+
+        public void SendGreetingMessages(DateTime date)
+        {
+            foreach (Message msg in GetGreetingMessages(date))
+            {
+                Notify(msg);
+            }
         }
     }
 }

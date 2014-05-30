@@ -957,6 +957,8 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
 
         #endregion
 
+        #region Roles  
+
         public void SaveRolesForEmployee(string username, string[] roles)
         {
             if (Membership.GetUser(username) != null)
@@ -1018,6 +1020,8 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
                 Membership.DeleteUser(username);
             }
         }
+
+        #endregion
 
         #region Messages
 
@@ -1468,6 +1472,49 @@ Employee employee = (from emp in Employees where emp.EmployeeID == bTrip.Employe
         {
             get { return context.Employees; }
             //get { return context.Users; }
+        }
+
+        #endregion
+
+        #region Greeting
+
+        public IEnumerable<Greeting> Greetings
+        {
+            get { return context.Greetings; }
+        }
+
+        public void SaveGreeting(Greeting greeting)
+        {
+            if (greeting.GreetingId == 0)
+            {
+                context.Greetings.Add(greeting);
+            }
+            else
+            {
+                Greeting dbentry = context.Greetings.Find(greeting.GreetingId);
+
+                if (dbentry != null)
+                {
+                    dbentry.GreetingHeader = greeting.GreetingHeader;
+                    dbentry.GreetingBody = greeting.GreetingBody;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public Greeting DeleteGreeting(int GreetingId)
+        {
+
+            Greeting dbentry = context.Greetings.Find(GreetingId);
+
+            if (dbentry != null)
+            {
+                context.Greetings.Remove(dbentry);
+                context.SaveChanges();
+            }
+
+            return dbentry;
+
         }
 
         #endregion

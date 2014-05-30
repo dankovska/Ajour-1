@@ -37,6 +37,22 @@ namespace AjourBT.Domain.Concrete
             Link = GetLink();
         }
 
+        public Message( string body, string author, Employee recipient, string subject)
+        {
+            this.MessageID = 0;
+            this.messageType = MessageType.Greeting;
+            this.BTList = null;
+            this.Author = null;
+            this.employee = recipient;
+                ReplyTo = author;
+            TimeStamp = DateTime.Now.ToLocalTimeAzure();
+            Role = "";
+            if(subject!=null && subject!=String.Empty)
+            Subject = subject.Insert(subject.Length-1, ", "+employee.FirstName);
+            Body = body;
+            Link = "";
+        }
+
         [NotMapped]
         public MessageType messageType { get; set; }
         [NotMapped]

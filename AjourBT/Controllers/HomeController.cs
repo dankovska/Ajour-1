@@ -66,6 +66,12 @@ namespace AjourBT.Controllers
             return View(tab);
         }
 
+        [Authorize(Roles = "BDM")]
+        public ActionResult BDMView(int tab = 0)
+        {
+            return View(tab);
+        }
+
         public ActionResult DataBaseDeleteError()
         {
             return View();
