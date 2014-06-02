@@ -53,8 +53,10 @@ namespace AjourBT
             //Database.SetInitializer<AjourDbContext>(new AjourDbInitializer());
             // DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(AjourBT.Domain.Entities.Permit.RequiredIfAttribute),typeof(RequiredAttributeAdapter));
             NinjectDependencyResolver res = new NinjectDependencyResolver(); 
-
+            if(WebConfigurationManager.AppSettings["EnableGreetings"] == "true")
+            { 
             Scheduler.Start(TimeSpan.Parse(WebConfigurationManager.AppSettings["GreetingsSendTime"]), res.GetService<IMessenger>());
+            }
         }
 
 #if !DEBUG
