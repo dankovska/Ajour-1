@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using System.Collections;
 using AjourBT.Domain.Entities;
 using AjourBT.Controllers;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using System.Threading.Tasks;
 using System.Threading;
 using AjourBT.Domain.Abstract;

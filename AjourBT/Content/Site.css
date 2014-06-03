@@ -1421,17 +1421,17 @@ i {
     color: red;
 }
 
-i2 {
+#i2 {
     color: red;
     font-size: 0.8em;
 }
 
-i4 {
+#i4 {
     color: red;
     font-size: 0.65em;
 }
 
-size0_8 {
+#size0_8 {
     font-size: 0.8em;
 }
 

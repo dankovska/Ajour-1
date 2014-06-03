@@ -1,6 +1,6 @@
 ﻿@using AjourBT.Domain.Entities
 @using AjourBT.Helpers
-@using AjourBT.Infrastructure
+@using AjourBT.Domain.Infrastructure
 
 @model IEnumerable<AjourBT.Domain.Entities.Employee>
 @{
@@ -49,7 +49,7 @@
                             @*@Html.ActionLink(bt.Location.Title + ":" + bt.StartDate.ToString("dd.MM") + "-" + bt.EndDate.ToString("dd.MM"), "BTMArrangeBT", new { id = bt.BusinessTripID })*@
                             if (bt.Status.HasFlag(BTStatus.Modified))
                             {
-                                <i4 style="color:red">
+                                <span id="i4">
                                     @if (bt.OldLocationTitle != null && bt.OldStartDate != null && bt.OldEndDate != null)
                                     {
                                         <br />
@@ -57,7 +57,7 @@
                                         @(bt.OldLocationTitle + ": " + bt.OldStartDate.Value.ToString("dd.MM") + "-" + bt.OldEndDate.Value.ToString("dd.MM"))
 
                                     }
-                                </i4>
+                                </span>
                             }
 
                             if (bt.Habitation == null || bt.Habitation == String.Empty)
@@ -121,14 +121,14 @@
 
                             if (bt.Status.HasFlag(BTStatus.Modified))
                             {
-                                <i4 style="color:red">
+                                <span id="i4">
                                     @if (bt.OldLocationTitle != null && bt.OldStartDate != null && bt.OldEndDate != null)
                                     {
                                         <br />
                                         @: Modified:
                                         @(bt.OldLocationTitle + ": " + bt.OldStartDate.Value.ToString("dd.MM") + "-" + bt.OldEndDate.Value.ToString("dd.MM"))
                                     }
-                                </i4>
+                                </span>
                             }
                         }
                         else
@@ -148,14 +148,14 @@
                             }
                             if (bt.Status.HasFlag(BTStatus.Modified))
                             {
-                                <i4 style="color:red">
+                                <span id="i4">
                                     @if (bt.OldLocationTitle != null && bt.OldStartDate != null && bt.OldEndDate != null)
                                     {
                                         <br />
                                         @: Modified:
                                         @(bt.OldLocationTitle + ": " + bt.OldStartDate.Value.ToString("dd.MM") + "-" + bt.OldEndDate.Value.ToString("dd.MM"))
                                     }
-                                </i4>
+                                </span>
                             }
 
                             if (bt.Habitation == null || bt.Habitation == String.Empty)

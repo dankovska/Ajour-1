@@ -1,5 +1,6 @@
 ﻿using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
+using AjourBT.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -45,7 +46,7 @@ namespace AjourBT.Controllers
             {
                 repository.SavePosition(position);
 
-                return RedirectToAction("PUView", "Home", new { tab = 3 });
+                return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Positions });
             }
 
             return View(position);
@@ -77,7 +78,7 @@ namespace AjourBT.Controllers
                 if (ModelState.IsValid)
                 {
                     repository.SavePosition(position);
-                    return RedirectToAction("PUView", "Home", new { tab = 3 });
+                    return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Positions });
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -126,7 +127,7 @@ namespace AjourBT.Controllers
                 return RedirectToAction("DataBaseDeleteError", "Home");
             }
 
-            return RedirectToAction("PUView", "Home", new { tab = 3 });
+            return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Positions });
         }
 
     }

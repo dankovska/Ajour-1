@@ -10,6 +10,7 @@ using AjourBT.Domain.Concrete;
 using AjourBT.Domain.Abstract;
 using System.Data.Entity.Infrastructure;
 using System.Text.RegularExpressions;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Controllers
 {
@@ -67,49 +68,12 @@ namespace AjourBT.Controllers
                 }
                 db.SaveLocation(location);
 
-                return RedirectToAction("PUView", "Home", new { tab = 2 });
+                return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Locations });
             }
 
             ViewBag.CountryList = CountriesDropDownList();
             return View(location);
         }
-
-        //
-        // GET: /Location/CreateResponsibleForLoc
-
-        //public ActionResult AddResponsibleForLoc(int id = 0)
-        //{
-        //    Location location = db.Locations.Where(l => l.LocationID == id).FirstOrDefault();
-        //    if (location == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    return View(location);
-        //}
-
-        //
-        // POST: /Location/CreateResponsibleForLoc
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AddResponsibleForLoc(Location location)    
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        bool isExistingID = IsExistingID(location.ResponsibleForLoc);
-        //        if (isExistingID == false)
-        //        {
-        //            return Json(new { error = "Not existing employee's id" });
-        //        }
-        //        db.SaveLocation(location);
-
-        //        return RedirectToAction("PUView", "Home", new { tab = 2 });
-        //    }
-
-        //    ViewBag.CountryList = CountriesDropDownList();
-        //    return View(location);
-        //}
 
         public bool IsExistingID(string responsibleForLoc)
         {
@@ -168,7 +132,7 @@ namespace AjourBT.Controllers
                         return Json(new { error = "Not existing Employee's EID" });
                     }
                     db.SaveLocation(location);
-                    return RedirectToAction("PUView", "Home", new { tab = 2 });
+                    return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Locations });
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -181,52 +145,6 @@ namespace AjourBT.Controllers
             return Json(new { error = ModelError });
         }
 
-        //
-        // GET: /Location/EditResponsibleForLoc/5
-
-        //public ActionResult EditResponsibleForLoc(int id = 0)
-        //{
-        //    Location location = (from loc in db.Locations where loc.LocationID == id select loc).FirstOrDefault();
-        //    ViewBag.CountryList = (from c in db.Countries select c).ToList();
-
-        //    if (location == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(location);
-        //}
-
-        //
-        // POST: /Location/EditResponsibleForLoc/
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EditResponsibleForLoc(Location location)
-        //{
-        //    string ModelError = "";
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            bool isExistingID = IsExistingID(location.ResponsibleForLoc);
-        //            if (isExistingID == false)
-        //            {
-        //                return Json(new { error = "Not existing employee's id" });
-        //            }
-        //            db.SaveLocation(location);
-        //            return RedirectToAction("PUView", "Home", new { tab = 2 });
-        //        }
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        ModelError = "The record you attempted to edit "
-        //                          + "was modified by another user after you got the original value. The "
-        //                          + "edit operation was canceled.";
-        //    }
-        //    return Json(new { error = ModelError });
-        //}
-
-        //
         // GET: /Location/Delete/5
 
         public ActionResult Delete(int id = 0)
@@ -263,7 +181,7 @@ namespace AjourBT.Controllers
 
             }
 
-            return RedirectToAction("PUView", "Home", new { tab = 2 });
+            return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Locations });
         }
     }
 }

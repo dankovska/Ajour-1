@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using System.Web.Configuration;
 using System.Data.Entity.Infrastructure;
 using AjourBT.Tests.MockRepository;

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AjourBT.Models;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using System.Data.Entity.Infrastructure;
 using AjourBT.Tests.MockRepository;
 
