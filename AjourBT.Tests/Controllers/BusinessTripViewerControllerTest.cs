@@ -8,10 +8,11 @@ using System.Linq;
 using AjourBT.Controllers;
 using AjourBT.Models;
 using System.Web.Mvc;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using System.Collections;
 using AjourBT.Tests.MockRepository;
 using ExcelLibrary.SpreadSheet;
+
 
 namespace AjourBT.Tests.Controllers
 {

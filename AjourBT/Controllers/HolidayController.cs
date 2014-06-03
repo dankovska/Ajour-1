@@ -1,5 +1,6 @@
 ﻿using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
+using AjourBT.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -109,7 +110,7 @@ namespace AjourBT.Controllers
                 if (ModelState.IsValid)
                 {
                     repository.SaveHoliday(holiday, DateTime.Parse(date), countryID, isPostponed);
-                    return RedirectToAction("ABMView", "Home", new { tab = 1});
+                    return RedirectToAction("ABMView", "Home", new { tab = Tabs.ABM.Holidays });
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -146,7 +147,7 @@ namespace AjourBT.Controllers
                 return RedirectToAction("DataBaseDeleteError", "Home");
             }
 
-            return RedirectToAction("ABMView", "Home", new { tab = 1});
+            return RedirectToAction("ABMView", "Home", new { tab = Tabs.ABM.Holidays});
         }
 
         [HttpGet]
@@ -163,7 +164,7 @@ namespace AjourBT.Controllers
             {
                 DateTime prs = DateTime.Parse(HolidayDate);
                 repository.SaveHoliday(holiday, prs, countryID, isPostponed);
-                return RedirectToAction("ABMView", "Home", new {tab = 1});
+                return RedirectToAction("ABMView", "Home", new {tab = Tabs.ABM.Holidays});
             }
 
             ViewBag.JSDatePattern = MvcApplication.JSDatePattern;

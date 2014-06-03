@@ -13,7 +13,7 @@ using AjourBT.Domain.Concrete;
 using System.IO;
 using AjourBT.Domain.Entities;
 using System.Web.Security;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Tests.Messaging_Subsystem
 {

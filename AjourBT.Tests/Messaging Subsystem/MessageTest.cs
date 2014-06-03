@@ -13,7 +13,7 @@ using AjourBT.Domain.Concrete;
 using System.IO;
 using AjourBT.Domain.Entities;
 using System.Text.RegularExpressions;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Tests.Messaging_Subsystem
 {
@@ -496,7 +496,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToACC, Result = "")]
         [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, Result = "")]
         [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToACC, Result = "<a href=\"http://localhost:50616/Home/ACCView/?tab=0\"> Goto Ajour page </a>")]
-        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=0\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToADM, Result = "<a href=\"http://localhost:50616/Home/ADMView/?tab=1\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMRejectsRegisteredOrRegisteredModifiedToACC, Result = "")]
         [TestCase(MessageType.BTMRejectsConfirmedOrConfirmedModifiedToADM, Result = "<a href=\"http://localhost:50616/Home/ADMView/?tab=1\"> Goto Ajour page </a>")]
@@ -524,8 +524,8 @@ namespace AjourBT.Tests.Messaging_Subsystem
         [TestCase(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
         [TestCase(MessageType.ACCModifiesConfirmedReportedToResponsible, Result = "<a href=\"http://localhost:50616/Home/VUView/?tab=2\"> Goto Ajour page </a>")]
-        [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
-        [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=4\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMCreateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=1\"> Goto Ajour page </a>")]
+        [TestCase(MessageType.BTMUpdateVisaRegistrationDateToEMP, Result = "<a href=\"http://localhost:50616/Home/EMPView/?tab=1\"> Goto Ajour page </a>")]
         public String GetLinkTest_MessageType_LinkAccordingToType(MessageType messageType)
         {
             //Arrange

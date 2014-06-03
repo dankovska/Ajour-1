@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Collections;
 using AjourBT.Domain.Entities;
 using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using PDFjet.NET;
 using AjourBT.Models;
 using System.IO;

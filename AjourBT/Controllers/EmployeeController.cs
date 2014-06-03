@@ -11,6 +11,7 @@ using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
 using System.Data.Entity.Infrastructure;
 using Newtonsoft.Json;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Controllers
 {
@@ -165,7 +166,7 @@ namespace AjourBT.Controllers
                 {
                     db.SaveEmployee(emp);
                     db.SaveRolesForEmployee(emp.EID, Roles);
-                    return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                    return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Employees, selectedDepartment = selectedDepartment, SearchString = searchString });
                 }
                 else
                 {
@@ -227,8 +228,7 @@ namespace AjourBT.Controllers
                     db.SaveRolesForEmployee(emp.EID, Roles);
                     List<Employee> empl = db.Users.ToList();
                     List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
-                    return View("OneRowPU", empList);
-                    //return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
+                    return View("OneRowPU", empList);                  
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -286,7 +286,6 @@ namespace AjourBT.Controllers
             List<EmployeeViewModel> empList = SearchEmployeeData(empl, selectedDepartment, searchString);
             return View("OneRowPU", empList);
 
-            //return RedirectToAction("PUView", "Home", new { tab = 1, selectedDepartment = selectedDepartment, SearchString = searchString });
         }
 
         [HttpGet]

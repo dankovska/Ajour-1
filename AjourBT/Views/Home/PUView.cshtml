@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using AjourBT.Domain.Infrastructure;
+@model int
 @{
     ViewBag.Title = "PUView";
     @*string selectedDepartment = ViewBag.SelectedDepartment;
@@ -36,7 +37,7 @@
     <div id="tabs2">@{Html.RenderAction("GetEmployee", "Employee", new { selectedDepartment = @ViewBag.SelectedDepartment, searchString = @ViewBag.SearchString });}</div>
     <div id="tabs3">@{Html.RenderAction("Index", "Location");}</div>
     <div id="tabs4">@{Html.RenderAction("Index", "Position");}</div>
-    <div id="tabs6">@{Html.RenderAction("GetMessagesForRole", "Message", new { role = "PU", tab = 5, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+    <div id="tabs6">@{Html.RenderAction("GetMessagesForRole", "Message", new { role = "PU", tab = Tabs.PU.Log, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
     @*<div id="tabs7">@{Html.RenderAction("Index", "Country");}</div>*@
     <div id="tabs8">@{Html.RenderAction("Index", "Unit");}</div>
 </div>

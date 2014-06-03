@@ -11,7 +11,7 @@ using System.Collections;
 using AjourBT.Domain.Abstract;
 using AjourBT.Domain.Entities;
 using AjourBT.Tests.MockRepository;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 namespace AjourBT.Tests.Helpers
 {
     [TestFixture]

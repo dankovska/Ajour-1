@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using AjourBT.Domain.Infrastructure;
+@model int
 @{
     ViewBag.Title = "Director View";
  }
@@ -21,7 +22,7 @@
         <li><a href="#tabs16">Messages</a></li>
     </ul>
     <div id="tabs15">@{Html.RenderAction("GetBusinessTripDIR", "BusinessTrip", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
-    <div id="tabs16"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "DIR", tab = 1, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action")});}</div>
+    <div id="tabs16"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "DIR", tab = Tabs.DIR.Messages, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action")});}</div>
 
 </div>
 

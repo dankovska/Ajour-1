@@ -255,11 +255,11 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.ACCModifiesConfirmedReportedToBTM:
                 case MessageType.DIRRejectsConfirmedToBTM:
                 case MessageType.ADMCancelsPlannedModifiedToBTM:
-                    pathAndQuery = "/Home/BTMView/?tab=1";
+                    pathAndQuery = "/Home/BTMView/?tab="+Tabs.BTM.BTsInProcess;
                     break;
                 case MessageType.ADMConfirmsPlannedOrRegisteredToDIR:
                 case MessageType.ACCModifiesConfirmedReportedToDIR:
-                    pathAndQuery = "/Home/DIRView/?tab=0";
+                    pathAndQuery = "/Home/DIRView/?tab="+Tabs.DIR.BusinessTrips;
                     break;
                 case MessageType.ADMConfirmsPlannedOrRegisteredToACC:
                 case MessageType.ADMRegistersPlannedOrPlannedModifiedToACC:
@@ -271,11 +271,11 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible: 
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible: 
                 case MessageType.ACCModifiesConfirmedReportedToResponsible: 
-                    pathAndQuery = "/Home/VUView/?tab=2";
+                    pathAndQuery = "/Home/VUView/?tab="+Tabs.VU.BTsInPreparationProcess;
                     break;
                 
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToACC:
-                    pathAndQuery = "/Home/ACCView/?tab=0";
+                    pathAndQuery = "/Home/ACCView/?tab="+Tabs.ACC.CurrentAndFutureBTs;
                     break;
 
                 case MessageType.BTMRejectsRegisteredOrRegisteredModifiedToADM:
@@ -283,17 +283,19 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.ACCCancelsConfirmedReportedToADM:
                 case MessageType.ACCModifiesConfirmedReportedToADM:
                 case MessageType.DIRRejectsConfirmedToADM:
-                    pathAndQuery = "/Home/ADMView/?tab=1";
+                    pathAndQuery = "/Home/ADMView/?tab="+Tabs.ADM.BTs;
                     break;
                
                 case MessageType.BTMCancelsPermitToADM:
-                    pathAndQuery = "/Home/ADMView/?tab=0";
+                    pathAndQuery = "/Home/ADMView/?tab="+Tabs.ADM.VisasAndPermits;
                     break;
                
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP:
+                    pathAndQuery = "/Home/EMPView/?tab="+Tabs.EMP.YourBTs;
+                    break; 
                 case MessageType.BTMUpdateVisaRegistrationDateToEMP:
                 case MessageType.BTMCreateVisaRegistrationDateToEMP:
-                    pathAndQuery = "/Home/EMPView/?tab=4";
+                    pathAndQuery = "/Home/EMPView/?tab="+Tabs.EMP.Visa;
                     break;
  
                 default:

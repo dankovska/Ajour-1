@@ -14,6 +14,7 @@ using AjourBT.Domain.Entities;
 using AjourBT.Domain.Concrete;
 using System.Configuration;
 using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using AjourBT.Domain.Abstract;
 
 namespace AjourBT.Controllers

@@ -20,6 +20,7 @@ using System.Web.Helpers;
 using Newtonsoft.Json;
 using System.Text;
 using AjourBT.Exeptions;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 {
@@ -206,43 +207,6 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             IEnumerable<Employee> empList = SelectEmployees(selectedDepartment, null);
             return View("TableViewBTADM", empList.ToList());
         }
-
-        //[Authorize(Roles = "ADM")]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult RegisterPlannedBT(BusinessTrip bTrip, string selectedDepartment = null)
-        //{
-        //    LocationsDropDownList(bTrip.LocationID);
-        //    BusinessTrip businessTrip = bTrip;
-
-        //    if (bTrip.BusinessTripID != 0)
-        //    {
-        //        businessTrip = RewriteBTsPropsAfterPlanningFromRepository(bTrip);
-        //        businessTrip.RejectComment = null;
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (((businessTrip.Status & BTStatus.Planned) == BTStatus.Planned) && businessTrip.RejectComment == null)
-        //        {
-        //            Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
-        //            List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
-        //            businessTrip.Status = (businessTrip.Status | BTStatus.Registered) & ~BTStatus.Planned;
-        //            AddLastCRUDDataToBT(businessTrip);
-        //            repository.SaveBusinessTrip(businessTrip);
-        //            selectedBusinessTripsList.Add(businessTrip);
-        //            messenger.Notify(new Message(MessageType.ADMRegistersPlannedOrPlannedModifiedToBTM, selectedBusinessTripsList, author));
-        //            messenger.Notify(new Message(MessageType.ADMRegistersPlannedOrPlannedModifiedToEMP, selectedBusinessTripsList, author));
-        //        }
-        //        return RedirectToAction("ADMView", "Home", new { tab = 1, selectedDepartment = selectedDepartment });
-
-        //    }
-        //    BusinessTripViewModel btViewModel = new BusinessTripViewModel(bTrip);
-        //    LocationsDropDownList(bTrip.LocationID);
-        //    btViewModel.BTof = repository.BusinessTrips.Where(bt => bt.BusinessTripID == bTrip.BusinessTripID).Select(b => b.BTof).FirstOrDefault();
-        //    return View("EditPlannedBT", btViewModel);
-        //}
-
 
         [Authorize(Roles = "ADM")]
         [HttpPost]
@@ -467,43 +431,6 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             }
             return RedirectToAction("ADMView", "Home", new { tab = 1, selectedDepartment = selectedDepartment });
         }
-
-        //[Authorize(Roles = "ADM")]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult ConfirmPlannedBT(BusinessTrip bTrip, string selectedDepartment = null)
-        //{
-        //    LocationsDropDownList(bTrip.LocationID);
-        //    BusinessTrip businessTrip = bTrip;
-
-        //    if (bTrip.BusinessTripID != 0)
-        //    {
-        //        businessTrip = RewriteBTsPropsAfterPlanningFromRepository(bTrip);
-        //        businessTrip.RejectComment = null;
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (((businessTrip.Status & BTStatus.Planned) == BTStatus.Planned) && businessTrip.RejectComment == null)
-        //        {
-        //            Employee author = repository.Users.Where(e => e.EID == HttpContext.User.Identity.Name).FirstOrDefault();
-        //            List<BusinessTrip> selectedBusinessTripsList = new List<BusinessTrip>();
-        //            businessTrip.Status = (businessTrip.Status | BTStatus.Confirmed) & ~BTStatus.Planned;
-        //            AddLastCRUDDataToBT(businessTrip);
-        //            repository.SaveBusinessTrip(businessTrip);
-        //            selectedBusinessTripsList.Add(businessTrip);
-        //            messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToBTM, selectedBusinessTripsList, author));
-        //            messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToDIR, selectedBusinessTripsList, author));
-        //            messenger.Notify(new Message(MessageType.ADMConfirmsPlannedOrRegisteredToEMP, selectedBusinessTripsList, author));
-        //        }
-        //        return RedirectToAction("ADMView", "Home", new { tab = 1, selectedDepartment = selectedDepartment });
-
-        //    }
-        //    BusinessTripViewModel btViewModel = new BusinessTripViewModel(bTrip);
-        //    LocationsDropDownList(bTrip.LocationID);
-        //    btViewModel.BTof = repository.BusinessTrips.Where(bt => bt.BusinessTripID == bTrip.BusinessTripID).Select(b => b.BTof).FirstOrDefault();
-        //    return View("EditPlannedBT", btViewModel);
-        //}
 
 
         //GET: Delete Planned BT
@@ -826,55 +753,6 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
             return View("EditPlannedBT", businessTrip);
         }
 
-        //[Authorize(Roles = "ADM")]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult ProcessCommand(BusinessTrip businesstrip, int id = 0, string commandName = "", string[] selectedPlannedBTs = null, string[] selectedRegisteredBTs = null, string selectedDepartment = null)
-        //{
-        //    switch (commandName)
-        //    {
-
-        //        case "EditPlannedBT":
-        //            return RedirectToAction("EditPlannedBT", new { id = id });
-
-        //        case "EditRegisteredBT":
-        //            return RedirectToAction("EditRegisteredBT", new { id = id });
-
-        //        case "EditConfirmedBT":
-        //            return RedirectToAction("EditConfirmedBT", new { id = id });
-
-        //        case "Register":
-        //            return this.RegisterPlannedBTs(selectedPlannedBTs, selectedDepartment);
-
-        //        case "Confirm":
-        //            return this.ConfirmPlannedBTs(selectedPlannedBTs, selectedDepartment);
-
-        //        case "Plan ":
-        //            return this.Plan(businesstrip, selectedDepartment);
-
-        //        //case "Register ":
-        //        //    return this.RegisterPlannedBT(businesstrip, selectedDepartment);
-
-        //        //case "Confirm ":
-        //        //    return this.ConfirmPlannedBT(businesstrip, selectedDepartment);
-
-        //        case "Confirm  ":
-        //            return this.ConfirmRegisteredBTs(selectedRegisteredBTs, selectedDepartment);
-
-        //        case "Replan":
-        //            return this.ReplanRegisteredBTs(selectedRegisteredBTs, selectedDepartment);
-
-        //        case "Cancel":
-        //            return this.CancelRegisteredBTs(selectedRegisteredBTs, selectedDepartment);
-
-        //        case "Cancel ":
-        //            return this.CancelConfirmedBT(id, selectedDepartment);
-
-        //        default:
-        //            return RedirectToAction("ADMView", "Home", new { tab = 1, selectedDepartment = selectedDepartment });
-        //    }
-        //}
-
         #endregion
 
         #region BTM
@@ -1014,7 +892,6 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                 return View("BTMArrangeBT", new BusinessTripViewModel(bTrip));
             }
 
-            //return RedirectToAction("BTMView", "Home", new { tab = 1, searchString = searchString });
             List<Employee> empList = SearchBusinessTripDataBTM(repository.Employees.ToList(), searchString);
             return View("TableViewBTM", empList);
             // return View("OneRowBTM", empList);
@@ -1441,7 +1318,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToBTM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToResponsible, selectedBusinessTripsList, author));
                     //messenger.Notify(new Message(MessageType.DIRRejectsConfirmedToACC, selectedBusinessTripsList, author));
-                    return RedirectToAction("DIRView", "Home", new { tab = 0, selectedDepartment = selectedDepartment });
+                    return RedirectToAction("DIRView", "Home", new { tab = Tabs.DIR.BusinessTrips, selectedDepartment = selectedDepartment });
                 }
                 else
                 {
@@ -1629,10 +1506,8 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             return Json(new { error = modelError });
                         }
 
-
                     }
-
-                    //return RedirectToAction("ACCView", "Home", new { tab = 0, selectedDepartment = selectedDepartment });
+                    
                     return Json(new { success = "success" });
 
                 }
@@ -1720,7 +1595,6 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToBTM, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToEMP, selectedBusinessTripsList, author));
                     messenger.Notify(new Message(MessageType.ACCCancelsConfirmedReportedToResponsible, selectedBusinessTripsList, author));
-                    //return RedirectToAction("ACCView", "Home", new { tab = 0, selectedDepartment = selectedDepartment });
                     return Json(new { success = "success" });
 
                 }

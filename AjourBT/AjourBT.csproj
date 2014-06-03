@@ -14,7 +14,7 @@
     <RootNamespace>AjourBT</RootNamespace>
     <AssemblyName>AjourBT</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -281,7 +281,6 @@
     <Compile Include="Helpers\StatusHintHelperForVUPreps.cs" />
     <Compile Include="Helpers\WeekIntervalHelper.cs" />
     <Compile Include="Infrastructure\CalendarToPdfExporter.cs" />
-    <Compile Include="Infrastructure\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\JourneyBydateComparer.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\OvertimeByDateComparer.cs" />
@@ -673,6 +672,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401171156088_unit.resx">
       <DependentUpon>201401171156088_unit.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

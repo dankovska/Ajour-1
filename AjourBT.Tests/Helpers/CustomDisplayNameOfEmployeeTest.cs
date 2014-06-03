@@ -76,7 +76,7 @@ namespace AjourBT.Tests.Helpers
             MvcHtmlString result = helper.CustomDisplayNameOfEmployee(emp);
 
             //Assert
-            Assert.AreEqual(String.Format("<a><strike>{0} {1}</strike> </a> <br> <i2>{2}</i2>", emp.LastName, emp.FirstName, emp.DateDismissed.Value.ToShortDateString()), result.ToString());
+            Assert.AreEqual(String.Format("<a><strike>{0} {1}</strike> </a> <br> <span id='i2'>{2}</span>", emp.LastName, emp.FirstName, emp.DateDismissed.Value.ToShortDateString()), result.ToString());
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace AjourBT.Tests.Helpers
             MvcHtmlString result = helper.CustomDisplayNameOfEmployeeViewModelForVU(employeeModel, hint);
 
             //Assert
-            Assert.AreEqual(String.Format("<a id=\"NumberDaysInBt\" class=\"DaysInBt\" title=\"{0}\"> <strike>{1} {2}</strike></a> <br> <i2>{3}</i2>", hint, employeeModel.LastName, employeeModel.FirstName, employeeModel.DateDismissed),result.ToString());
+            Assert.AreEqual(String.Format("<a id=\"NumberDaysInBt\" class=\"DaysInBt\" title=\"{0}\"> <strike>{1} {2}</strike></a> <br> <span id='i2'>{3}</span>", hint, employeeModel.LastName, employeeModel.FirstName, employeeModel.DateDismissed),result.ToString());
         }
 
         [Test]

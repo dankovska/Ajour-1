@@ -17,7 +17,7 @@ namespace AjourBT.Helpers
             {
                 if (employee.DateDismissed != null)
                 {
-                    return new MvcHtmlString(String.Format("<a><strike>{0} {1}</strike> </a> <br> <i2>{2}</i2>", employee.LastName, employee.FirstName, employee.DateDismissed.Value.ToShortDateString()));
+                    return new MvcHtmlString(String.Format("<a><strike>{0} {1}</strike> </a> <br> <span id='i2'>{2}</span>", employee.LastName, employee.FirstName, employee.DateDismissed.Value.ToShortDateString()));
                 }
                 else
                 {
@@ -42,7 +42,7 @@ namespace AjourBT.Helpers
             {
                 if (employeeModel.DateDismissed != null && employeeModel.DateDismissed != "")
                 {
-                    return new MvcHtmlString(String.Format("<a id=\"NumberDaysInBt\" class=\"DaysInBt\" title=\"{0}\"> <strike>{1} {2}</strike></a> <br> <i2>{3}</i2>", daysUsedInBtHint, employeeModel.LastName, employeeModel.FirstName, employeeModel.DateDismissed));
+                    return new MvcHtmlString(String.Format("<a id=\"NumberDaysInBt\" class=\"DaysInBt\" title=\"{0}\"> <strike>{1} {2}</strike></a> <br> <span id='i2'>{3}</span>", daysUsedInBtHint, employeeModel.LastName, employeeModel.FirstName, employeeModel.DateDismissed));
                 }
                 else
                 {

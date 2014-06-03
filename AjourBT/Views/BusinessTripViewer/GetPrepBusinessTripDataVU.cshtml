@@ -1,6 +1,6 @@
 ﻿@using AjourBT.Domain.Entities
 @using AjourBT.Helpers
-@using AjourBT.Infrastructure
+@using AjourBT.Domain.Infrastructure
 
 @model IEnumerable<AjourBT.Models.PrepBusinessTripViewModelForVU>
 
@@ -72,10 +72,10 @@
                                     var statusHint = Html.CustomStatusHintForVUPreps(bt);
                                     if (bt.Status.HasFlag(BTStatus.Cancelled))
                                     {
-                                        <strike style="color:red">
+                                        <span style="color:red; text-decoration: line-through">
                                             @*<div title="@statusHint" style="display: inline; color: red">@bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</div>*@
                                             <a id="PrepBTsDataShowBTInformation" title="@statusHint" style="display: inline; color: red" href="/BusinessTripViewer/ShowBTInformation/@bt.BusinessTripID"> @bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</a>
-                                        </strike>
+                                        </span>
                                     }                             
                                     else
                                     {
@@ -93,30 +93,30 @@
 
                 <td>
                     @if (item.BusinessTripsByEmployee != null)
-                    {
-                        foreach (var bts in item.BusinessTripsByEmployee
-                                .Where(b => (b.Key.HasFlag(BTStatus.Confirmed) && !b.Key.HasFlag(BTStatus.Reported))))
-                        {
-                            foreach (var bt in bts.Value.OrderBy(b => b.StartDate))
-                            {
-                                if(bt.StartDate > DateTime.Now.ToLocalTimeAzure().Date)
-                                {
-                                var statusHint = Html.CustomStatusHintForVUPreps(bt);
+{
+    foreach (var bts in item.BusinessTripsByEmployee
+            .Where(b => (b.Key.HasFlag(BTStatus.Confirmed) && !b.Key.HasFlag(BTStatus.Reported))))
+    {
+        foreach (var bt in bts.Value.OrderBy(b => b.StartDate))
+        {
+            if (bt.StartDate > DateTime.Now.ToLocalTimeAzure().Date)
+            {
+                var statusHint = Html.CustomStatusHintForVUPreps(bt);
 
-                                if ((bt.Status & BTStatus.Cancelled) == BTStatus.Cancelled)
-                                {
-                                    <strike style="color:red">
-                                        @*if (bt.Status.HasFlag(BTStatus.Modified))
-                                        {
-                                            <div style="color:red" id="ShowBTDataADM" title="@statusHint">@bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</div>
-                                        }
-                                        else
-                                        {
-                                            <div style="color:red" id="ShowBTDataADM" title="@statusHint">@bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</div>
-                                        }*@
-                                        <a id="PrepBTsDataShowBTInformation" title="@statusHint" style="display: inline; color: red;" href="/BusinessTripViewer/ShowBTInformation/@bt.BusinessTripID"> @bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</a>
-                                    </strike>
-                                }
+                if ((bt.Status & BTStatus.Cancelled) == BTStatus.Cancelled)
+                {
+                    <span style="color:red; text-decoration: line-through">
+                        @*if (bt.Status.HasFlag(BTStatus.Modified))
+                            {
+                                <div style="color:red" id="ShowBTDataADM" title="@statusHint">@bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</div>
+                            }
+                            else
+                            {
+                                <div style="color:red" id="ShowBTDataADM" title="@statusHint">@bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</div>
+                            }*@
+                        <a id="PrepBTsDataShowBTInformation" title="@statusHint" style="display: inline; color: red;" href="/BusinessTripViewer/ShowBTInformation/@bt.BusinessTripID"> @bt.Location.Title:@bt.StartDate.ToString("dd.MM")-@bt.EndDate.ToString("dd.MM")</a>
+                    </span>
+                }
                                 @*else if (!bt.Status.HasFlag(BTStatus.Reported))
                                 {
                                     if (bt.Status.HasFlag(BTStatus.Modified))

@@ -9,6 +9,7 @@ using AjourBT.Domain.Entities;
 using AjourBT.Domain.Concrete;
 using AjourBT.Domain.Abstract;
 using System.Data.Entity.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Controllers
 {
@@ -48,7 +49,7 @@ namespace AjourBT.Controllers
             {
                 db.SaveUnit(unit);
 
-                return RedirectToAction("PUView", "Home", new { tab = 4});
+                return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Units});
             }
 
             return View(unit);
@@ -82,7 +83,7 @@ namespace AjourBT.Controllers
                 if (ModelState.IsValid)
                 {
                     db.SaveUnit(unit);
-                    return RedirectToAction("PUView", "Home", new { tab = 4 });
+                    return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Units });
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -132,7 +133,7 @@ namespace AjourBT.Controllers
 
             }
 
-            return RedirectToAction("PUView", "Home", new { tab = 4 });
+            return RedirectToAction("PUView", "Home", new { tab = Tabs.PU.Units });
         }
     }
 }
