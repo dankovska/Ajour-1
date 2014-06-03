@@ -633,12 +633,12 @@ namespace AjourBT.Tests.Controllers
             var oRes = result.Model as List<Employee>;
 
             //Assert
-            Assert.AreEqual(5, oRes.Count);
+            Assert.AreEqual(6, oRes.Count);
             Assert.AreEqual("Anastasia", oRes[0].FirstName);
             Assert.AreEqual("Anton", oRes[1].FirstName);
             Assert.AreEqual("Anatoliy", oRes[2].FirstName);
             Assert.AreEqual("Tymur", oRes[3].FirstName);
-            Assert.AreEqual("Oleg", oRes[4].FirstName);
+            Assert.AreEqual("Andriy", oRes[4].FirstName);
         }
 
 
