@@ -76,7 +76,9 @@ namespace AjourBT.Domain.Abstract
         BTMReportsConfirmedOrConfirmedModifiedToResponsible,
         ACCModifiesConfirmedReportedToResponsible, 
 
-        Greeting
+        Greeting, 
+
+        ResetPassword
 
     }
 }

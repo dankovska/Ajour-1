@@ -59,18 +59,18 @@ function submitForm(){
             </fieldset>
         }
 
-
-       <a title="Press to view persons who responsible for password managing" onclick="toggleElement('passParagraph')">Forgot your password ? </a>
-       <p id="passParagraph" style="display:none"> Contact to reset password:  <b>@ViewBag.EmpWithPU </b></p>
+        @Html.ActionLink("Forgot your password?", "ForgotPassword", "Account")
+       @*<a title="Press to view persons who responsible for password managing" onclick="toggleElement('passParagraph')">Forgot your password ? </a>
+       <p id="passParagraph" style="display:none"> Contact to reset password:  <b>@ViewBag.EmpWithPU </b></p>*@
 
 
     </section>
 </section>
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     function toggleElement(id)
     {
         var e = document.getElementById(id);
         e.style.display = e.style.display != 'block' ? 'block' : 'none';
     }
-</script>
+</script>*@
