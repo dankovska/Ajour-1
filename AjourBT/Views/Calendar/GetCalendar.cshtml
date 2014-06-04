@@ -1,4 +1,5 @@
-﻿@{
+﻿@using AjourBT.Domain.Infrastructure;
+@{
     Layout = null;
     
     AjaxOptions ajaxOpts = new AjaxOptions
@@ -20,9 +21,9 @@
        <table class="wtrContainer">
         <tr id="wtrInput">
             <td>@Html.Label("From")</td>
-            <td>@Html.TextBox("calendarFromDate")</td>
+            <td>@Html.TextBox("calendarFromDate", new DateTime(DateTime.Now.ToLocalTimeAzure().Year, 01, 01).ToString("dd.MM.yyyy"), new {@readonly ="true"})</td>
             <td>@Html.Label("To")</td>
-            <td>@Html.TextBox("calendarToDate")</td>
+            <td>@Html.TextBox("calendarToDate", new DateTime(DateTime.Now.ToLocalTimeAzure().Year, 12, 31).ToString("dd.MM.yyyy"), new { @readonly = "true" })</td>
             <td>
                 <div id="calendarAbsenceSubmitBtn">
                     <button id="calendarAbsenceButton" type="button">Submit</button>

@@ -79,6 +79,12 @@ namespace AjourBT.Controllers
                 parseToDate = new DateTime(currentYear, 12, 31);
             }
 
+            if (parseFromDate > parseToDate)
+            {
+                parseFromDate = new DateTime(currentYear, 01, 01);
+                parseToDate = new DateTime(currentYear, 12, 31);
+            }
+
             ViewBag.Holidays = GetHolidaysData();
             ViewBag.PostponedHolidays = GetPostponedHolidaysData();
             List<Employee> empList = SearchEmployeeData(selectedDepartment);

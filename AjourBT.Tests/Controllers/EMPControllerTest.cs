@@ -734,18 +734,94 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
-        public void GetReportedBTs_View()
+        public void GetReportedBTsEmptyUserName_NoDataView()
         {
             //Arrange
             EMPController controller = new EMPController(mock.Object);
-            string userName = "iwoo";
-            int selectedYear = 2014;
+            string userName = "";
+            int selectedYear = 2012;
 
             //Act
             var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
 
             //Assert
+            Assert.AreEqual("NoData", result.ViewName);
+        }
+
+        [Test]
+        public void GetReportedBTsNullUserName_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = null;
+            int selectedYear = 2012;
+
+            //Act
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoData", result.ViewName);
+        }
+
+        [Test]
+        public void GetReportedBTsNonExistingYear_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "iwoo";
+            int selectedYear = 2000;
+
+            //Act
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoBtsInThisYear", result.ViewName);
+        }
+
+        [Test]
+        public void GetReportedBTsZeroYear_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "iwoo";
+            int selectedYear = 0;
+
+            //Act
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoBtsInThisYear", result.ViewName);
+        }
+
+        [Test]
+        public void GetReportedBTsNegativeYear_NoDataView()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "iwoo";
+            int selectedYear = -1;
+
+            //Act
+            var result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
+            Assert.AreEqual("NoBtsInThisYear", result.ViewName);
+        }
+
+        [Test]
+        public void GetReportedBTs_View_OnlyRegisteredOrConfirmedButNotCancelledBTs()
+        {
+            //Arrange
+            EMPController controller = new EMPController(mock.Object);
+            string userName = "xtwe";
+            int selectedYear = 2014;
+
+            //Act
+            PartialViewResult result = controller.GetReportedBTs(selectedYear, userName) as PartialViewResult;
+
+            //Assert
             Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual(3, (result.Model as List<BusinessTrip>).Count);
         }
 
         [Test]
