@@ -16,6 +16,7 @@ using AjourBT.Domain.Abstract;
 using System.Web.Security;
 using System.Data.SqlClient;
 using AjourBT.Tests.MockRepository;
+using System.Web.Routing;
 
 namespace AjourBT.Tests.Controllers
 {
@@ -23,18 +24,24 @@ namespace AjourBT.Tests.Controllers
     public class AccountControllerTest
     {
         Mock<ControllerContext> mock;
+        Mock<IMessenger> messengerMock; 
         AccountController controller;
         ViewContext viewContext;
 
         [SetUp]
         public void SetUp()
         {
-            var mock1 = Mock_Repository.CreateMock();
+            var mock1 = Mock_Repository.CreateMock(); 
             mock = new Mock<ControllerContext>();
+            messengerMock = new Mock<IMessenger>();
+            messengerMock.Setup(m => m.Notify(It.IsAny<IMessage>())).Verifiable();
             mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("briv");
             mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
-            controller = new AccountController(mock1.Object);
+            controller = new AccountController(mock1.Object, messengerMock.Object);
             controller.ControllerContext = mock.Object;
+
+            var routes = new RouteCollection();
+            controller.Url = new UrlHelper(new RequestContext(mock.Object.HttpContext, new RouteData()), routes);
             viewContext = new ViewContext();
             viewContext.HttpContext = new FakeHttpContext();
         }
@@ -386,7 +393,99 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual("", result);
         }
 
+        #region ForgotPassword
+        [Test]
+        public void ForgotPassword_Get_NoParameters_View()
+        {
+            //Arrange
 
-     
+            //Act
+            ViewResult result = controller.ForgotPassword();
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+        }
+
+        [Test]
+        public void ForgotPassword_Post_ProperUserName_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ForgotPassword("andl");
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("Email with password verification token has been sent.", result.ViewBag.Message);
+            messengerMock.Verify(m => m.Notify(It.IsAny<IMessage>()), Times.Once);
+        }
+
+        [Test]
+        public void ForgotPassword_Post_NonExistingUserName_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ForgotPassword("ssss");
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("User does not exist.", result.ViewBag.Message);
+        }
+
+        [Test]
+        public void ForgotPassword_Post_NullUserName_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ForgotPassword(null);
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("User does not exist.", result.ViewBag.Message);
+        } 
+        #endregion
+
+        #region ResetPassword 
+        [Test]
+        public void ResetPassword_Post_ProperTokenForUser_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ResetPassword("OK");
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("Reset password success! Your New Password Is ", result.ViewBag.Message);
+        }
+
+        [Test]
+        public void ResetPassword_Post_NotProperTokenForUser_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ResetPassword("NotOK");
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("Password could not be reseted! Please contact power users: ujm, ik,", result.ViewBag.Message);
+        }
+
+        [Test]
+        public void ResetPassword_Post_NullTokenForUser_View()
+        {
+            //Arrange
+
+            //Act
+            ViewResult result = controller.ResetPassword(null);
+
+            //Assert   
+            Assert.AreEqual("", result.ViewName);
+            Assert.AreEqual("Password could not be reseted! Please contact power users: ujm, ik,", result.ViewBag.Message);
+        } 
+        #endregion
     }
 }

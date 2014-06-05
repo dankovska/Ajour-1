@@ -55,7 +55,7 @@ namespace AjourBT.Domain.Concrete
             List<string> mailingList = new List<string>();
             if (message != null)
             {
-                if (message.messageType != MessageType.Greeting)
+                if (message.messageType != MessageType.Greeting && message.messageType!=MessageType.ResetPassword)
                 {
                     switch (message.Role)
                     {

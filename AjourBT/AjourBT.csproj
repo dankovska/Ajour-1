@@ -404,12 +404,15 @@
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
     <Content Include="Scripts\AjourBTScript\GreetingScript.js" />
+    <Content Include="Scripts\AjourBTScript\ResetPasswordScript.js" />
     <Content Include="Views\Shared\NoAbsenceData.cshtml" />
     <Content Include="Views\Greeting\Create.cshtml" />
     <Content Include="Views\Greeting\Delete.cshtml" />
     <Content Include="Views\Greeting\Edit.cshtml" />
     <Content Include="Views\Greeting\Index.cshtml" />
     <Content Include="Views\Home\BDMView.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
     <Resource Include="Resources\PDFjet.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

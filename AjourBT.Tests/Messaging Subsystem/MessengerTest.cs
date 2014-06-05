@@ -540,6 +540,20 @@ namespace AjourBT.Tests.Messaging_Subsystem
         }
 
         [Test]
+        public void GetMailingListForRole_ResetPasswordMessage_EmployeeFromMessage()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Message msg = new Message("", "", mockRepository.Object.Employees.FirstOrDefault());
+            //Act
+            string[] result = messenger.GetMailingListForRole(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "andl@elegant.com" }, result);
+
+        }
+
+        [Test]
         public void EmptyConstructor_NoParameters_NewMessengerInstance()
         {
             //Arrange

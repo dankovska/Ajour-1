@@ -53,6 +53,21 @@ namespace AjourBT.Domain.Concrete
             Link = "";
         }
 
+        public Message(string subject, string body, Employee recipient)
+        {
+            this.MessageID = 0;
+            this.messageType = MessageType.ResetPassword;
+            this.BTList = null;
+            this.Author = null;
+            this.employee = recipient;
+            ReplyTo = "";
+            TimeStamp = DateTime.Now.ToLocalTimeAzure();
+            Role = "";
+                Subject = subject;
+                Body = body; 
+            Link = "";
+        }
+
         [NotMapped]
         public MessageType messageType { get; set; }
         [NotMapped]

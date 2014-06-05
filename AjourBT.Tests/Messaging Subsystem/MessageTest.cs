@@ -349,7 +349,35 @@ namespace AjourBT.Tests.Messaging_Subsystem
             Assert.AreEqual("Happy Birthday, Anastasia!", message.Subject);
             Assert.LessOrEqual(message.TimeStamp, DateTime.Now.ToLocalTimeAzure());
             Assert.AreEqual(employee, message.employee); 
-        }
+        }  
+
+        [Test]
+        public void MessageConstructor_ResetPasswordOverload_ProperGreetingMessage()
+        {
+            //Arrange
+
+            //Act  
+            Employee employee = mock.Object.Employees.FirstOrDefault();
+
+            string subject = "Reset password";
+            string messageBody = "Password Reseted!"; 
+
+
+            Message message = new Message(subject, messageBody, employee);
+
+            //Assert        
+            Assert.AreEqual(null, message.Author);
+            Assert.AreEqual("Password Reseted!", message.Body);    
+            Assert.AreEqual(null, message.BTList);       
+            Assert.AreEqual("", message.Link);
+            Assert.AreEqual(0, message.MessageID);
+            Assert.AreEqual(MessageType.ResetPassword, message.messageType);
+            Assert.AreEqual("", message.ReplyTo);
+            Assert.AreEqual("", message.Role);
+            Assert.AreEqual("Reset password", message.Subject);
+            Assert.LessOrEqual(message.TimeStamp, DateTime.Now.ToLocalTimeAzure());
+            Assert.AreEqual(employee, message.employee);
+        }  
 
         [Test]
         [TestCase(MessageType.UnknownType, Result = "Unknown Subject")]
