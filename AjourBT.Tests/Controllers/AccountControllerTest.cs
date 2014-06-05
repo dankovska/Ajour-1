@@ -24,18 +24,22 @@ namespace AjourBT.Tests.Controllers
     public class AccountControllerTest
     {
         Mock<ControllerContext> mock;
+        Mock<IMessenger> messengerMock; 
         AccountController controller;
         ViewContext viewContext;
 
         [SetUp]
         public void SetUp()
         {
-            var mock1 = Mock_Repository.CreateMock();
+            var mock1 = Mock_Repository.CreateMock(); 
             mock = new Mock<ControllerContext>();
+            messengerMock = new Mock<IMessenger>();
+            messengerMock.Setup(m => m.Notify(It.IsAny<IMessage>())).Verifiable();
             mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("briv");
             mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
-            controller = new AccountController(mock1.Object);
+            controller = new AccountController(mock1.Object, messengerMock.Object);
             controller.ControllerContext = mock.Object;
+
             var routes = new RouteCollection();
             controller.Url = new UrlHelper(new RequestContext(mock.Object.HttpContext, new RouteData()), routes);
             viewContext = new ViewContext();
@@ -412,7 +416,8 @@ namespace AjourBT.Tests.Controllers
 
             //Assert   
             Assert.AreEqual("", result.ViewName);
-            Assert.AreEqual("Email with password verification token has been sent.", result.ViewBag.Message); 
+            Assert.AreEqual("Email with password verification token has been sent.", result.ViewBag.Message);
+            messengerMock.Verify(m => m.Notify(It.IsAny<IMessage>()), Times.Once);
         }
 
         [Test]

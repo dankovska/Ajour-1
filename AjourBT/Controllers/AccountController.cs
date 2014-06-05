@@ -26,9 +26,11 @@ namespace AjourBT.Controllers
     public class AccountController : Controller
     {
         private IRepository repository;
-        public AccountController(IRepository repo)
+        private IMessenger messenger;
+        public AccountController(IRepository repo, IMessenger messenger)
         {
             repository = repo;
+            this.messenger = messenger;
         }
 
         [HttpPost]
@@ -539,7 +541,6 @@ namespace AjourBT.Controllers
                 string body = "<b>Password Reset Token</b><br/>" + resetLink + 
                     "<br>If you're not " + UserName + " or didn't request verification, you can ignore this email."; 
 
-                Messenger messenger = new Messenger(repository);
                 string subject = "Password Reset Token";
                 Message msg = new Message(subject, body, repository.Users.Where(u => u.EID == UserName).FirstOrDefault());
                 try
