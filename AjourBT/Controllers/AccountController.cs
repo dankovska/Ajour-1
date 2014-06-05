@@ -510,7 +510,7 @@ namespace AjourBT.Controllers
         }
         
         [AllowAnonymous]
-        public ActionResult ForgotPassword()
+        public ViewResult ForgotPassword()
         {
             return View();
         }
@@ -518,34 +518,38 @@ namespace AjourBT.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ForgotPassword(string UserName)
+        public ViewResult ForgotPassword(string UserName)
         {
-            //check user existance
+            if (UserName == null)
+            {
+                ViewBag.Message = "User does not exist.";
+                return View();
+            }
             var user = Membership.GetUser(UserName);
             if (user == null)
             {
-                TempData["Message"] = "User Not exist.";
+                ViewBag.Message= "User does not exist.";
             }
             else
             {
-                //generate password token
-                var token = WebSecurity.GeneratePasswordResetToken(UserName);
-                //create url with above token
-                var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new { un = UserName, rt = token }, "http") + "'>Reset Password</a>";
-                //get user emailid
-                //send mail
-                string body = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
+                var token = WebSecurity.GeneratePasswordResetToken(UserName, Int32.Parse(ConfigurationManager.AppSettings["TokenExpirationInMinutes"]));
+
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new {rt = token }, "http") + "'>Reset Password</a>"; 
+                
+                string body = "<b>Password Reset Token</b><br/>" + resetLink + 
+                    "<br>If you're not " + UserName + " or didn't request verification, you can ignore this email."; 
+
                 Messenger messenger = new Messenger(repository);
                 string subject = "Password Reset Token";
                 Message msg = new Message(subject, body, repository.Users.Where(u => u.EID == UserName).FirstOrDefault());
                 try
                 {
                     messenger.Notify(msg);
-                    TempData["Message"] = "Mail Sent.";
+                    ViewBag.Message= "Email with password verification token has been sent.";
                 }
                 catch (Exception ex)
                 {
-                    TempData["Message"] = "Error occured while sending email." + ex.Message;
+                    ViewBag.Message= "Error occured while sending email." + ex.Message;
                 }
             }
 
@@ -553,27 +557,27 @@ namespace AjourBT.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ResetPassword(string un, string rt)
+        public ViewResult ResetPassword(string rt)
         {
             try
             {
                 bool response = WebSecurity.ResetPassword(rt, ConfigurationManager.AppSettings["DefaultPassword"]);
                 if (response == true)
                 {
-                    TempData["Message"] = "Reset password success! Your New Password Is " + ConfigurationManager.AppSettings["DefaultPassword"];
+                    ViewBag.Message= "Reset password success! Your New Password Is " + ConfigurationManager.AppSettings["DefaultPassword"];
                 }
                 else
                 {
                     string[] roles = System.Web.Security.Roles.GetUsersInRole("PU");
                     var powerUsers = String.Join(", ", roles);
-                    TempData["Message"] = "Password could not be reseted! Please contact power users: " + powerUsers;
+                    ViewBag.Message= "Password could not be reseted! Please contact power users: " + powerUsers;
                 }
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 string[] roles = System.Web.Security.Roles.GetUsersInRole("PU");
                 var powerUsers = String.Join(", ", roles);
-                TempData["Message"] = "Password could not be reseted! Please contact power users: " + powerUsers;
+                ViewBag.Message= "Password could not be reseted! Please contact power users: " + powerUsers;
             }
 
             return View();

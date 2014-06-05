@@ -404,6 +404,7 @@
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
     <Content Include="Scripts\AjourBTScript\GreetingScript.js" />
+    <Content Include="Scripts\AjourBTScript\ResetPasswordScript.js" />
     <Content Include="Views\Shared\NoAbsenceData.cshtml" />
     <Content Include="Views\Greeting\Create.cshtml" />
     <Content Include="Views\Greeting\Delete.cshtml" />
