@@ -44,7 +44,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
         private string btDatesOverlay = "BT with same dates is already planned for this user. "
                                       + "Please change \'From\' or \'To\'";
 
-        private string btCreationError ="Absence already planned on this period for this user. "
+        private string btCreationError = "Absence already planned on this period for this user. "
                                       + "Please change OrderDates or if BT haven\'t OrderDates "
                                       + "change \'From\' or \'To\'";
 
@@ -112,12 +112,13 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                            orderby emp.IsManager descending, emp.LastName
                            select emp;
                 }
-                else { 
-                data = from emp in repository.Employees.AsEnumerable()
-                       join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
-                       where ((emp.Department.DepartmentName == selectedUserDepartment && (emp.DateDismissed == null)))
-                       orderby emp.IsManager descending, emp.LastName
-                       select emp;
+                else
+                {
+                    data = from emp in repository.Employees.AsEnumerable()
+                           join dep in repository.Departments on emp.DepartmentID equals dep.DepartmentID
+                           where ((emp.Department.DepartmentName == selectedUserDepartment && (emp.DateDismissed == null)))
+                           orderby emp.IsManager descending, emp.LastName
+                           select emp;
                 }
 
 
@@ -861,7 +862,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (ModelState.IsValid)
             {
-                if ((bTrip.Status == (BTStatus.Confirmed | BTStatus.Modified)) || (bTrip.Status == (BTStatus.Registered | BTStatus.Modified)))
+                if (bTrip.Status == (BTStatus.Registered | BTStatus.Modified))
                 {
                     bTrip.Status = bTrip.Status & ~BTStatus.Modified;
                 }
@@ -880,7 +881,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                     return Json(new { error = btCreationError });
                 }
                 selectedBusinessTripsList.Add(bTrip);
-                if (bTrip.Status == BTStatus.Confirmed)
+                if (bTrip.Status == (BTStatus.Confirmed | BTStatus.Modified) || bTrip.Status == BTStatus.Confirmed)
                 {
                     messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP, selectedBusinessTripsList, author));
                     //messenger.Notify(new Message(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC, selectedBusinessTripsList, author)); 
@@ -1353,8 +1354,15 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                                         join e in repository.Employees on bt.EmployeeID equals e.EmployeeID
                                         join d in repository.Departments on e.DepartmentID equals d.DepartmentID
                                         where ((selectedDepartment == null || selectedDepartment == String.Empty || d.DepartmentName == selectedDepartment)
-                                              && (e.DateDismissed == null && (e.EID.ToLower().Contains(searchString.ToLower()) || e.FirstName.ToLower().Contains(searchString.ToLower()) || e.LastName.ToLower().Contains(searchString.ToLower())))
-                                              && ((bt.Status == (BTStatus.Confirmed | BTStatus.Reported)) && ((bt.EndDate.Date >= DateTime.Now.ToLocalTimeAzure().Date) || (bt.AccComment == null || bt.AccComment == "" || bt.AccComment == defaultAccComment))))
+                                              && (e.DateDismissed == null
+                                                    && (e.EID.ToLower().Contains(searchString.ToLower())
+                                                            || e.FirstName.ToLower().Contains(searchString.ToLower())
+                                                            || e.LastName.ToLower().Contains(searchString.ToLower())))
+                                              && ((bt.Status == (BTStatus.Confirmed | BTStatus.Reported)
+                                                    || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)) 
+                                              && ((bt.EndDate.Date >= DateTime.Now.ToLocalTimeAzure().Date) 
+                                                    || (bt.AccComment == null || bt.AccComment == "" 
+                                                    || bt.AccComment == defaultAccComment))))
                                         orderby bt.StartDate, e.LastName
                                         select bt).ToList();
             return query;
@@ -1499,7 +1507,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToBTM, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToDIR, selectedBusinessTripsList, author));
                             messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToEMP, selectedBusinessTripsList, author));
-                            messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToResponsible, selectedBusinessTripsList, author)); 
+                            messenger.Notify(new Message(MessageType.ACCModifiesConfirmedReportedToResponsible, selectedBusinessTripsList, author));
                         }
                         catch (DbUpdateConcurrencyException)
                         {
@@ -1507,7 +1515,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
                         }
 
                     }
-                    
+
                     return Json(new { success = "success" });
 
                 }

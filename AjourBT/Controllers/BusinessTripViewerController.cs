@@ -368,7 +368,9 @@ namespace AjourBT.Controllers
                         join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID                            
                         join loc in repository.Locations on bt.LocationID equals loc.LocationID
                         where ( bt.StartDate.Year == selectedYear
-                              && ( bt.Status == (BTStatus.Confirmed | BTStatus.Reported) || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled) )  )
+                              && ( bt.Status == (BTStatus.Confirmed | BTStatus.Reported) 
+                                    || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)
+                                    || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)))
                         orderby emp.LastName, bt.StartDate
                         select new BusinessTripViewModel(bt);
 
@@ -408,7 +410,9 @@ namespace AjourBT.Controllers
                         join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID
                         join loc in repository.Locations on bt.LocationID equals loc.LocationID
                         where (bt.StartDate.Year == selectedYear
-                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)))
+                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) 
+                              || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled) 
+                              || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)))
                               orderby bt.BusinessTripID
                         select new BusinessTripViewModel(bt, CalculateId(bt.BusinessTripID, FirstBusinessTripIdInYear));
             return query;
