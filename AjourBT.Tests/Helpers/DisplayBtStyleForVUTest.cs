@@ -57,6 +57,22 @@ namespace AjourBT.Tests.Helpers
         }
 
         [Test]
+        public void CustomBtModelStyle_ModifiedBt_RedAndStrikeStyle()
+        {
+            //Arrange
+            HtmlHelper helper = new HtmlHelper(viewContext, new FakeViewDataContainer());
+            BusinessTrip businessTrip = new BusinessTrip { BusinessTripID = 1, Status =  BTStatus.Confirmed | BTStatus.Modified, UnitID = 1, Unit = new Unit() };
+            BusinessTripViewModel btModel = new BusinessTripViewModel(businessTrip);
+
+            //Act
+            string result = helper.CustomBtModelStyle(btModel);
+            string expected = "color: blue;";
+
+            //Assert   
+            Assert.AreEqual(result, expected);
+        }
+
+        [Test]
         public void CustomBtModelStyle_CancelledRegisteredBt_RedAndStrikeStyle()
         {
             //Arrange

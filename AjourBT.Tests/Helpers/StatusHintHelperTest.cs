@@ -228,6 +228,23 @@ namespace AjourBT.Tests.Helpers
         }
 
         [Test]
+        public void CustomStatusHint_ConfirmedBTRejectCommentEmptyFields_FormattedString()
+        {
+            //Arrange
+            var vc = new ViewContext();
+            vc.HttpContext = new FakeHttpContext();
+            HtmlHelper helper = new HtmlHelper(vc, new FakeViewDataContainer());
+            BusinessTrip bt = mock.Object.BusinessTrips.Where(b => b.BusinessTripID == 3).FirstOrDefault();
+            bt.Status = bt.Status | BTStatus.Confirmed;
+
+            //Act
+            string result = helper.CustomStatusHint(bt);
+
+            //Assert
+            Assert.AreEqual("BT is Confirmed. Contact BTM to cancel BT", result);
+        }
+
+        [Test]
         public void CustomStatusHint_ConfirmedModifiedBTRejectCommentEmptyFields_FormattedString()
         {
             //Arrange
@@ -241,7 +258,7 @@ namespace AjourBT.Tests.Helpers
             string result = helper.CustomStatusHint(bt);
 
             //Assert
-            Assert.AreEqual("Contact BTM to cancel BT", result);
+            Assert.AreEqual("BT is Modified. Contact BTM to cancel BT", result);
         }
 
         [Test]

@@ -1918,16 +1918,16 @@ namespace AjourBT.Tests.Controllers
             // Assert
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", view.ViewName);
-            Assert.AreEqual(5, bts.Count());
+            Assert.AreEqual(7, bts.Count());
             Assert.AreEqual("xtwe", bts[0].BTof.EID);
-            Assert.AreEqual("chap", bts[1].BTof.EID);
-            Assert.AreEqual("tedk", bts[2].BTof.EID);
-            Assert.AreEqual("iwoo", bts[3].BTof.EID);
+            Assert.AreEqual("xtwe", bts[1].BTof.EID);
+            Assert.AreEqual("chap", bts[2].BTof.EID);
+            Assert.AreEqual("tedk", bts[3].BTof.EID);
 
-            Assert.AreEqual(15, bts[0].BusinessTripID);
-            Assert.AreEqual(38, bts[1].BusinessTripID);
-            Assert.AreEqual(37, bts[2].BusinessTripID);
-            Assert.AreEqual(16, bts[3].BusinessTripID);
+            Assert.AreEqual(14, bts[0].BusinessTripID);
+            Assert.AreEqual(15, bts[1].BusinessTripID);
+            Assert.AreEqual(38, bts[2].BusinessTripID);
+            Assert.AreEqual(37, bts[3].BusinessTripID);
             Assert.AreEqual(2014, ((PartialViewResult)view).ViewBag.SelectedYear);
         }
 

@@ -674,7 +674,7 @@ namespace AjourBT.Tests.Controllers
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", ((PartialViewResult)view).ViewName);
             Assert.AreEqual(result.ToList(), ((PartialViewResult)view).Model);
-            Assert.AreEqual(14, result.ToArray().Length);
+            Assert.AreEqual(16, result.ToArray().Length);
 
             Assert.AreEqual(31, result.ToArray()[0].BusinessTripID);
             Assert.AreEqual(34, result.ToArray()[1].BusinessTripID);
@@ -698,7 +698,7 @@ namespace AjourBT.Tests.Controllers
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", ((PartialViewResult)view).ViewName);
             Assert.AreEqual(result.ToList(), ((PartialViewResult)view).Model);
-            Assert.AreEqual(14, result.ToArray().Length);
+            Assert.AreEqual(16, result.ToArray().Length);
 
             Assert.AreEqual(31, result.ToArray()[0].BusinessTripID);
             Assert.AreEqual(34, result.ToArray()[1].BusinessTripID);
@@ -728,7 +728,7 @@ namespace AjourBT.Tests.Controllers
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", ((PartialViewResult)view).ViewName);
             Assert.AreEqual(((PartialViewResult)view).Model, result.ToList());
-            Assert.AreEqual(6, result.ToArray().Length);
+            Assert.AreEqual(7, result.ToArray().Length);
             Assert.AreEqual("xtwe", result.ToArray()[0].BTof.EID);
             Assert.AreEqual("iwoo", result.ToArray()[1].BTof.EID);
             Assert.AreEqual("iwpe", result.ToArray()[2].BTof.EID);
@@ -763,7 +763,7 @@ namespace AjourBT.Tests.Controllers
             List<BusinessTrip> data = controller.SearchBusinessTripDataACC(mock.Object.BusinessTrips.ToList(), selectedDepartment, searchString);
 
             //Assert
-            Assert.AreEqual(14, data.Count);
+            Assert.AreEqual(16, data.Count);
             Assert.AreEqual("Pyorge", data.First().BTof.LastName);
             Assert.AreEqual(new DateTime(2012, 04, 22), data.First().StartDate);
             Assert.AreEqual("Manowens", data.Last().BTof.LastName);
@@ -781,7 +781,7 @@ namespace AjourBT.Tests.Controllers
             List<BusinessTrip> data = controller.SearchBusinessTripDataACC(mock.Object.BusinessTrips.ToList(), selectedDepartment, searchString);
 
             //Assert
-            Assert.AreEqual(2, data.Count);
+            Assert.AreEqual(3, data.Count);
             Assert.AreEqual("Manowens", data.First().BTof.LastName);
             Assert.AreEqual(new DateTime(2013, 12, 25), data.First().StartDate);
             Assert.AreEqual("Manowens", data.Last().BTof.LastName);
@@ -816,7 +816,7 @@ namespace AjourBT.Tests.Controllers
 
 
             //Assert
-            Assert.AreEqual(4, data.Count);
+            Assert.AreEqual(5, data.Count);
             Assert.AreEqual("Manowens", data.First().BTof.LastName);
             Assert.AreEqual(32, data.ToArray()[0].BusinessTripID);
             Assert.AreEqual(39, data.ToArray()[1].BusinessTripID);
@@ -838,7 +838,7 @@ namespace AjourBT.Tests.Controllers
             List<BusinessTrip> data = controller.SearchBusinessTripDataACC(mock.Object.BusinessTrips.ToList(), selectedDepartment, searchString);
 
             //Assert
-            Assert.AreEqual(4, data.Count);
+            Assert.AreEqual(5, data.Count);
             Assert.AreEqual(32, data.ToArray()[0].BusinessTripID);
             Assert.AreEqual(39, data.ToArray()[1].BusinessTripID);
             Assert.AreEqual(21, data.ToArray()[2].BusinessTripID);
@@ -9216,7 +9216,7 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
-        public void SaveArrangedBT_ValidConfirmededModifiedBT_BTSaved()
+        public void SaveArrangedBT_ValidConfirmedModifiedBT_BTSaved()
         {
             //Arrange
             BusinessTrip bt = (from b in mock.Object.BusinessTrips where b.BusinessTripID == 14 select b).FirstOrDefault();
@@ -9226,7 +9226,7 @@ namespace AjourBT.Tests.Controllers
             var result = controller.SaveArrangedBT(bt);
 
             //Assert   
-            Assert.AreEqual(BTStatus.Confirmed, bt.Status);
+            Assert.AreEqual(BTStatus.Confirmed | BTStatus.Modified, bt.Status);
             mock.Verify(m => m.SaveBusinessTrip(bt), Times.Once);
             messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToEMP) && msg.ReplyTo == "User User")), Times.Once);
             //messengerMock.Verify(m => m.Notify(It.Is<IMessage>(msg => msg.messageType.Equals(MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToACC))), Times.Once);
@@ -9241,7 +9241,7 @@ namespace AjourBT.Tests.Controllers
         }
 
         [Test]
-        public void SaveArrangedBT_ValidConfirmededBT_BTSaved()
+        public void SaveArrangedBT_ValidConfirmedBT_BTSaved()
         {
             //Arrange
             BusinessTrip bt = (from b in mock.Object.BusinessTrips where b.BusinessTripID == 3 select b).FirstOrDefault();

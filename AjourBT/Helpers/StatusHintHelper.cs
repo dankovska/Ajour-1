@@ -65,7 +65,14 @@ namespace AjourBT.Helpers
                 && !businessTrip.Status.HasFlag(BTStatus.Cancelled)
                 && (businessTrip.RejectComment == String.Empty || businessTrip.RejectComment == null))
             {
-                hintBuilder.Append("Contact BTM to cancel BT");
+                if(businessTrip.Status.HasFlag(BTStatus.Modified))
+                { 
+                    hintBuilder.Append("BT is Modified. Contact BTM to cancel BT"); 
+                }
+                else
+                {
+                    hintBuilder.Append("BT is Confirmed. Contact BTM to cancel BT"); 
+                }
             }
 
             return hintBuilder.ToString();
