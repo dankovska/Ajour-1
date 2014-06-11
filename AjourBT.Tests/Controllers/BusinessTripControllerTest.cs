@@ -396,6 +396,27 @@ namespace AjourBT.Tests.Controllers
             Assert.AreEqual(rowVersion, ((view as ViewResult).Model as BusinessTripViewModel).RowVersion);
         }
 
+        [Test]
+        public void Reject_BT_DIR_JsonDataContainsWhiteSpace_ExistingBT()
+        {
+            //Arrange
+            string department = "AA";
+            byte[] rowVersion = { 0, 0, 0, 0, 0, 2, 159, 230 };
+            string jsonData = JsonConvert.SerializeObject(rowVersion);
+
+            // Act
+            var view = controller.Reject_BT_DIR(3, jsonData.Replace("+", " "), department);
+            BusinessTrip businessTrip = mock.Object.BusinessTrips.Where(b => b.BusinessTripID == 3).FirstOrDefault();
+
+            //Assert 
+            Assert.IsInstanceOf(typeof(ViewResult), view);
+            Assert.AreEqual("", ((ViewResult)view).ViewName);
+            Assert.AreEqual(3, businessTrip.BusinessTripID);
+            Assert.AreEqual(department, ((ViewResult)view).ViewBag.SelectedDepartment);
+            Assert.IsInstanceOf(typeof(BusinessTripViewModel), (view as ViewResult).Model);
+            Assert.AreEqual(rowVersion, ((view as ViewResult).Model as BusinessTripViewModel).RowVersion);
+        }
+
         #endregion
 
         #region Reject_BT_DIR_Confirm
@@ -9711,6 +9732,27 @@ namespace AjourBT.Tests.Controllers
 
             // Act
             var view = controller.Reject_BT_BTM(3, jsonData, searchString);
+            BusinessTrip businessTrip = mock.Object.BusinessTrips.Where(b => b.BusinessTripID == 3).FirstOrDefault();
+
+            //Assert 
+            Assert.IsInstanceOf(typeof(ViewResult), view);
+            Assert.AreEqual("", ((ViewResult)view).ViewName);
+            Assert.AreEqual(3, businessTrip.BusinessTripID);
+            Assert.AreEqual(searchString, ((ViewResult)view).ViewBag.SearchString);
+            Assert.IsInstanceOf(typeof(BusinessTripViewModel), (view as ViewResult).Model);
+            Assert.AreEqual(rowVersion, ((view as ViewResult).Model as BusinessTripViewModel).RowVersion);
+        }
+
+        [Test]
+        public void Reject_BT_BTM_JsonDataContainsWhiteSpace_ExistingBT()
+        {
+            //Arrange
+            string searchString = "AA";
+            byte[] rowVersion = { 0, 0, 0, 0, 0, 2, 159, 230 };
+            string jsonData = JsonConvert.SerializeObject(rowVersion);
+
+            // Act
+            var view = controller.Reject_BT_BTM(3, jsonData.Replace("+", " "), searchString);
             BusinessTrip businessTrip = mock.Object.BusinessTrips.Where(b => b.BusinessTripID == 3).FirstOrDefault();
 
             //Assert 

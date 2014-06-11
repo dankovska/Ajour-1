@@ -63,7 +63,7 @@
                         {
                             if (employee.Journeys != null && employee.Journeys.Count != 0 && employee.Journeys[i].Date < employee.Overtimes[j].Date)
                             {
-                                Html.CustomDisplayJourneyDateForVU(employee.Journeys[i], searchString);
+                                @Html.CustomDisplayJourneyDateForVU(employee.Journeys[i], searchString);
                                 i++;
                             }
                             else if (employee.Overtimes != null && employee.Overtimes.Count != 0)

@@ -1080,7 +1080,8 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (jsonRowVersionData != "")
             {
-                businessTrip.RowVersion = JsonConvert.DeserializeObject<byte[]>(jsonRowVersionData);
+
+                businessTrip.RowVersion = JsonConvert.DeserializeObject<byte[]>(jsonRowVersionData.Replace(" ", "+"));
             }
 
             ViewBag.SearchString = searchString;
@@ -1266,7 +1267,7 @@ namespace AjourBT.Controllers // Add Items to CalendarItem (Employee)
 
             if (jsonRowVersionData != "")
             {
-                businessTrip.RowVersion = JsonConvert.DeserializeObject<byte[]>(jsonRowVersionData);
+                businessTrip.RowVersion = JsonConvert.DeserializeObject<byte[]>(jsonRowVersionData.Replace(" ", "+"));
             }
 
             ViewBag.SelectedDepartment = selectedDepartment;
