@@ -339,7 +339,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Assert        
             Assert.AreEqual(null, message.Author);
-            Assert.AreEqual("happyBirthday!", message.Body);
+            Assert.AreEqual("Header<br>happyBirthday!<br>Footer", message.Body);
             Assert.AreEqual(null, message.BTList);
             Assert.AreEqual("", message.Link);
             Assert.AreEqual(0, message.MessageID);

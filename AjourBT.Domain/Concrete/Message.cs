@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AjourBT.Domain.Infrastructure;
 using AjourBT.Domain.Abstract;
+using System.Web.Configuration;
 
 namespace AjourBT.Domain.Concrete
 {
@@ -49,7 +50,7 @@ namespace AjourBT.Domain.Concrete
             Role = "";
             if(subject!=null && subject!=String.Empty)
             Subject = subject.Insert(subject.Length-1, ", "+employee.FirstName);
-            Body = body;
+            Body = WebConfigurationManager.AppSettings["GreetingsHeader"] + "<br>" + body + "<br>" + WebConfigurationManager.AppSettings["GreetingsFooter"];
             Link = "";
         }
 
