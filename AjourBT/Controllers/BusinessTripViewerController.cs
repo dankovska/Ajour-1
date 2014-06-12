@@ -475,6 +475,16 @@ namespace AjourBT.Controllers
         {
             int i = 1;
             var businessTrips = BusinessTripDataByUnitsWithoutCancelledAndDismissedQuery(selectedYear);
+            workSheet.Cells.ColumnWidth[0] = 1067;
+            workSheet.Cells.ColumnWidth[1] = 1700;
+            workSheet.Cells.ColumnWidth[2] = 4867;
+            workSheet.Cells.ColumnWidth[3] = 2067;
+            workSheet.Cells.ColumnWidth[4] = 2867;
+            workSheet.Cells.ColumnWidth[5] = 2867;
+            workSheet.Cells.ColumnWidth[6] = 2434;
+            workSheet.Cells.ColumnWidth[7] = 4867;
+            workSheet.Cells.ColumnWidth[8] = 1466;
+            workSheet.Cells.ColumnWidth[9] = 1631;
             foreach (BusinessTripViewModel businessTripViewModel in businessTrips)
             {
                 workSheet.Cells[i, 0] = new Cell(businessTripViewModel.BusinessTripID);
@@ -487,6 +497,7 @@ namespace AjourBT.Controllers
                 }
                 else
                 {
+                    workSheet.Cells.ColumnWidth[4] = 7166;
                     workSheet.Cells[i, 4] = new Cell(businessTripViewModel.StartDateFormated + " To be updated soon");
                 }
                 workSheet.Cells[i, 5] = new Cell(businessTripViewModel.EndDateFormated);
