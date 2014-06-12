@@ -2061,7 +2061,7 @@ namespace AjourBT.Tests.Controllers
             IEnumerable<BusinessTripViewModel> result = controller.BusinessTripDataByUnitsWithoutCancelledAndDismissedQuery(2014);
 
             //Assert        
-            Assert.AreEqual(4, result.Count());
+            Assert.AreEqual(6, result.Count());
             foreach (BusinessTripViewModel item in result)
             {
                 Assert.AreEqual(false, item.Status.HasFlag(BTStatus.Cancelled));
@@ -2093,10 +2093,29 @@ namespace AjourBT.Tests.Controllers
 
             //Assert        
             Assert.AreEqual("1", workSheet.Cells[1, 0].Value.ToString());
-            Assert.AreEqual("iwoo", workSheet.Cells[2, 1].Value.ToString());
+            Assert.AreEqual("2014-10-01 To be updated soon", workSheet.Cells[1, 4].Value.ToString());
+            Assert.AreEqual("2014-03-01", workSheet.Cells[5, 4].Value.ToString());
+            Assert.AreEqual("xtwe", workSheet.Cells[2, 1].Value.ToString());
             Assert.AreEqual("LDF", workSheet.Cells[3, 3].Value.ToString());
         }
 
+        #region GetBusinessTripIDInYear
+
+        [Test]
+        public void GetFirstBusinessTripIdInYear_YearContainsBTs_IDOfFirstBT()
+        {
+            //Arrange
+            BusinessTripViewerController controller = new BusinessTripViewerController(mock.Object);
+
+            //Act
+            int result = controller.GetFirstBusinessTripIdInYear(DateTime.Now.ToLocalTimeAzure().Year);
+
+            //Assert     
+            Assert.AreEqual(4, result);
+
+        }
+
+        #endregion
 
     }
 }
