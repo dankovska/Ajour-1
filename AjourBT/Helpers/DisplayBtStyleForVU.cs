@@ -19,6 +19,10 @@ namespace AjourBT.Helpers
                 {
                     return ("color: red; text-decoration: line-through;");
                 }
+                else if (businessTripModel.Status == (BTStatus.Confirmed | BTStatus.Modified))
+                {
+                    return "color: blue;";
+                }
             }
 
             return ("");

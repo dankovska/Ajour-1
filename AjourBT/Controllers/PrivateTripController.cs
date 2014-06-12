@@ -117,7 +117,6 @@ namespace AjourBT.Controllers
                     repository.SaveVisa(visa, visa.EmployeeID);
                 }
                 repository.SavePrivateTrip(privateTrip);
-                //return RedirectToAction("BTMView", "Home", new { tab = 2, searchString = searchString });
                 List<Employee> emplist = SearchPrivateTripData(repository.Employees.ToList(), searchString);
                 return View("TableViewPTBTM", emplist);
             }

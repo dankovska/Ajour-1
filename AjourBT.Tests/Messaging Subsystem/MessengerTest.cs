@@ -13,7 +13,7 @@ using AjourBT.Domain.Concrete;
 using System.IO;
 using AjourBT.Domain.Entities;
 using System.Web.Security;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 
 namespace AjourBT.Tests.Messaging_Subsystem
 {
@@ -62,6 +62,15 @@ namespace AjourBT.Tests.Messaging_Subsystem
                      new Department{DepartmentID = 5, DepartmentName = "RAAA3",Employees = new List<Employee>()},
                      new Department{DepartmentID = 6, DepartmentName = "RAAA4",Employees = new List<Employee>()},
                      new Department{DepartmentID = 7, DepartmentName = "RAAA5",Employees = new List<Employee>()}};
+
+            List<Greeting> greetings = new List<Greeting>
+                {
+                    new Greeting{GreetingId = 1,GreetingHeader = "Greeting 1", GreetingBody = "May your birthday and every day be filled with the warmth of sunshine, the happiness of smiles, the sounds of laughter, the feeling of love and the sharing of good cheer."},
+                    new Greeting{GreetingId = 2,GreetingHeader = "Greeting 2", GreetingBody = "I hope you have a wonderful day and that the year ahead is filled with much love, many wonderful surprises and gives you lasting memories that you will cherish in all the days ahead. Happy Birthday."}, 
+                    new Greeting{GreetingId = 3,GreetingHeader = "Greeting 3", GreetingBody = "On this special day, i wish you all the very best, all the joy you can ever have and may you be blessed abundantly today, tomorrow and the days to come! May you have a fantastic birthday and many more to come... HAPPY BIRTHDAY!!!!"},               
+                    new Greeting{GreetingId = 4,GreetingHeader = "Greeting 4", GreetingBody = "They say that you can count your true friends on 1 hand - but not the candles on your birthday cake! #1Happybirthday"}, 
+                    new Greeting{GreetingId = 5,GreetingHeader = "Greeting 5", GreetingBody = "Celebrate your birthday today. Celebrate being Happy every day"}
+                };
 
             List<Employee> employees = new List<Employee>
              {
@@ -139,6 +148,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             mockRepository.Setup(m => m.VisaRegistrationDates).Returns(visaRegistrationDates.AsQueryable());
             mockRepository.Setup(m => m.Permits).Returns(permits.AsQueryable());
             mockRepository.Setup(m => m.BusinessTrips).Returns(businessTrips.AsQueryable());
+            mockRepository.Setup(m => m.Greetings).Returns(greetings);
 
             departments.Find(d => d.DepartmentID == 1).Employees.Add(employees.Find(e => e.EmployeeID == 1));
             departments.Find(d => d.DepartmentID == 2).Employees.Add(employees.Find(e => e.EmployeeID == 2));
@@ -277,7 +287,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             employees.Find(e => e.EmployeeID == 2).Permit = permits.Find(p => p.EmployeeID == 2);
             employees.Find(e => e.EmployeeID == 3).Permit = permits.Find(p => p.EmployeeID == 3);
 
-            mockMessage = new Mock<IMessage> ();
+            mockMessage = new Mock<IMessage>();
 
             mockMessage.Setup(m => m.MessageID).Returns(0);
             mockMessage.Setup(m => m.Role).Returns("BTM");
@@ -333,11 +343,11 @@ namespace AjourBT.Tests.Messaging_Subsystem
             Messenger messenger = new Messenger(mockRepository.Object);
             Message msg = new Message(MessageType.ADMCancelsConfirmedOrConfirmedModifiedToBTM, null, null);
             //Act
-            string [] result = messenger.GetMailingListForRole(msg);
+            string[] result = messenger.GetMailingListForRole(msg);
 
             //Assert        
             Assert.AreEqual(new string[] { "abc@elegant.com", "xyz@elegant.com" }, result);
-            
+
         }
 
         [Test]
@@ -377,7 +387,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             string[] result = messenger.GetMailingListForRole(null);
 
             //Assert        
-            Assert.AreEqual(new string[0] {}, result);
+            Assert.AreEqual(new string[0] { }, result);
 
         }
 
@@ -426,7 +436,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             string[] result = messenger.GetMailingListForRole(msg);
 
             //Assert        
-            Assert.AreEqual(new string[0] {}, result);
+            Assert.AreEqual(new string[0] { }, result);
 
         }
 
@@ -496,7 +506,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
             string[] result = messenger.GetMailingListForRole(msg);
 
             //Assert
-            Assert.AreEqual(new string[] {"tedk"}, result);
+            Assert.AreEqual(new string[] { "tedk" }, result);
 
         }
 
@@ -512,6 +522,34 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Assert        
             Assert.AreEqual(new string[0] { }, result);
+
+        }
+
+        [Test]
+        public void GetMailingListForRole_GreetingMessage_EmployeeFromMessage()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Message msg = new Message("", "", mockRepository.Object.Employees.FirstOrDefault(), "");
+            //Act
+            string[] result = messenger.GetMailingListForRole(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "andl@elegant.com"}, result);
+
+        }
+
+        [Test]
+        public void GetMailingListForRole_ResetPasswordMessage_EmployeeFromMessage()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Message msg = new Message("", "", mockRepository.Object.Employees.FirstOrDefault());
+            //Act
+            string[] result = messenger.GetMailingListForRole(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "andl@elegant.com" }, result);
 
         }
 
@@ -656,5 +694,213 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
         }
 
+
+        [Test]
+        public void GetRandomGreetingBody_NoParameters_RandomNotEmptyBody()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            string result = "";
+            string previousResult = "";
+            int coincidences = 0;
+            int trials = 20;
+
+            //Act
+            for (int i = 0; i < trials - 1; i++)
+            {
+                previousResult = result;
+                result = messenger.GetRandomGreetingBody();
+                if (result.Equals(previousResult))
+                    coincidences++;
+                if (result.Equals(String.Empty))
+                    throw new ArgumentException(i.ToString());
+            }
+
+            //Assert    
+            Assert.Greater(trials, coincidences);
+
+        }
+
+        [Test]
+        public void GetRandomGreetingBody_NoParametersNoGreetingsInRepository_EmptyString()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            string result = "";
+            string previousResult = "";
+            int coincidences = 0;
+            int trials = 20;
+            mockRepository.Setup(m => m.Greetings).Returns(new List<Greeting>());
+
+            //Act
+            for (int i = 0; i < trials; i++)
+            {
+                previousResult = result;
+                result = messenger.GetRandomGreetingBody();
+                if (result.Equals(previousResult))
+                    coincidences++;
+            }
+
+            //Assert        
+            Assert.AreEqual("", result);
+            Assert.AreEqual(20, coincidences);
+
+        }
+
+        [Test]
+        public void GetGreetingMessages_NoBirthdaysToday_EmptyIMessageList()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+
+            //Act
+            List<IMessage> messages = messenger.GetGreetingMessages(DateTime.Now.ToLocalTimeAzure());
+
+            //Assert     
+            Assert.AreEqual(0, messages.Count());
+
+        }
+
+        [Test]
+        public void GetGreetingMessages_BirthdaysToday_IMessageList()
+        {
+            //Arrange
+            mockRepository = new Mock<IRepository>();
+            List<Employee> employees = new List<Employee>
+             {
+                new Employee {EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, EID = "andl", DateDismissed = new DateTime(2013,11,01), DateEmployed = new DateTime(2011,11,01), IsManager = false, BusinessTrips = new List<BusinessTrip>(),
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().Day)},
+                new Employee {EmployeeID = 2, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().Day)}, 
+                new Employee {EmployeeID = 3, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().AddDays(1).Day)}, 
+                new Employee {EmployeeID = 4, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().AddMonths(1).Month, DateTime.Now.ToLocalTimeAzure().Day)},  
+             };
+            mockRepository.Setup(m => m.Employees).Returns(employees.AsQueryable());
+
+            Messenger messenger = new Messenger(mockRepository.Object);
+            //Act
+            List<IMessage> messages = messenger.GetGreetingMessages(DateTime.Now.ToLocalTimeAzure());
+
+            //Assert     
+            Assert.AreEqual(2, messages.Count());
+            Assert.AreEqual("andl", messages[0].ReplyTo);
+            Assert.AreEqual("Happy Birthday, Anatoliy!", messages[1].Subject);
+
+        }
+
+        [Test]
+        public void SendGreetingMessages_NoBirthdaysToday_NoExceptions()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            //Act
+            messenger.SendGreetingMessages(DateTime.Now.ToLocalTimeAzure());
+
+            //Assert     
+
+        }
+
+        [Test]
+        public void SendGreetingMessages_BirthdaysToday_NoExceptions()
+        {
+            //Arrange
+            mockRepository = new Mock<IRepository>();
+            List<Employee> employees = new List<Employee>
+             {
+                new Employee {EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, EID = "andl", DateDismissed = new DateTime(2013,11,01), DateEmployed = new DateTime(2011,11,01), IsManager = false, BusinessTrips = new List<BusinessTrip>(),
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().Day)},
+                new Employee {EmployeeID = 2, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().Day)}, 
+                new Employee {EmployeeID = 3, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().Month, DateTime.Now.ToLocalTimeAzure().AddDays(1).Day)}, 
+                new Employee {EmployeeID = 4, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>(), 
+                    BirthDay = new DateTime(1980, DateTime.Now.ToLocalTimeAzure().AddMonths(1).Month, DateTime.Now.ToLocalTimeAzure().Day)},  
+             };
+            mockRepository.Setup(m => m.Employees).Returns(employees.AsQueryable());
+
+            Messenger messenger = new Messenger(mockRepository.Object);
+            //Act
+            messenger.SendGreetingMessages(DateTime.Now.ToLocalTimeAzure());
+
+            //Assert     
+
+        }
+
+        #region GetBlindCopyMailingList
+        [Test]
+        public void GetBlindCopyMailingList_ProperEmployee_AllEmployeesExceptForAGivenOne()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            Message msg = new Message("", "", employee, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "ascr@elegant.com", "tedk@elegant.com", "tadk@elegant.com", 
+                                           "daol@elegant.com", "tebl@elegant.com", "xtwe@elegant.com", "xomi@elegant.com" },
+                            result);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotNullEmployeeNull_AllEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            Message msg = new Message("", "", null, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(8, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNull_NoEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            string[] result = messenger.GetBlindCopyMailingList(null);
+
+            //Assert        
+            Assert.AreEqual(0, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotNullEmployeeEIDNull_AllEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            employee.EID = null;
+            Message msg = new Message("", "", null, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(8, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotGreeting_NoEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            employee.EID = null;
+            Message msg = new Message("", "", null);
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(0, result.Length);
+
+        }
+
+        #endregion
     }
 }

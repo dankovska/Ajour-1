@@ -1019,6 +1019,25 @@ namespace AjourBT.Domain.Concrete
 
         #endregion
 
+        #region Greeting 
+
+        public IEnumerable<Greeting> Greetings
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void  SaveGreeting(Greeting greeting)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Greeting DeleteGreeting(int Greeting)
+        {
+            throw new NotImplementedException();
+        } 
+
+        #endregion
+
     }
 
 }

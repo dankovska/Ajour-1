@@ -8,10 +8,11 @@ using System.Linq;
 using AjourBT.Controllers;
 using AjourBT.Models;
 using System.Web.Mvc;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using System.Collections;
 using AjourBT.Tests.MockRepository;
 using ExcelLibrary.SpreadSheet;
+
 
 namespace AjourBT.Tests.Controllers
 {
@@ -1917,16 +1918,16 @@ namespace AjourBT.Tests.Controllers
             // Assert
             Assert.IsInstanceOf(typeof(PartialViewResult), view);
             Assert.AreEqual("", view.ViewName);
-            Assert.AreEqual(5, bts.Count());
+            Assert.AreEqual(7, bts.Count());
             Assert.AreEqual("xtwe", bts[0].BTof.EID);
-            Assert.AreEqual("chap", bts[1].BTof.EID);
-            Assert.AreEqual("tedk", bts[2].BTof.EID);
-            Assert.AreEqual("iwoo", bts[3].BTof.EID);
+            Assert.AreEqual("xtwe", bts[1].BTof.EID);
+            Assert.AreEqual("chap", bts[2].BTof.EID);
+            Assert.AreEqual("tedk", bts[3].BTof.EID);
 
-            Assert.AreEqual(15, bts[0].BusinessTripID);
-            Assert.AreEqual(38, bts[1].BusinessTripID);
-            Assert.AreEqual(37, bts[2].BusinessTripID);
-            Assert.AreEqual(16, bts[3].BusinessTripID);
+            Assert.AreEqual(14, bts[0].BusinessTripID);
+            Assert.AreEqual(15, bts[1].BusinessTripID);
+            Assert.AreEqual(38, bts[2].BusinessTripID);
+            Assert.AreEqual(37, bts[3].BusinessTripID);
             Assert.AreEqual(2014, ((PartialViewResult)view).ViewBag.SelectedYear);
         }
 
@@ -2060,7 +2061,7 @@ namespace AjourBT.Tests.Controllers
             IEnumerable<BusinessTripViewModel> result = controller.BusinessTripDataByUnitsWithoutCancelledAndDismissedQuery(2014);
 
             //Assert        
-            Assert.AreEqual(4, result.Count());
+            Assert.AreEqual(6, result.Count());
             foreach (BusinessTripViewModel item in result)
             {
                 Assert.AreEqual(false, item.Status.HasFlag(BTStatus.Cancelled));
@@ -2092,10 +2093,29 @@ namespace AjourBT.Tests.Controllers
 
             //Assert        
             Assert.AreEqual("1", workSheet.Cells[1, 0].Value.ToString());
-            Assert.AreEqual("iwoo", workSheet.Cells[2, 1].Value.ToString());
+            Assert.AreEqual("2014-10-01 To be updated soon", workSheet.Cells[1, 4].Value.ToString());
+            Assert.AreEqual("2014-03-01", workSheet.Cells[5, 4].Value.ToString());
+            Assert.AreEqual("xtwe", workSheet.Cells[2, 1].Value.ToString());
             Assert.AreEqual("LDF", workSheet.Cells[3, 3].Value.ToString());
         }
 
+        #region GetBusinessTripIDInYear
+
+        [Test]
+        public void GetFirstBusinessTripIdInYear_YearContainsBTs_IDOfFirstBT()
+        {
+            //Arrange
+            BusinessTripViewerController controller = new BusinessTripViewerController(mock.Object);
+
+            //Act
+            int result = controller.GetFirstBusinessTripIdInYear(DateTime.Now.ToLocalTimeAzure().Year);
+
+            //Assert     
+            Assert.AreEqual(4, result);
+
+        }
+
+        #endregion
 
     }
 }

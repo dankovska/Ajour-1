@@ -1,6 +1,6 @@
 ﻿@using AjourBT.Helpers
 @using AjourBT.Domain.Entities
-@using AjourBT.Infrastructure
+@using AjourBT.Domain.Infrastructure
 @model IEnumerable<AjourBT.Domain.Entities.Employee>
 
 @{
@@ -20,13 +20,13 @@
                 @if (item.DateDismissed != null)
                 {
                     <td>
-                        <strike>
+                        <span style="text-decoration: line-through">
                             @Html.DisplayFor(model => item.LastName)
                             @Html.DisplayFor(model => item.FirstName)
-                        </strike>
-                        <br>
-                        <i2>@Html.DisplayFor(modelItem => item.DateDismissed)</i2>
-                    </td>
+                            </span>
+                            <br>
+                            <span id="i2">@Html.DisplayFor(modelItem => item.DateDismissed)</span>
+</td>
                 }
                 else
                 {
@@ -117,7 +117,7 @@
                             {
                                 @Html.ActionLink("Karta Polaka", "Edit", "Permit", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "permitEditDialog", data_date_format = ViewBag.JSDatePattern })
                                 <br />
-                                <size0_8>
+                                <span id="size0_8">
                                     @if (item.Permit.StartDate != null)
                                     {
                                         @Html.CustomDisplayDateTime(item.Permit.StartDate.Value)
@@ -127,7 +127,7 @@
                                         @:-
                                         @Html.CustomDisplayDateTime(item.Permit.EndDate.Value)
                                     }
-                                </size0_8>
+                                </span>
                             }
                             else
                             {

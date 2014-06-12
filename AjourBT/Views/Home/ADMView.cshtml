@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using AjourBT.Domain.Infrastructure;
+@model int
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -21,7 +22,7 @@
     </ul>
     <div id="tabs-6">@{Html.RenderAction("GetVisaADM", "Visa", new { userName = HttpContext.Current.User.Identity.Name.ToString() });}</div>
     <div id="tabs-7">@{Html.RenderAction("GetBusinessTripADM", "BusinessTrip", new { userName = HttpContext.Current.User.Identity.Name.ToString(), selectedDepartment = @ViewBag.SelectedDepartment });}</div>
-    <div id="tabs-8"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "ADM", tab = 2, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
+    <div id="tabs-8"> @{Html.RenderAction("GetMessagesForRole", "Message", new { role = "ADM", tab = Tabs.ADM.Messages, searchString = @ViewBag.SearchString, actionNameForPagination = ViewContext.RouteData.GetRequiredString("action") });}</div>
 
 </div>
 

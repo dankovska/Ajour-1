@@ -9,7 +9,7 @@ using AjourBT.Domain.Entities;
 using Moq;
 using System.Linq;
 using AjourBT.Helpers;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using AjourBT.Tests.MockRepository;
 
 namespace AjourBT.Tests.Helpers

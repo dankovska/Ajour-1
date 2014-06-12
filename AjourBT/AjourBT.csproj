@@ -14,7 +14,7 @@
     <RootNamespace>AjourBT</RootNamespace>
     <AssemblyName>AjourBT</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -224,6 +224,7 @@
     <Compile Include="Controllers\EMPController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GreetingController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HolidayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -280,7 +281,6 @@
     <Compile Include="Helpers\StatusHintHelperForVUPreps.cs" />
     <Compile Include="Helpers\WeekIntervalHelper.cs" />
     <Compile Include="Infrastructure\CalendarToPdfExporter.cs" />
-    <Compile Include="Infrastructure\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\JourneyBydateComparer.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\OvertimeByDateComparer.cs" />
@@ -403,7 +403,16 @@
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
+    <Content Include="Scripts\AjourBTScript\GreetingScript.js" />
+    <Content Include="Scripts\AjourBTScript\ResetPasswordScript.js" />
     <Content Include="Views\Shared\NoAbsenceData.cshtml" />
+    <Content Include="Views\Greeting\Create.cshtml" />
+    <Content Include="Views\Greeting\Delete.cshtml" />
+    <Content Include="Views\Greeting\Edit.cshtml" />
+    <Content Include="Views\Greeting\Index.cshtml" />
+    <Content Include="Views\Home\BDMView.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
     <Resource Include="Resources\PDFjet.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -666,6 +675,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401171156088_unit.resx">
       <DependentUpon>201401171156088_unit.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AjourBT.Domain.Infrastructure;
 using AjourBT.Domain.Abstract;
+using System.Web.Configuration;
 
 namespace AjourBT.Domain.Concrete
 {
@@ -35,6 +36,54 @@ namespace AjourBT.Domain.Concrete
             Subject = GetSubject();
             Body = GetBody();
             Link = GetLink();
+        }
+
+        public Message( string body, string author, Employee recipient, string subject)
+        {
+            this.MessageID = 0;
+            this.messageType = MessageType.Greeting;
+            this.BTList = null;
+            this.Author = null;
+            this.employee = recipient;
+                ReplyTo = author;
+            TimeStamp = DateTime.Now.ToLocalTimeAzure();
+            Role = "";
+            if(subject!=null && subject!=String.Empty)
+            Subject = subject.Insert(subject.Length-1, ", "+employee.FirstName);
+
+            Body = WebConfigurationManager.AppSettings["GreetingsHeader"] + "<br/>" + getUkName(recipient) + "<br/><br/>" + body + "<br/><br/>" + WebConfigurationManager.AppSettings["GreetingsFooter"];
+            Link = "";
+        }
+
+        public string getUkName(Employee recipient)
+        {
+            string ukName = "";
+            if (recipient != null && recipient.FullNameUk != null)
+            {
+                string[] names = recipient.FullNameUk.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < Math.Min(names.Length, 2); i++)
+                {
+                    ukName += names[i];
+                    if (i < Math.Min(names.Length, 2) - 1)
+                        ukName += " ";
+                }
+            }
+            return ukName;
+        }
+
+        public Message(string subject, string body, Employee recipient)
+        {
+            this.MessageID = 0;
+            this.messageType = MessageType.ResetPassword;
+            this.BTList = null;
+            this.Author = null;
+            this.employee = recipient;
+            ReplyTo = "";
+            TimeStamp = DateTime.Now.ToLocalTimeAzure();
+            Role = "";
+                Subject = subject;
+                Body = body; 
+            Link = "";
         }
 
         [NotMapped]
@@ -239,11 +288,11 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.ACCModifiesConfirmedReportedToBTM:
                 case MessageType.DIRRejectsConfirmedToBTM:
                 case MessageType.ADMCancelsPlannedModifiedToBTM:
-                    pathAndQuery = "/Home/BTMView/?tab=1";
+                    pathAndQuery = "/Home/BTMView/?tab="+Tabs.BTM.BTsInProcess;
                     break;
                 case MessageType.ADMConfirmsPlannedOrRegisteredToDIR:
                 case MessageType.ACCModifiesConfirmedReportedToDIR:
-                    pathAndQuery = "/Home/DIRView/?tab=0";
+                    pathAndQuery = "/Home/DIRView/?tab="+Tabs.DIR.BusinessTrips;
                     break;
                 case MessageType.ADMConfirmsPlannedOrRegisteredToACC:
                 case MessageType.ADMRegistersPlannedOrPlannedModifiedToACC:
@@ -255,11 +304,11 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.BTMUpdatesConfirmedOrConfirmedModifiedToResponsible: 
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToResponsible: 
                 case MessageType.ACCModifiesConfirmedReportedToResponsible: 
-                    pathAndQuery = "/Home/VUView/?tab=2";
+                    pathAndQuery = "/Home/VUView/?tab="+Tabs.VU.BTsInPreparationProcess;
                     break;
                 
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToACC:
-                    pathAndQuery = "/Home/ACCView/?tab=0";
+                    pathAndQuery = "/Home/ACCView/?tab="+Tabs.ACC.CurrentAndFutureBTs;
                     break;
 
                 case MessageType.BTMRejectsRegisteredOrRegisteredModifiedToADM:
@@ -267,17 +316,19 @@ namespace AjourBT.Domain.Concrete
                 case MessageType.ACCCancelsConfirmedReportedToADM:
                 case MessageType.ACCModifiesConfirmedReportedToADM:
                 case MessageType.DIRRejectsConfirmedToADM:
-                    pathAndQuery = "/Home/ADMView/?tab=1";
+                    pathAndQuery = "/Home/ADMView/?tab="+Tabs.ADM.BTs;
                     break;
                
                 case MessageType.BTMCancelsPermitToADM:
-                    pathAndQuery = "/Home/ADMView/?tab=0";
+                    pathAndQuery = "/Home/ADMView/?tab="+Tabs.ADM.VisasAndPermits;
                     break;
                
                 case MessageType.BTMReportsConfirmedOrConfirmedModifiedToEMP:
+                    pathAndQuery = "/Home/EMPView/?tab="+Tabs.EMP.YourBTs;
+                    break; 
                 case MessageType.BTMUpdateVisaRegistrationDateToEMP:
                 case MessageType.BTMCreateVisaRegistrationDateToEMP:
-                    pathAndQuery = "/Home/EMPView/?tab=4";
+                    pathAndQuery = "/Home/EMPView/?tab="+Tabs.EMP.Visa;
                     break;
  
                 default:

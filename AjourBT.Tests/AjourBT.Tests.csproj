@@ -175,11 +175,13 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AbsenceControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\CalendarControllerTest.cs" />
+    <Compile Include="Controllers\GreetingControllerTest.cs" />
     <Compile Include="Controllers\CountryControllerTests.cs" />
     <Compile Include="Controllers\DepartmentControllerTest.cs" />
     <Compile Include="Controllers\EMPControllerTest.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="Helpers\SortingFactorDatesTest.cs" />
     <Compile Include="Helpers\DisplayCityOfRegistrationHelperTest.cs" />
     <Compile Include="Infrastructure\CalendarToPdfExporterTest.cs" />
+    <Compile Include="Infrastructure\SchedulerTest.cs" />
     <Compile Include="MockRepository\Mock_Repository.cs" />
     <Compile Include="Controllers\PassportControllerTest.cs" />
     <Compile Include="Controllers\PermitControllerTest.cs" />

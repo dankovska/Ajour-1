@@ -114,9 +114,12 @@
     <Compile Include="Concrete\AjourDbContext.cs" />
     <Compile Include="Concrete\AjourDbRepository.cs" />
     <Compile Include="Concrete\Infrastructure\DateTimeExtensions.cs" />
+    <Compile Include="Concrete\Infrastructure\Tabs.cs" />
     <Compile Include="Concrete\ListRepository.cs" />
     <Compile Include="Concrete\Message.cs" />
     <Compile Include="Concrete\Messenger.cs" />
+    <Compile Include="Concrete\Scheduler.cs" />
+    <Compile Include="Entities\Greeting.cs" />
     <Compile Include="Exceptions\VacationAlreadyExistException.cs" />
     <Compile Include="Concrete\XlsLoader.cs" />
     <Compile Include="CustomAnnotations\GreaterThan.cs" />
@@ -265,6 +268,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405271237251_User.resx">
       <DependentUpon>201405271237251_User.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

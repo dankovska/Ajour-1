@@ -129,14 +129,14 @@ $('#absenceButton').click(function () {
 $('#calendarAbsenceButton').button();
 
 $('#calendarAbsenceSubmitBtn').click(function () {
-    var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
-    var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
-    if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
+    //var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
+    //var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
+    //if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
 
-        $('#errorFromAbs').text('');
-        $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
-        $('#errorToAbs').text('');
-        $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
+    //    $('#errorFromAbs').text('');
+    //    $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
+    //    $('#errorToAbs').text('');
+    //    $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
 
         $.ajax({
             cache: false,
@@ -147,37 +147,37 @@ $('#calendarAbsenceSubmitBtn').click(function () {
                 $("#CalendarData").html(data);
             }
         })
-    }
-    else {
-        if ($('#calendarFromDate').val().length == 0) {
-            $('#errorFromAbs').text('');
-            $('#errorFromAbs').append('The From field is required');
-            $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //}
+    //else {
+    //    if ($('#calendarFromDate').val().length == 0) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorFromAbs').append('The From field is required');
+    //        $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if ($('#calendarToDate').val().length == 0) {
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The To field is required');
-            $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //    if ($('#calendarToDate').val().length == 0) {
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The To field is required');
+    //        $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if (from > to) {
-            $('#errorFromAbs').text('');
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The From Date must be less than To date');
-        }
-    }
+    //    if (from > to) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The From Date must be less than To date');
+    //    }
+    //}
 })
 
 $('#depDropList').on("change", function () {
-    var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
-    var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
-    if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
+    //var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
+    //var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
+    //if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
 
-        $('#errorFromAbs').text('');
-        $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
-        $('#errorToAbs').text('');
-        $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
+    //    $('#errorFromAbs').text('');
+    //    $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
+    //    $('#errorToAbs').text('');
+    //    $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
 
         $.ajax({
             cache: false,
@@ -188,57 +188,57 @@ $('#depDropList').on("change", function () {
                 $("#CalendarData").html(data);
             }
         })
-    }
-    else {
-        if ($('#calendarFromDate').val().length == 0) {
-            $('#errorFromAbs').text('');
-            $('#errorFromAbs').append('The From field is required');
-            $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //}
+    //else {
+    //    if ($('#calendarFromDate').val().length == 0) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorFromAbs').append('The From field is required');
+    //        $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if ($('#calendarToDate').val().length == 0) {
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The To field is required');
-            $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //    if ($('#calendarToDate').val().length == 0) {
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The To field is required');
+    //        $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if (from > to) {
-            $('#errorFromAbs').text('');
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The From Date must be less than To date');
-        }
-    }
+    //    if (from > to) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The From Date must be less than To date');
+    //    }
+    //}
 })
 
 $('#pdfPrintBtn').click(function (event) {
     event.preventDefault();
-    var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
-    var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
-    if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
+    //var from = $.datepicker.parseDate("dd.mm.yy", $('#calendarFromDate').val());
+    //var to = $.datepicker.parseDate("dd.mm.yy", $('#calendarToDate').val());
+    //if ($('#calendarFromDate').val().length > 0 && $('#calendarToDate').val().length > 0 && to >= from) {
 
-        $('#errorFromAbs').text('');
-        $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
-        $('#errorToAbs').text('');
-        $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
+    //    $('#errorFromAbs').text('');
+    //    $('#calendarFromDate').css('border', '1px solid rgb(226,226,226)');
+    //    $('#errorToAbs').text('');
+    //    $('#calendarToDate').css('border', '1px solid rgb(226, 226, 226)');
         $('#printCalendarToPdf').submit();
-    }
-    else {
-        if ($('#calendarFromDate').val().length == 0) {
-            $('#errorFromAbs').text('');
-            $('#errorFromAbs').append('The From field is required');
-            $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //}
+    //else {
+    //    if ($('#calendarFromDate').val().length == 0) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorFromAbs').append('The From field is required');
+    //        $('#calendarFromDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if ($('#calendarToDate').val().length == 0) {
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The To field is required');
-            $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
-        }
+    //    if ($('#calendarToDate').val().length == 0) {
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The To field is required');
+    //        $('#calendarToDate').css('border', '1px solid rgb(232,12,77)');
+    //    }
 
-        if (from > to) {
-            $('#errorFromAbs').text('');
-            $('#errorToAbs').text('');
-            $('#errorToAbs').append('The From Date must be less than To date');
-        }
-    }
+    //    if (from > to) {
+    //        $('#errorFromAbs').text('');
+    //        $('#errorToAbs').text('');
+    //        $('#errorToAbs').append('The From Date must be less than To date');
+    //    }
+    //}
 })

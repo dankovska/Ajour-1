@@ -11884,6 +11884,8 @@
 		"date-pre": function (a) {
 
 		    var dateAtagPos = a.search("<a");
+		    var dateSpanTagPos = a.search("<span");
+
 		    if (dateAtagPos != -1) {
 		        var dateAtagEndPos = a.search("</a>");
 		        var dateText = a.substr(dateAtagPos + 1, dateAtagEndPos - 1);
@@ -11895,6 +11897,29 @@
 
 		        if (dateTxt == null)
 		        {
+		            return "";
+		        }
+
+		        var dateTxt = dateTxt.toString();
+		        var extDate = dateTxt;
+		        var extArr = extDate.substr(0, 2);
+		        if ($.isNumeric(extArr)) {
+		            var extTrm = jQuery.trim(extDate);
+		            var extX = jQuery.datepicker.parseDate("dd.mm.yy", extTrm);
+		            return extX;
+		        }
+		    }
+
+		    if (dateSpanTagPos != -1) {
+		        var dateAtagEndPos = a.search("</span>");
+		        var dateText = a.substr(dateAtagPos + 1, dateAtagEndPos - 1);
+		        var dateAtagClosePos = dateText.search(">");
+		        var dateTxt = dateText.substr(dateAtagClosePos + 1, dateAtagEndPos - 1);//Date extracted
+
+		        var regexp = /\d{2}\.\d{2}\.\d{4}/
+		        var dateTxt = dateTxt.match(regexp);
+
+		        if (dateTxt == null) {
 		            return "";
 		        }
 

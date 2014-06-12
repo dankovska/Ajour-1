@@ -14,6 +14,7 @@ using AjourBT.Domain.Entities;
 using AjourBT.Domain.Concrete;
 using System.Configuration;
 using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 using AjourBT.Domain.Abstract;
 
 namespace AjourBT.Controllers
@@ -25,9 +26,11 @@ namespace AjourBT.Controllers
     public class AccountController : Controller
     {
         private IRepository repository;
-        public AccountController(IRepository repo)
+        private IMessenger messenger;
+        public AccountController(IRepository repo, IMessenger messenger)
         {
             repository = repo;
+            this.messenger = messenger;
         }
 
         [HttpPost]
@@ -507,5 +510,79 @@ namespace AjourBT.Controllers
             Employee emp = repository.Users.Where(e => e.EID == eid).FirstOrDefault();
             return emp != null ? emp.FirstName : "";
         }
+        
+        [AllowAnonymous]
+        public ViewResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ViewResult ForgotPassword(string UserName)
+        {
+            if (UserName == null)
+            {
+                ViewBag.Message = "User does not exist.";
+                return View();
+            }
+            var user = Membership.GetUser(UserName);
+            if (user == null)
+            {
+                ViewBag.Message= "User does not exist.";
+            }
+            else
+            {
+                var token = WebSecurity.GeneratePasswordResetToken(UserName, Int32.Parse(ConfigurationManager.AppSettings["TokenExpirationInMinutes"]));
+
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new {rt = token }, "http") + "'>Reset Password</a>"; 
+                
+                string body = "<b>Password Reset Token</b><br/>" + resetLink + 
+                    "<br>If you're not " + UserName + " or didn't request verification, you can ignore this email."; 
+
+                string subject = "Password Reset Token";
+                Message msg = new Message(subject, body, repository.Users.Where(u => u.EID == UserName).FirstOrDefault());
+                try
+                {
+                    messenger.Notify(msg);
+                    ViewBag.Message= "Email with password verification token has been sent.";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message= "Error occured while sending email." + ex.Message;
+                }
+            }
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ViewResult ResetPassword(string rt)
+        {
+            try
+            {
+                bool response = WebSecurity.ResetPassword(rt, ConfigurationManager.AppSettings["DefaultPassword"]);
+                if (response == true)
+                {
+                    ViewBag.Message= "Reset password success! Your New Password Is " + ConfigurationManager.AppSettings["DefaultPassword"];
+                }
+                else
+                {
+                    string[] roles = System.Web.Security.Roles.GetUsersInRole("PU");
+                    var powerUsers = String.Join(", ", roles);
+                    ViewBag.Message= "Password could not be reseted! Please contact power users: " + powerUsers;
+                }
+            }
+            catch (Exception)
+            {
+                string[] roles = System.Web.Security.Roles.GetUsersInRole("PU");
+                var powerUsers = String.Join(", ", roles);
+                ViewBag.Message= "Password could not be reseted! Please contact power users: " + powerUsers;
+            }
+
+            return View();
+        }
+
     }
 }

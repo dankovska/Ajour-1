@@ -374,9 +374,12 @@ namespace AjourBT.Controllers
             List<BusinessTrip> reportedBTs = (from bts in repository.BusinessTrips.AsEnumerable()
 
                                               where
-                                              ((bts.StartDate.Year == selectedYear) && (bts.BTof.EID == userName) && bts.Status != BTStatus.Cancelled && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) ||
-                                                  bts.Status == (BTStatus.Reported) ||
-                                                  bts.Status == (BTStatus.Confirmed)))
+                                              ((bts.StartDate.Year == selectedYear) 
+                                              && (bts.BTof.EID == userName) 
+                                              && bts.Status != BTStatus.Cancelled 
+                                              && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) 
+                                              || bts.Status == (BTStatus.Reported) 
+                                              || bts.Status == (BTStatus.Confirmed)))
 
                                               orderby bts.StartDate descending
                                               select new BusinessTrip(bts)).ToList();
@@ -423,9 +426,8 @@ namespace AjourBT.Controllers
            List<BusinessTrip> reportedBTs = (from bts in repository.BusinessTrips.AsEnumerable()
                                             
                                               where
-                                              ((bts.StartDate.Year == selectedYear) && (bts.BTof.EID==userName) && bts.Status != BTStatus.Cancelled && (bts.Status == (BTStatus.Reported | BTStatus.Confirmed) ||
-                                                  bts.Status == (BTStatus.Reported) ||
-                                                  bts.Status == (BTStatus.Confirmed)))
+                                              ((bts.StartDate.Year == selectedYear) && (bts.BTof.EID==userName) && !bts.Status.HasFlag(BTStatus.Cancelled) && 
+                                              (bts.Status.HasFlag(BTStatus.Registered) || bts.Status.HasFlag(BTStatus.Confirmed)))
                          
                                               orderby bts.StartDate descending
                                              select new BusinessTrip (bts)).ToList();

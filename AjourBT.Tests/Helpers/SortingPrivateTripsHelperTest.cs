@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AjourBT.Infrastructure;
+using AjourBT.Domain.Infrastructure;
 namespace AjourBT.Tests.Helpers
 {
     [TestFixture]
