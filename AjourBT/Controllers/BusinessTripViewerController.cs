@@ -35,9 +35,9 @@ namespace AjourBT.Controllers
         }
 
         [Authorize(Roles = "VU")]
-        public ViewResult GetBusinessTripDataInQuarterVU(int selectedKey, string selectedDepartment = "" , string searchString = "")
+        public ViewResult GetBusinessTripDataInQuarterVU(int selectedKey, string selectedDepartment = "", string searchString = "")
         {
-            if(searchString != "")
+            if (searchString != "")
             {
                 searchString = searchString.ToLower().Trim();
             }
@@ -87,16 +87,16 @@ namespace AjourBT.Controllers
             ViewBag.MonthList = monthes;
             ViewBag.SelectedKey = selectedKey;
             ViewBag.SearchString = searchString;
-            
-           
+
+
             var employeeGroups = from e in repository.Employees
-                                 where(  (selectedDepartment == String.Empty ||
+                                 where ((selectedDepartment == String.Empty ||
                                         e.Department.DepartmentName == selectedDepartment)
                                         && (e.FirstName.ToLower().Contains(searchString) ||
                                             e.LastName.ToLower().Contains(searchString) ||
-                                            e.EID.ToLower().Contains(searchString)) )
-                                        
-                                 
+                                            e.EID.ToLower().Contains(searchString)))
+
+
                                  orderby e.LastName
                                  select new
                                  {
@@ -107,11 +107,11 @@ namespace AjourBT.Controllers
                                      e.DateDismissed,
                                      MonthGroups = from bt in e.BusinessTrips
                                                    where ((
-                                                        (bt.StartDate.Year == selectedKey && selectedKey >=7) ||
-                                                            (selectedKey<7 &&
-                                                                ((bt.StartDate.Month >= selectedStartPeriod.Month && bt.StartDate.Year == selectedStartPeriod.Year && bt.StartDate <= currentDate) 
+                                                        (bt.StartDate.Year == selectedKey && selectedKey >= 7) ||
+                                                            (selectedKey < 7 &&
+                                                                ((bt.StartDate.Month >= selectedStartPeriod.Month && bt.StartDate.Year == selectedStartPeriod.Year && bt.StartDate <= currentDate)
                                                                 || (bt.StartDate.Month < selectedStartPeriod2.Month && bt.StartDate.Year == selectedStartPeriod2.Year && bt.StartDate <= currentDate))))
-                                                        && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)) 
+                                                        && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled))
                                                         )
                                                    group bt by bt.StartDate.Month into MonthGroup
                                                    select new { Month = MonthGroup.Key, Bts = MonthGroup }
@@ -144,7 +144,7 @@ namespace AjourBT.Controllers
                         monthBTs.Add(bt);
                     }
 
-                    employee.BusinessTripsByMonth.Add(month.Month, monthBTs); 
+                    employee.BusinessTripsByMonth.Add(month.Month, monthBTs);
                 }
 
                 employeesBTsByMonthList.Add(employee);
@@ -162,7 +162,7 @@ namespace AjourBT.Controllers
                            select new { Year = yearGroup.Key };
 
             Dictionary<int, string> values = new Dictionary<int, string>();
-            
+
             values.Add(0, "current month");
             values.Add(1, "last month(till today)");
             values.Add(3, "last 3 monthes(till today)");
@@ -306,7 +306,7 @@ namespace AjourBT.Controllers
                                            where ((b.Status != BTStatus.Planned)
                                             && b.Status != (BTStatus.Planned | BTStatus.Modified)
                                             && b.Status != (BTStatus.Planned | BTStatus.Cancelled)
-                                            //&& b.StartDate > today
+                                               //&& b.StartDate > today
                                             )
 
                                            group b by b.Status into EmployeeGroup
@@ -360,15 +360,15 @@ namespace AjourBT.Controllers
 
             return View(selectedYear);
         }
-        
+
         [Authorize(Roles = "VU")]
         public PartialViewResult GetBusinessTripDataByDatesVU(int selectedYear = 0)
         {
             var query = from bt in repository.BusinessTrips.AsEnumerable()
-                        join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID                            
+                        join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID
                         join loc in repository.Locations on bt.LocationID equals loc.LocationID
-                        where ( bt.StartDate.Year == selectedYear
-                              && ( bt.Status == (BTStatus.Confirmed | BTStatus.Reported) 
+                        where (bt.StartDate.Year == selectedYear
+                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported)
                                     || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)
                                     || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)))
                         orderby emp.LastName, bt.StartDate
@@ -410,24 +410,26 @@ namespace AjourBT.Controllers
                         join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID
                         join loc in repository.Locations on bt.LocationID equals loc.LocationID
                         where (bt.StartDate.Year == selectedYear
-                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) 
-                              || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled) 
+                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported)
+                              || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)
                               || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)))
-                              orderby bt.BusinessTripID
+                        orderby bt.BusinessTripID
                         select new BusinessTripViewModel(bt, CalculateId(bt.BusinessTripID, FirstBusinessTripIdInYear));
             return query;
         }
 
-        public int GetFirstBusinessTripIdInYear(int selectedYear) 
+        public int GetFirstBusinessTripIdInYear(int selectedYear)
         {
             var query = (from bt in repository.BusinessTrips.AsEnumerable()
-                        join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID
-                        join loc in repository.Locations on bt.LocationID equals loc.LocationID
-                        where (bt.StartDate.Year == selectedYear
-                              && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported) || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)))
-                              orderby bt.BusinessTripID
-                             select bt.BusinessTripID).FirstOrDefault();
-                return query;
+                         join emp in repository.Employees on bt.EmployeeID equals emp.EmployeeID
+                         join loc in repository.Locations on bt.LocationID equals loc.LocationID
+                         where (bt.StartDate.Year == selectedYear
+                               && (bt.Status == (BTStatus.Confirmed | BTStatus.Reported)
+                               || bt.Status == (BTStatus.Confirmed | BTStatus.Cancelled)
+                               || bt.Status == (BTStatus.Confirmed | BTStatus.Modified)))
+                         orderby bt.BusinessTripID
+                         select bt.BusinessTripID).FirstOrDefault();
+            return query;
         }
 
         int CalculateId(int BusinessTripID, int FirstBusinessTripID)
@@ -438,7 +440,8 @@ namespace AjourBT.Controllers
         public IEnumerable<BusinessTripViewModel> BusinessTripDataByUnitsWithoutCancelledAndDismissedQuery(int selectedYear)
         {
             var query = BusinessTripDataByUnitsQuery(selectedYear).Where(bt => bt.BTof.DateDismissed == null &&
-                bt.Status == (BTStatus.Confirmed | BTStatus.Reported));
+                bt.Status == (BTStatus.Confirmed | BTStatus.Reported)
+                             || bt.Status == (BTStatus.Confirmed | BTStatus.Modified));
             return query;
         }
 
@@ -478,7 +481,14 @@ namespace AjourBT.Controllers
                 workSheet.Cells[i, 1] = new Cell(businessTripViewModel.BTof.EID);
                 workSheet.Cells[i, 2] = new Cell(businessTripViewModel.BTof.LastName + " " + businessTripViewModel.BTof.FirstName);
                 workSheet.Cells[i, 3] = new Cell(businessTripViewModel.Title);
-                workSheet.Cells[i, 4] = new Cell(businessTripViewModel.StartDateFormated);
+                if (businessTripViewModel.Status == (BTStatus.Confirmed | BTStatus.Reported))
+                {
+                    workSheet.Cells[i, 4] = new Cell(businessTripViewModel.StartDateFormated);
+                }
+                else
+                {
+                    workSheet.Cells[i, 4] = new Cell(businessTripViewModel.StartDateFormated + " To be updated soon");
+                }
                 workSheet.Cells[i, 5] = new Cell(businessTripViewModel.EndDateFormated);
                 workSheet.Cells[i, 6] = new Cell(businessTripViewModel.Unit);
                 workSheet.Cells[i, 7] = new Cell(businessTripViewModel.Purpose);
