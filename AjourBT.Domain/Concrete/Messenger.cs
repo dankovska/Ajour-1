@@ -35,7 +35,7 @@ namespace AjourBT.Domain.Concrete
             try
             {
                 StoreMessage(message);
-                SendToMailingList(GetMailingListForRole(message), message);
+                SendToMailingList(GetMailingListForRole(message), GetBlindCopyMailingList(message), message);
             }
             catch (Exception)
             {
@@ -139,13 +139,28 @@ namespace AjourBT.Domain.Concrete
             return mailingList.ToArray<string>();
         }
 
-        public void SendToMailingList(string[] mailingList, IMessage message)
+        public string[] GetBlindCopyMailingList(IMessage message)
+        {
+            List<String> blindMialinglist = new List<string>();
+            if (message != null && message.messageType == MessageType.Greeting)
+            {
+                foreach (Employee emp in repository.Employees)
+                {
+                    blindMialinglist.Add(emp.EID + WebConfigurationManager.AppSettings["MailAlias"]);
+                }
+                if(message.employee!=null && message.employee.EID!=null)
+                blindMialinglist.Remove(message.employee.EID + WebConfigurationManager.AppSettings["MailAlias"]);
+            }
+            return blindMialinglist.ToArray<string>();
+        }
+
+        public void SendToMailingList(string[] mailingList, string[] blindMailingList, IMessage message)
         {
             string sendingChoice = WebConfigurationManager.AppSettings["WayOfMessageSending"];
             switch (sendingChoice)
             {
                 case "LotusNotes":
-                    SendUsingLotusNotes(mailingList, message);
+                    SendUsingLotusNotes(mailingList, blindMailingList, message);
                     break;
                 case "SendGrid":
                     SendUsingSendGrid(mailingList, message);
@@ -185,7 +200,7 @@ namespace AjourBT.Domain.Concrete
             transportSMTP.Deliver(myMessage);
         }
 
-        private static void SendUsingLotusNotes(string[] mailingList, IMessage message)
+        private static void SendUsingLotusNotes(string[] mailingList, string[] blindMailingList, IMessage message)
         {
             string serverName = WebConfigurationManager.AppSettings["LotusNotesServerName"];
             string mailFile = WebConfigurationManager.AppSettings["LotusNotesMailFileName"];
@@ -193,7 +208,7 @@ namespace AjourBT.Domain.Concrete
             string[] sendTo = mailingList;
             string[] copyTo = { };
             string replyTo = message.ReplyTo;
-            string blindCopyTo = "";
+            string[] blindCopyTo = blindMailingList;
             string subject = message.Subject;
 
             //Create new notes session
@@ -213,6 +228,7 @@ namespace AjourBT.Domain.Concrete
             //Set notes memo fields (To: CC: Bcc: Subject etc) 
             notesDocument.ReplaceItemValue("SendTo", sendTo);
             notesDocument.ReplaceItemValue("CopyTo", copyTo);
+            if(blindCopyTo != null)
             notesDocument.ReplaceItemValue("BlindCopyTo", blindCopyTo);
             notesDocument.ReplaceItemValue("ReplyTo", replyTo);
             notesDocument.ReplaceItemValue("Subject", subject);
@@ -227,7 +243,7 @@ namespace AjourBT.Domain.Concrete
             mimeItem.SetContentFromText(notesStream, "text/html; charset=UTF-8", MIME_ENCODING.ENC_NONE);
 
             notesDocument.Send(false);
-        }
+        } 
 
         public List<IMessage> GetGreetingMessages(DateTime date)
         {

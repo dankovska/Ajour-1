@@ -50,8 +50,25 @@ namespace AjourBT.Domain.Concrete
             Role = "";
             if(subject!=null && subject!=String.Empty)
             Subject = subject.Insert(subject.Length-1, ", "+employee.FirstName);
-            Body = WebConfigurationManager.AppSettings["GreetingsHeader"] + "<br>" + body + "<br>" + WebConfigurationManager.AppSettings["GreetingsFooter"];
+
+            Body = WebConfigurationManager.AppSettings["GreetingsHeader"] + "<br/>" + getUkName(recipient) + "<br/><br/>" + body + "<br/><br/>" + WebConfigurationManager.AppSettings["GreetingsFooter"];
             Link = "";
+        }
+
+        public string getUkName(Employee recipient)
+        {
+            string ukName = "";
+            if (recipient != null && recipient.FullNameUk != null)
+            {
+                string[] names = recipient.FullNameUk.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < Math.Min(names.Length, 2); i++)
+                {
+                    ukName += names[i];
+                    if (i < Math.Min(names.Length, 2) - 1)
+                        ukName += " ";
+                }
+            }
+            return ukName;
         }
 
         public Message(string subject, string body, Employee recipient)

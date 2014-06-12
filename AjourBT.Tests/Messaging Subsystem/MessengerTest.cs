@@ -828,5 +828,79 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
         }
 
+        #region GetBlindCopyMailingList
+        [Test]
+        public void GetBlindCopyMailingList_ProperEmployee_AllEmployeesExceptForAGivenOne()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            Message msg = new Message("", "", employee, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(new string[] { "ascr@elegant.com", "tedk@elegant.com", "tadk@elegant.com", 
+                                           "daol@elegant.com", "tebl@elegant.com", "xtwe@elegant.com", "xomi@elegant.com" },
+                            result);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotNullEmployeeNull_AllEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            Message msg = new Message("", "", null, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(8, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNull_NoEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            string[] result = messenger.GetBlindCopyMailingList(null);
+
+            //Assert        
+            Assert.AreEqual(0, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotNullEmployeeEIDNull_AllEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            employee.EID = null;
+            Message msg = new Message("", "", null, "");
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(8, result.Length);
+
+        }
+
+        [Test]
+        public void GetBlindCopyMailingList_MessageNotGreeting_NoEmployees()
+        {
+            //Arrange
+            Messenger messenger = new Messenger(mockRepository.Object);
+            Employee employee = mockRepository.Object.Employees.FirstOrDefault();
+            employee.EID = null;
+            Message msg = new Message("", "", null);
+            string[] result = messenger.GetBlindCopyMailingList(msg);
+
+            //Assert        
+            Assert.AreEqual(0, result.Length);
+
+        }
+
+        #endregion
     }
 }
