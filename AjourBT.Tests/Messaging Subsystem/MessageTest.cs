@@ -63,7 +63,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             List<Employee> employees = new List<Employee>
              {
-                new Employee {EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, EID = "andl", DateDismissed = new DateTime(2013,11,01), DateEmployed = new DateTime(2011,11,01), IsManager = false, BusinessTrips = new List<BusinessTrip>()},
+                new Employee {EmployeeID = 1, FirstName = "Anastasia", LastName = "Zarose", DepartmentID = 1, EID = "andl", DateDismissed = new DateTime(2013,11,01), DateEmployed = new DateTime(2011,11,01), IsManager = false, BusinessTrips = new List<BusinessTrip>(), FullNameUk ="Джонні Роус Олександрович"},
                 new Employee {EmployeeID = 2, FirstName = "Anatoliy", LastName = "Struz", DepartmentID = 2, EID = "ascr", DateEmployed = new DateTime(2013,04,11), IsManager = true, BusinessTrips = new List<BusinessTrip>()},          
                 new Employee {EmployeeID = 3, FirstName = "Tymur", LastName = "Pyorge", DepartmentID = 1, EID = "tedk", DateEmployed = new DateTime(2013,04,11), IsManager = false, BusinessTrips = new List<BusinessTrip>()},
                 new Employee {EmployeeID = 4, FirstName = "Tanya", LastName = "Kowood", DepartmentID = 4 , EID = "tadk", DateEmployed = new DateTime(2012,04,11), IsManager = false, BusinessTrips = new List<BusinessTrip>()},
@@ -339,7 +339,7 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Assert        
             Assert.AreEqual(null, message.Author);
-            Assert.AreEqual("Header<br>happyBirthday!<br>Footer", message.Body);
+            Assert.AreEqual("Header<br/>Джонні Роус<br/><br/>happyBirthday!<br/><br/>Footer", message.Body);
             Assert.AreEqual(null, message.BTList);
             Assert.AreEqual("", message.Link);
             Assert.AreEqual(0, message.MessageID);
@@ -1275,6 +1275,121 @@ namespace AjourBT.Tests.Messaging_Subsystem
 
             //Assert  
             Assert.AreEqual(excpectedResult, result);
+        }
+
+        #region getUkName
+        [Test]
+        public void getUkName_FirstNameSurnameLastName_FirstNameSurname()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("Джонні Роус", result);
+            
+        }
+
+        [Test]
+        public void getUkName_Empty_EmptyString()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            emp.FullNameUk = "";
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("", result);
+
+        }
+
+        [Test]
+        public void getUkName_FirstName_FirstName()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            emp.FullNameUk = "Джонні";
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("Джонні", result);
+
+        }
+
+        [Test]
+        public void getUkName_FirstNameSurname_FirstNameSurname()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            emp.FullNameUk = "Джонні Роус";
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("Джонні Роус", result);
+
+        }
+
+        [Test]
+        public void getUkName_FullNameNull_EmptyString()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            emp.FullNameUk = null;
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("", result);
+
+        }
+
+        [Test]
+        public void getUkName_EmployeeNull_EmptyString()
+        {
+            //Arrange
+
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(null);
+
+            //Assert        
+            Assert.AreEqual("", result);
+
+        }
+
+        [Test]
+        public void getUkName_FirstNameSurNameLastNameMoreThanOneWhiteSpaceInARow_EmptyString()
+        {
+            //Arrange
+            Employee emp = mock.Object.Employees.FirstOrDefault();
+            emp.FullNameUk = "Джонні   Роус  Джонні    Роус";
+
+            //Act
+
+            Message msg = new Message();
+            string result = msg.getUkName(emp);
+
+            //Assert        
+            Assert.AreEqual("Джонні Роус", result);
+
         } 
+
+        #endregion
+
     }
 }
