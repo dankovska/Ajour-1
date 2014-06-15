@@ -335,6 +335,19 @@ $(document).on("click", "#CreateVisaRegistrationDate", function (event) {
                         buttonImageOnly: true
                     });
                 }
+
+                if ($('#PaymentDateCreate').length > 0) {
+                    $('#PaymentDateCreate').datepicker({
+                        firstDay: 1,
+                        dateFormat: dateFormat,
+                        showWeek: true,
+                        calculateWeek: myWeekCalc,
+                        showOn: 'button',
+                        buttonImage: '/Content/themes/base/images/calendar2.gif',
+                        buttonImageOnly: true
+                    });
+                }           
+
             },
             buttons: {
                 "Save": {
@@ -408,6 +421,7 @@ $(document).on("click", "#CreateVisaRegistrationDate", function (event) {
 
             close: function (event, ui) {
                 $('#RegistrationDateCreate').datepicker("destroy");
+                $('#PaymentDateCreate').datepicker("destroy");
                 $(this).dialog("destroy");
                 $(this).remove();
             }
@@ -454,6 +468,15 @@ $(document).on("click", ".visaRegistrationDateEdit", function (event) {
                     buttonImageOnly: true
                 });
 
+                $('#editVisaPaymentDate').datepicker({
+                    firstDay: 1,
+                    dateFormat: dateFormat,
+                    showWeek: true,
+                    calculateWeek: myWeekCalc,
+                    showOn: 'button',
+                    buttonImage: '/Content/themes/base/images/calendar2.gif',
+                    buttonImageOnly: true
+                });
 
                 $("#btnSave,#btnDeleteVisaRegistrationDate").button();
                 $("#btnSave").click(function (event) {
@@ -461,13 +484,12 @@ $(document).on("click", ".visaRegistrationDateEdit", function (event) {
 
                     var reg = new RegExp("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
                     var regResult = reg.test($('#editVisaRegTime').val().trim());
-
-                    if ($('#editVisaRegTime').val().trim().length == 0) {
+                    var regResult2 = reg.test($('#eidtVisaPaymentTime').val().trim());
+                    
+                    if ( ($('#editVisaRegTime').val().trim().length == 0) && ($('#eidtVisaPaymentTime').val().trim().length == 0) ) {
                         regResult = true;
                     }
                     if (regResult == true) {
-
-
                         $("#EditRegDateForm").validate();
                         if ($("#EditRegDateForm").valid()) {
                             $.ajax({
@@ -547,6 +569,7 @@ $(document).on("click", ".visaRegistrationDateEdit", function (event) {
 
             close: function (event, ui) {
                 $('#editVisaRegDate').datepicker("destroy");
+                $('#editVisaPaymentDate').datepicker("destroy");
                 (dialogRegDate).dialog("destroy");
                 (dialogRegDate).remove();
             }

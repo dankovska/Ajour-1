@@ -65,6 +65,8 @@ namespace AjourBT.Models
         public string VisaDueDate { get; set; }
         [Display(Name = "Registration")]
         public string RegistrationDate { get; set; }
+        [Display(Name = "Payment Date")]
+        public string PaymentDate { get; set; }
         [Display(Name = "Type")]
         public string VisaType { get; set; }
 
@@ -116,6 +118,8 @@ namespace AjourBT.Models
             EntriesUsedInBT = employee.Visa == null ? default(int) : employee.Visa.EntriesUsedInBT;
             EntriesUsedInPrivateTrips = employee.Visa == null ? default(int) : employee.Visa.EntriesUsedInPrivateTrips;
             RegistrationDate = employee.VisaRegistrationDate == null ? null : string.Format("{0:d}", employee.VisaRegistrationDate.RegistrationDate);
+            PaymentDate = employee.VisaRegistrationDate == null ? null : string.Format("{0:d}", employee.VisaRegistrationDate.PaymentDate);
+
             Passport = employee.Passport;
             BirthDay = string.Format("{0:d}", employee.BirthDay);
             Comment = employee.Comment;

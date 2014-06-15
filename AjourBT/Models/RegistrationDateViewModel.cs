@@ -1,4 +1,5 @@
-﻿using AjourBT.Domain.Entities;
+﻿using AjourBT.CustomAnnotations;
+using AjourBT.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,9 @@ namespace AjourBT.Models
         [Required]
         [Display(Name = "Type")]
         public string VisaType { get; set; }
+
         [Required]
+        //[RequiredIf("PaymentDate", null, ErrorMessage = "Either Registration Date or Payment Date must be filled in")]
         [Display(Name = "Registration Date")]
         public string RegistrationDate { get; set; }
 
@@ -26,7 +29,17 @@ namespace AjourBT.Models
         public string City { get; set; }
 
         [Display(Name = "Registration Number")]
-        public string RegistrationNumber { get; set; } 
+        public string RegistrationNumber { get; set; }
+
+        //[RequiredIf("RegistrationDate", null, ErrorMessage = "Either Registration Date or Payment Date must be filled in")]
+        [Display(Name = "Payment Date")]
+        public string PaymentDate { get; set; }
+
+        [Display(Name = "Payment Time")]
+        public string PaymentTime { get; set; }
+
+        [Display(Name = "Payment PIN")]
+        public string PaymentPIN { get; set; }
 
         public RegistrationDateViewModel(VisaRegistrationDate visaRegistrationDate)
         {
@@ -36,6 +49,9 @@ namespace AjourBT.Models
             RegistrationTime = visaRegistrationDate.RegistrationTime;
             City = visaRegistrationDate.City;
             RegistrationNumber = visaRegistrationDate.RegistrationNumber;
+            PaymentDate = string.Format("{0:d}", visaRegistrationDate.PaymentDate);
+            PaymentTime = visaRegistrationDate.PaymentTime;
+            PaymentPIN = visaRegistrationDate.PaymentPIN;
             RowVersion = visaRegistrationDate.RowVersion;
         }
 

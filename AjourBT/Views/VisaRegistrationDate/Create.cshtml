@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+<script src="~/Scripts/AjourBTScript/RequiredIfValidation.js"></script>
+
 <script type="text/javascript">
     clearTimeout(timer);
     timer = window.setTimeout(function () { location.reload(); }, timeout);
@@ -34,32 +36,55 @@
             <td>@Html.TextBoxFor(model => model.RegistrationDate, new { id = "RegistrationDateCreate", @readonly = true, @class = "editorForCalendar" })
             <br />@Html.ValidationMessageFor(model => model.RegistrationDate)</td>
         </tr>
-    <tr>
-        <td><b>@Html.Label("Time")</b></td>
-        <td>
-            @Html.TextBoxFor(model => model.RegistrationTime, new { @class = "editorForCalendar", @id = "visaRegTime" })
-        <br />@Html.ValidationMessageFor(model => model.RegistrationTime)
-   
-         </td>
-    </tr>
+        <tr>
+            <td><b>@Html.Label("Time")</b></td>
+            <td>
+                @Html.TextBoxFor(model => model.RegistrationTime, new { @class = "editorForCalendar", @id = "visaRegTime" })
+                <br />@Html.ValidationMessageFor(model => model.RegistrationTime)
+            </td>
+        </tr>
 
-    <tr>
-        <td><b>@Html.Label("City")</b></td>
-        <td>
-            @Html.TextBoxFor(model => model.City, new {@Value = "Lviv",  @class = "editorReadOnly" })
-            <br />@Html.ValidationMessageFor(model => model.City)
+        <tr>
+            <td><b>@Html.Label("City")</b></td>
+            <td>
+                @Html.TextBoxFor(model => model.City, new {@Value = "Lviv",  @class = "editorReadOnly" })
+                <br />@Html.ValidationMessageFor(model => model.City)
 
-        </td>
-    </tr>
+            </td>
+        </tr>
 
-    <tr>
-        <td><b>@Html.Label("Reg #")</td>
-        <td>
-            @Html.TextBoxFor(model => model.RegistrationNumber, new { @class = "editorReadOnly" })
-            <br />@Html.ValidationMessageFor(model => model.RegistrationNumber)
+        <tr>
+            <td><b>@Html.Label("Reg #")</td>
+            <td>
+                @Html.TextBoxFor(model => model.RegistrationNumber, new { @class = "editorReadOnly" })
+                <br />@Html.ValidationMessageFor(model => model.RegistrationNumber)
 
-        </td>
-    </tr>
+            </td>
+        </tr>
+
+        <tr>
+            <td><b>@Html.Label("Payment Date")</b></td>
+            <td>
+                @Html.TextBoxFor(model => model.PaymentDate, new { id = "PaymentDateCreate", @readonly = true, @class = "editorForCalendar" })
+                <br />@Html.ValidationMessageFor(model => model.PaymentDate)
+            </td>
+        </tr>
+        <tr>
+            <td><b>@Html.Label("Payment Time")</b></td>
+            <td>
+                @Html.TextBoxFor(model => model.PaymentTime, new { @class = "editorForCalendar", @id = "visaPaymentTime" })
+                <br />@Html.ValidationMessageFor(model => model.PaymentTime)
+            </td>
+        </tr>
+        <tr>
+            <td><b>@Html.Label("Payment PIN")</b></td>
+            <td>
+                @Html.TextBoxFor(model => model.PaymentPIN, new { @class = "editorReadOnly" })
+                <br />@Html.ValidationMessageFor(model => model.PaymentPIN)
+
+            </td>
+        </tr>
+
 </table>
         <br />
         @*<div style="float: left">

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AjourBT.CustomAnnotation;
+using AjourBT.Domain.CustomAnnotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +24,8 @@ namespace AjourBT.Domain.Entities
         [Display(Name = "Visa Type")]
         public string VisaType { get; set; }
 
+        [Required]
+        //[RequiredIf("PaymentDate", null, ErrorMessage = "Either Registration Date or Payment Date must be filled in")]
         [Display(Name = "Registration Date")]
         public DateTime RegistrationDate { get; set; }
 
@@ -32,7 +36,17 @@ namespace AjourBT.Domain.Entities
         public string City { get; set; }
      
         [Display(Name = "Registration Number")]
-        public string RegistrationNumber { get; set; } 
+        public string RegistrationNumber { get; set; }
+
+        //[RequiredIf("RegistrationDate", null, ErrorMessage = "Either Registration Date or Payment Date must be filled in")]
+        [Display(Name = "Payment Date")]
+        public DateTime? PaymentDate { get; set; }
+
+        [Display(Name = "Payment Time")]
+        public string PaymentTime { get; set; }
+
+        [Display(Name = "Payment PIN")]
+        public string PaymentPIN { get; set; }
 
         public virtual Employee VisaRegistrationDateOf { get; set; }
 

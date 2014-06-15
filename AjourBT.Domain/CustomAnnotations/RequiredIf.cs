@@ -60,8 +60,9 @@ namespace AjourBT.CustomAnnotation
             //if it's a bool, format it javascript style 
             // (the default is True or False!)
             string targetValue = (this.TargetValue ?? "").ToString();
-            if (this.TargetValue.GetType() == typeof(bool))
-                targetValue = targetValue.ToLower();
+            if (this.TargetValue != null)
+                if (this.TargetValue.GetType() == typeof(bool))
+                    targetValue = targetValue.ToLower();
 
             rule.ValidationParameters.Add("dependentproperty", _anotherProperty);
             rule.ValidationParameters.Add("targetvalue", targetValue);

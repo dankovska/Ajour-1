@@ -244,7 +244,9 @@ namespace AjourBT.Domain.Concrete
                 dbEntry.City = visaRegistrationDate.City;
                 dbEntry.RegistrationNumber = visaRegistrationDate.RegistrationNumber;
                 dbEntry.RegistrationTime = visaRegistrationDate.RegistrationTime;
-
+                dbEntry.PaymentDate = visaRegistrationDate.PaymentDate;
+                dbEntry.PaymentTime = visaRegistrationDate.PaymentTime;
+                dbEntry.PaymentPIN = visaRegistrationDate.PaymentPIN;
             }
             else
             {

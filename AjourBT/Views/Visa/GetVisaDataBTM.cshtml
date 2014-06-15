@@ -85,37 +85,6 @@
                      @name
                 </td>
 
-                @*@if (item.DateDismissed != null)
-                {
-                    <td>
-                        <strike>
-                            @Html.DisplayFor(model => item.LastName)
-                            @Html.DisplayFor(model => item.FirstName)
-                        </strike>
-                        <br>
-                        <i2>@Html.CustomDisplayDateTime(item.DateDismissed)</i2>
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        @if (item.IsManager == true)
-                        {
-                            <b>
-                                @Html.DisplayFor(model => item.LastName)
-                                @Html.DisplayFor(model => item.FirstName)
-                            </b>
-                        }
-                        else
-                        {
-                            @Html.DisplayFor(model => item.LastName)
-                            @:
-                            @Html.DisplayFor(model => item.FirstName)
-                        }
-                    </td>
-                }*@
-
-
                 <td style="text-align:center">
                     @Html.CheckBox("HasPassport", item.Passport != null ? true : false, new { id = "HasPassport", value = item.EmployeeID })
                     &nbsp;
@@ -166,9 +135,18 @@
                 }
                 @if (item.VisaRegistrationDate != null)
                 {
-                    <td>
-                        @Html.ActionLink(item.VisaRegistrationDate.RegistrationDate.ToShortDateString(), "Edit", "VisaRegistrationDate", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "visaRegistrationDateEdit", data_date_format = ViewBag.JSDatePattern })
-                    </td>
+                    if (item.VisaRegistrationDate.RegistrationDate == null && item.VisaRegistrationDate.PaymentDate != null)
+                    {
+                        <td style="color:red">
+                            @Html.ActionLink(item.VisaRegistrationDate.PaymentDate.Value.ToString(), "Edit", "VisaRegistrationDate", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "visaRegistrationDateEdit", data_date_format = ViewBag.JSDatePattern })
+                        </td>
+                    }
+                    else
+                    { 
+                        <td>
+                            @Html.ActionLink(item.VisaRegistrationDate.RegistrationDate.ToShortDateString(), "Edit", "VisaRegistrationDate", new { id = item.EmployeeID, searchString = ViewBag.SearchString }, new { @class = "visaRegistrationDateEdit", data_date_format = ViewBag.JSDatePattern })
+                        </td>
+                    }
                 }
                 else
                 {
